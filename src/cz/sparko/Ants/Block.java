@@ -39,6 +39,7 @@ public class Block extends AnimatedSprite {
         blockTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "line.png", 160, 0, 1, 1);
     }
 
+
     public static Block createRandomBlockFactory(int x, int y, VertexBufferObjectManager vertexBufferObjectManager) {
         Random rnd = new Random();
         return new Block(x, y, blockTextureRegions[rnd.nextInt(3)], vertexBufferObjectManager) {
