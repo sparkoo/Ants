@@ -14,7 +14,7 @@
     <ignored path=".idea/workspace.xml" />
     <file path="$PROJECT_DIR$/res/layout/main.xml" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1378020412127" ignored="false" />
     <file path="$PROJECT_DIR$/res/values/strings.xml" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1378020412127" ignored="false" />
-    <file path="/Dummy.txt" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379752379310" ignored="false" />
+    <file path="/Dummy.txt" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379756845092" ignored="false" />
     <file path="/MyActivity.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1378744151617" ignored="false" />
     <file path="/Beam.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379191660490" ignored="false" />
     <file path="/Lazzor.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379192432058" ignored="false" />
@@ -24,6 +24,7 @@
     <file path="$PROJECT_DIR$/gen/cz/sparko/Ants/Manifest.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379752480373" ignored="false" />
     <file path="$PROJECT_DIR$/gen/cz/sparko/Ants/R.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379752480373" ignored="false" />
     <file path="$PROJECT_DIR$/gen/cz/sparko/Ants/BuildConfig.java" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379752551904" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="fd6e5bde-ed23-41bf-a058-5b8ff9b234ca" time="1379756845092" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +77,7 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/src/cz/sparko/Ants/Field.java" line="95" class="cz.sparko.AndTest.Field$1" package="cz.sparko.AndTest">
+      <breakpoint url="file://$PROJECT_DIR$/src/cz/sparko/Ants/Field.java" line="95" class="cz.sparko.Ants.Field$1" package="cz.sparko.Ants">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -113,7 +114,7 @@
       <file leaf-file-name="Ant.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cz/sparko/Ants/Ant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="33" selection-start="837" selection-end="837" vertical-scroll-proportion="0.0">
+            <state line="41" column="38" selection-start="1501" selection-end="1501" vertical-scroll-proportion="0.7010309">
               <folding />
             </state>
           </provider>
@@ -197,6 +198,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -254,7 +256,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -474,7 +475,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32814237" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -489,8 +490,8 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14941302" sideWeight="0.6929922" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3070078" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14941302" sideWeight="0.6929922" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3063263" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -653,7 +654,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cz/sparko/Ants/Ant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="33" selection-start="837" selection-end="837" vertical-scroll-proportion="0.0">
+        <state line="41" column="38" selection-start="1501" selection-end="1501" vertical-scroll-proportion="0.7010309">
           <folding />
         </state>
       </provider>
