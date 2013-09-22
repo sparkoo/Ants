@@ -1,10 +1,12 @@
 package cz.sparko.Ants;
 
+import android.widget.Toast;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -30,6 +32,10 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
     private Scene mScene;
 
     private Block[][] blocks;
+    private Ant ant;
+    private Block activeBlock;
+
+    private boolean running = true;
 
     public Field() {
     }
@@ -69,18 +75,22 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
 
         final float centerX = (CAMERA_WIDTH - this.mAntTextRegion.getWidth()) / 2;
         final float centerY = (CAMERA_HEIGHT - this.mAntTextRegion.getHeight()) / 2;
-        final Ant ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
-        ant.setVelocity(50, 0);
+        ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
+
 
         int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
         int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[FIELD_SIZE_X][FIELD_SIZE_Y];
         for (int x = 0; x < FIELD_SIZE_X; x++) {
             for (int y = 0; y < FIELD_SIZE_Y; y++) {
-                Block nBlock = Block.createRandomBlockFactory(startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
-                blocks[x][y] = nBlock;
-                mScene.attachChild(nBlock);
-                mScene.registerTouchArea(nBlock);
+                try {
+                    Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                    blocks[x][y] = nBlock;
+                    mScene.attachChild(nBlock);
+                    mScene.registerTouchArea(nBlock);
+                } catch(NotDefinedBlockException e) {
+                    Toast.makeText(this.getBaseContext(), "load failed", Toast.LENGTH_SHORT);
+                }
             }
         }
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
@@ -88,23 +98,22 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
         mScene.registerUpdateHandler(new IUpdateHandler() {
             @Override
             public void onUpdate(float pSecondsElapsed) {
-                for (int x = 0; x < FIELD_SIZE_X; x++) {
-                    for (int y = 0; y < FIELD_SIZE_Y; y++) {
-                        if (ant.collidesWith(blocks[x][y])) {
-                            System.out.println("x: " + blocks[x][y].getX() + blocks[x][y].getScaleCenterX() + "; y: " + blocks[x][y].getY() + blocks[x][y].getScaleCenterY());
-                            System.out.println("X: " + ant.getX() + ant.getScaleCenterX() + "; Y: " + ant.getY() + ant.getScaleCenterY());
-                            blocks[x][y].setAlpha(blocks[x][y].getAlpha() - 0.01f);
-                        }
+                activeBlock = blocks[0][0];
+                /*while (false) {
+                    Coordinate currentCoordinate = activeBlock.getOutCoordinate();
+                    if (!blocks[currentCoordinate.getX()][currentCoordinate.getY()].canGetIn(activeBlock.getCoordinate())) {
+                        running = false;
+                        reset();
                     }
-                }
+
+                }*/
             }
 
             @Override
             public void reset() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                System.out.println("game over");
             }
         });
-
         mScene.attachChild(ant);
 
         return mScene;
@@ -113,6 +122,8 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
     @Override
     public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
         System.out.println("touch x: " + pSceneTouchEvent.getX() + "; y: " + pSceneTouchEvent.getY());
+        /*if (pSceneTouchEvent.isActionUp())
+            ant.registerEntityModifier(new MoveModifier(0.5f, ant.getX(), pSceneTouchEvent.getX(), ant.getY(), pSceneTouchEvent.getY()));*/
         return false;
     }
 }
