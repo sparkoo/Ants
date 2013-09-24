@@ -16,10 +16,6 @@ public class Ant extends AnimatedSprite {
 
     @Override
     protected void onManagedUpdate(final float pSecondsElapsed) {
-        if(this.mX < 0 || this.mY < 0 || this.mX + this.getWidth() > Field.getCameraWidth() || this.mY + this.getHeight() > Field.getCameraHeight()) {
-
-        }
-
         super.onManagedUpdate(pSecondsElapsed);
     }
 }

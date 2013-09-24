@@ -91,8 +91,8 @@ public abstract class Block extends AnimatedSprite {
         if (pSceneTouchEvent.isActionDown()) {
             this.rotate();
             return true;
-        } else
-            return false;
+        }
+        return false;
     }
 
     public Coordinate getOutCoordinate() {
