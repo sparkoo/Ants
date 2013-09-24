@@ -65,19 +65,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
         this.mBitmapTextureAtlas.load();
     }
 
-    @Override
-    public Scene onCreateScene() {
-        this.mEngine.registerUpdateHandler(new FPSLogger());
-
-        mScene = new Scene();
-        mScene.setBackground(new Background(0.22f, 0.22f, 0.22f));
-        mScene.setOnSceneTouchListener(this);
-
-        final float centerX = (CAMERA_WIDTH - this.mAntTextRegion.getWidth()) / 2;
-        final float centerY = (CAMERA_HEIGHT - this.mAntTextRegion.getHeight()) / 2;
-        ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
-
-
+    private void createRandomField(Scene mScene) {
         int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
         int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[FIELD_SIZE_X][FIELD_SIZE_Y];
@@ -93,25 +81,53 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                 }
             }
         }
+    }
+
+    @Override
+    public Scene onCreateScene() {
+        this.mEngine.registerUpdateHandler(new FPSLogger());
+
+        mScene = new Scene();
+        mScene.setBackground(new Background(0.22f, 0.22f, 0.22f));
+        mScene.setOnSceneTouchListener(this);
+
+        final float centerX = (CAMERA_WIDTH - this.mAntTextRegion.getWidth()) / 2;
+        final float centerY = (CAMERA_HEIGHT - this.mAntTextRegion.getHeight()) / 2;
+        ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
+
+        createRandomField(mScene);
+
+        activeBlock = blocks[0][0];
+        ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
+
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
         mScene.registerUpdateHandler(new IUpdateHandler() {
             @Override
             public void onUpdate(float pSecondsElapsed) {
-                activeBlock = blocks[0][0];
-                /*while (false) {
-                    Coordinate currentCoordinate = activeBlock.getOutCoordinate();
-                    if (!blocks[currentCoordinate.getX()][currentCoordinate.getY()].canGetIn(activeBlock.getCoordinate())) {
-                        running = false;
+                if (running) {
+                    int currentX = activeBlock.getCoordinate().getX() + activeBlock.getOutCoordinate().getX();
+                    int currentY = activeBlock.getCoordinate().getY() + activeBlock.getOutCoordinate().getY();
+                    if (currentX < 0) currentX = FIELD_SIZE_X - 1;
+                    if (currentX >= FIELD_SIZE_X) currentX = 0;
+                    if (currentY < 0) currentY = FIELD_SIZE_Y - 1;
+                    if (currentY >= FIELD_SIZE_Y) currentY = 0;
+                    Coordinate nCoordinate = new Coordinate(currentX, currentY);
+                    if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetIn(activeBlock.getCoordinate())) {
+                        activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
+                        ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
+                        System.out.println("get in");
+                    } else {
+                        //running = false;
                         reset();
                     }
-
-                }*/
+                }
             }
 
             @Override
             public void reset() {
                 System.out.println("game over");
+                //System.exit(0);
             }
         });
         mScene.attachChild(ant);

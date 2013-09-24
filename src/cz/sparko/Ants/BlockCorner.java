@@ -22,9 +22,9 @@ public class BlockCorner extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        possibleSourceWays = new ArrayList<Integer>(2);
-        possibleSourceWays.add(0, Block.DOWN);
-        possibleSourceWays.add(1, Block.RIGHT);
+        sourceWays = new ArrayList<Integer>(2);
+        sourceWays.add(0, Block.DOWN);
+        sourceWays.add(1, Block.RIGHT);
     }
 
     @Override

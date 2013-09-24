@@ -22,11 +22,11 @@ public class BlockCross extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        possibleSourceWays = new ArrayList<Integer>(4);
-        possibleSourceWays.add(0, Block.UP);
-        possibleSourceWays.add(1, Block.DOWN);
-        possibleSourceWays.add(2, Block.LEFT);
-        possibleSourceWays.add(3, Block.RIGHT);
+        sourceWays = new ArrayList<Integer>(4);
+        sourceWays.add(0, Block.UP);
+        sourceWays.add(1, Block.DOWN);
+        sourceWays.add(2, Block.LEFT);
+        sourceWays.add(3, Block.RIGHT);
     }
 
     @Override

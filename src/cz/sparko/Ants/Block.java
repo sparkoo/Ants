@@ -14,14 +14,14 @@ import java.util.Random;
 public abstract class Block extends AnimatedSprite {
     public static final int SIZE = 64;
 
-    protected static final int LEFT = 0;
+    protected static final int UP = 0;
     protected static final int RIGHT = 1;
     protected static final int DOWN = 2;
-    protected static final int UP = 3;
-    protected static final Coordinate[] directions = {new Coordinate(-1, 0),  new Coordinate(1, 0), new Coordinate(0, 1), new Coordinate(0, -1)};
+    protected static final int LEFT = 3;
+    protected static final Coordinate[] directions = {new Coordinate(0, -1),  new Coordinate(1, 0), new Coordinate(0, 1), new Coordinate(-1, 0)};
 
     protected Coordinate coordinate;
-    protected ArrayList<Integer> possibleSourceWays;
+    protected ArrayList<Integer> sourceWays;
     protected ArrayList<Integer> outWays;
     protected int wayNo = 0;
 
@@ -72,13 +72,16 @@ public abstract class Block extends AnimatedSprite {
                 nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager);
                 break;
             case 1:
-                nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager);
+                nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager);
                 break;
             case 2:
-                nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager);
+                nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager);
                 break;
             default:
                 throw new NotDefinedBlockException();
+        }
+        for (int i = 0; i < rnd.nextInt(4); i++) {
+            nBlock.rotate();
         }
         return nBlock;
     }
@@ -86,11 +89,10 @@ public abstract class Block extends AnimatedSprite {
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
         if (pSceneTouchEvent.isActionDown()) {
-            this.setRotation(this.getRotation() + 90);
             this.rotate();
             return true;
-        }
-        return false;
+        } else
+            return false;
     }
 
     public Coordinate getOutCoordinate() {
@@ -99,21 +101,24 @@ public abstract class Block extends AnimatedSprite {
 
     public boolean canGetIn(Coordinate fromCoordinate) {
         Coordinate fromDirection = new Coordinate(fromCoordinate.getX() - coordinate.getX(), fromCoordinate.getY() - coordinate.getY());
-        int from = 0;
+        int from = -1;
         for (int i = 0; i < directions.length; i++) {
-            if (directions[i].equals(fromDirection))
+            if (directions[i].equals(fromDirection)) {
                 from = i;
+                break;
+            }
         }
-        wayNo = possibleSourceWays.indexOf(from);
-        if (wayNo > 0)
+        wayNo = sourceWays.indexOf(from);
+        if (wayNo > -1)
             return true;
         return false;
     }
 
     public void rotate() {
-        for (int i = 0; i < possibleSourceWays.size() && i < outWays.size(); i++) {
-            possibleSourceWays.set(i, possibleSourceWays.get(i) + (((int)this.getRotation() / 90) % 4));
-            outWays.set(i, outWays.get(i) + (((int)this.getRotation() / 90) % 4));
+        this.setRotation(this.getRotation() + 90);
+        for (int i = 0; i < sourceWays.size() && i < outWays.size(); i++) {
+            sourceWays.set(i, (sourceWays.get(i) + 1)% 4);
+            outWays.set(i, (outWays.get(i) + 1) % 4);
         }
     }
 

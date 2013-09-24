@@ -22,15 +22,15 @@ public class BlockLine extends Block{
 
     @Override
     public void setPossibleSourceWays() {
-        possibleSourceWays = new ArrayList<Integer>(2);
-        possibleSourceWays.add(0, Block.DOWN);
-        possibleSourceWays.add(1, Block.UP);
+        sourceWays = new ArrayList<Integer>(2);
+        sourceWays.add(0, Block.DOWN);
+        sourceWays.add(1, Block.UP);
     }
 
     @Override
     public void setOutWays() {
         outWays = new ArrayList<Integer>(2);
-        outWays.add(0, Block.DOWN);
-        outWays.add(1, Block.UP);
+        outWays.add(0, Block.UP);
+        outWays.add(1, Block.DOWN);
     }
 }
