@@ -1,5 +1,7 @@
 package cz.sparko.Ants;
 
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -13,7 +15,11 @@ import java.util.Random;
 
 public abstract class Block extends AnimatedSprite {
     public static final int SIZE = 64;
+    public static final int Z_INDEX = 10;
 
+    /*
+    TODO: enum ?
+     */
     protected static final int UP = 0;
     protected static final int RIGHT = 1;
     protected static final int DOWN = 2;
@@ -35,6 +41,7 @@ public abstract class Block extends AnimatedSprite {
         this.coordinate = coordinate;
         this.setPossibleSourceWays();
         this.setOutWays();
+        this.setZIndex(Z_INDEX);
     }
     //private Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager){}
 
@@ -53,6 +60,7 @@ public abstract class Block extends AnimatedSprite {
     public void delete() {
         this.deleted = true;
         this.active = false;
+        this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Field.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Field.getAnt().getSpeed() / 4, 1f, 0f)));
     }
 
     public Coordinate getCoordinate() { return coordinate; }
@@ -100,10 +108,13 @@ public abstract class Block extends AnimatedSprite {
         return directions[outWays.get(wayNo)];
     }
 
-    public boolean canGetFrom(Coordinate fromCoordinate) {
+    public boolean canGetInFrom(Coordinate fromCoordinate) {
+        if (deleted) return false;
+
         //walking through side walls
         int directionX = fromCoordinate.getX() - coordinate.getX();
         int directionY = fromCoordinate.getY() - coordinate.getY();
+        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Field.needRefreshField(); //refresh field on walk through wall
         if (directionX < -1) directionX = 1;
         if (directionX > 1) directionX = -1;
         if (directionY < -1) directionY = 1;
@@ -131,8 +142,7 @@ public abstract class Block extends AnimatedSprite {
         }
     }
 
-    public abstract void moveAnt(Ant ant);
-    public abstract void pastToNextBlock(Ant ant, Block[][] blocks);
+    public abstract SequenceEntityModifier getMoveHandler(Ant ant);
     public abstract void setPossibleSourceWays();
     public abstract void setOutWays();
 }

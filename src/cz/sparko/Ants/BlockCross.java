@@ -1,5 +1,7 @@
 package cz.sparko.Ants;
 
+import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -11,13 +13,19 @@ public class BlockCross extends Block {
     }
 
     @Override
-    public void moveAnt(Ant ant) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+    /*
+    TODO: same as BlockLine ==> refactor ?
+     */
+    public SequenceEntityModifier getMoveHandler(Ant ant) {
+        final float centerX = this.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2);
+        final float centerY = this.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2);
 
-    @Override
-    public void pastToNextBlock(Ant ant, Block[][] blocks) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        final float sourcePositionX = centerX + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getX());
+        final float sourcePositionY = centerY + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getY());
+        final float outPositionX = centerX + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getX());
+        final float outPositionY = centerY + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getY());
+
+        return new SequenceEntityModifier(new MoveModifier(ant.getSpeed(), sourcePositionX, outPositionX, sourcePositionY, outPositionY));
     }
 
     @Override

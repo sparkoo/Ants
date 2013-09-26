@@ -1,12 +1,10 @@
 package cz.sparko.Ants;
 
-import android.widget.Toast;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -38,6 +36,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
     private boolean running = true;
 
     private static Ant staticAnt = null;
+    private static boolean refreshField = false;
 
     public Field() {
     }
@@ -48,6 +47,10 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
 
     public static int getCameraHeight() {
         return CAMERA_HEIGHT;
+    }
+
+    public static void needRefreshField() {
+        refreshField = true;
     }
 
     public static Ant getAnt() { return staticAnt; }
@@ -81,10 +84,33 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     mScene.attachChild(nBlock);
                     mScene.registerTouchArea(nBlock);
                 } catch(NotDefinedBlockException e) {
-                    Toast.makeText(this.getBaseContext(), "load failed", Toast.LENGTH_SHORT);
+
                 }
             }
         }
+    }
+
+    private void refreshField(Scene mScene) {
+        int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
+        int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
+
+        for (int x = 0; x < FIELD_SIZE_X; x++) {
+            for (int y = 0; y < FIELD_SIZE_Y; y++) {
+                if (blocks[x][y].isDeleted()) {
+                    try {
+                        mScene.detachChild(blocks[x][y]);
+                        mScene.unregisterTouchArea(blocks[x][y]);
+                        Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                        blocks[x][y] = nBlock;
+                        mScene.attachChild(nBlock);
+                        mScene.registerTouchArea(nBlock);
+                    } catch(NotDefinedBlockException e) {
+
+                    }
+                }
+            }
+        }
+        mScene.sortChildren();
     }
 
     @Override
@@ -112,6 +138,10 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
             @Override
             public void onUpdate(float pSecondsElapsed) {
                 System.out.println(timeCounter + "         " + pSecondsElapsed + "           " + ant.getSpeed());
+                if (refreshField) {
+                    refreshField(mScene);
+                    refreshField = false;
+                }
                 if (running && timeCounter > ant.getSpeed()) {
                     timeCounter = 0;
                     int currentX = activeBlock.getCoordinate().getX() + activeBlock.getOutCoordinate().getX();
@@ -121,9 +151,11 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     if (currentY < 0) currentY = FIELD_SIZE_Y - 1;
                     if (currentY >= FIELD_SIZE_Y) currentY = 0;
                     Coordinate nCoordinate = new Coordinate(currentX, currentY);
-                    if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetFrom(activeBlock.getCoordinate())) {
+                    if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetInFrom(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
-                        ant.registerEntityModifier(new MoveModifier(ant.getSpeed(), ant.getX(), activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), ant.getY(), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2)));
+                        //ant.registerEntityModifier();
+                        ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
+                        activeBlock.delete();
                         System.out.println("get in");
                     } else {
                         //running = false;
@@ -136,7 +168,6 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
 
             @Override
             public void reset() {
-                //System.out.println("game over");
                 //System.exit(0);
             }
         });
