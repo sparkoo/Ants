@@ -36,6 +36,7 @@ public abstract class Block extends AnimatedSprite {
         this.setPossibleSourceWays();
         this.setOutWays();
     }
+    //private Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager){}
 
     public boolean isActive() {
         return this.active;
@@ -88,7 +89,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()) {
+        if (pSceneTouchEvent.isActionDown()/* && !collidesWith(Field.getAnt())*/) {
             this.rotate();
             return true;
         }

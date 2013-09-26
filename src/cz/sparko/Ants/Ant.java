@@ -9,6 +9,8 @@ public class Ant extends AnimatedSprite {
     public static final int SIZE_X = 16;
     public static final int SIZE_Y = 16;
 
+    private float speed = 1;
+
 
     public Ant(float pX, float pY, final TiledTextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
         super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
@@ -18,4 +20,6 @@ public class Ant extends AnimatedSprite {
     protected void onManagedUpdate(final float pSecondsElapsed) {
         super.onManagedUpdate(pSecondsElapsed);
     }
+
+    public float getSpeed() { return speed; }
 }

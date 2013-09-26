@@ -37,6 +37,8 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
 
     private boolean running = true;
 
+    private static Ant staticAnt = null;
+
     public Field() {
     }
 
@@ -47,6 +49,8 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
     public static int getCameraHeight() {
         return CAMERA_HEIGHT;
     }
+
+    public static Ant getAnt() { return staticAnt; }
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -94,6 +98,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
         final float centerX = (CAMERA_WIDTH - this.mAntTextRegion.getWidth()) / 2;
         final float centerY = (CAMERA_HEIGHT - this.mAntTextRegion.getHeight()) / 2;
         ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
+        staticAnt = ant;
 
         createRandomField(mScene);
 
@@ -103,9 +108,12 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
         mScene.registerUpdateHandler(new IUpdateHandler() {
+            float timeCounter = 0;
             @Override
             public void onUpdate(float pSecondsElapsed) {
-                if (running) {
+                System.out.println(timeCounter + "         " + pSecondsElapsed + "           " + ant.getSpeed());
+                if (running && timeCounter > ant.getSpeed()) {
+                    timeCounter = 0;
                     int currentX = activeBlock.getCoordinate().getX() + activeBlock.getOutCoordinate().getX();
                     int currentY = activeBlock.getCoordinate().getY() + activeBlock.getOutCoordinate().getY();
                     if (currentX < 0) currentX = FIELD_SIZE_X - 1;
@@ -115,18 +123,20 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     Coordinate nCoordinate = new Coordinate(currentX, currentY);
                     if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetIn(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
-                        ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
+                        ant.registerEntityModifier(new MoveModifier(ant.getSpeed(), ant.getX(), activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), ant.getY(), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2)));
                         System.out.println("get in");
                     } else {
                         //running = false;
                         reset();
                     }
+                } else {
+                    timeCounter += pSecondsElapsed;
                 }
             }
 
             @Override
             public void reset() {
-                System.out.println("game over");
+                //System.out.println("game over");
                 //System.exit(0);
             }
         });
