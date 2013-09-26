@@ -100,8 +100,16 @@ public abstract class Block extends AnimatedSprite {
         return directions[outWays.get(wayNo)];
     }
 
-    public boolean canGetIn(Coordinate fromCoordinate) {
-        Coordinate fromDirection = new Coordinate(fromCoordinate.getX() - coordinate.getX(), fromCoordinate.getY() - coordinate.getY());
+    public boolean canGetFrom(Coordinate fromCoordinate) {
+        //walking through side walls
+        int directionX = fromCoordinate.getX() - coordinate.getX();
+        int directionY = fromCoordinate.getY() - coordinate.getY();
+        if (directionX < -1) directionX = 1;
+        if (directionX > 1) directionX = -1;
+        if (directionY < -1) directionY = 1;
+        if (directionY > 1) directionY = -1;
+
+        Coordinate fromDirection = new Coordinate(directionX, directionY);
         int from = -1;
         for (int i = 0; i < directions.length; i++) {
             if (directions[i].equals(fromDirection)) {

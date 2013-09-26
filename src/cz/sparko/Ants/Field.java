@@ -121,7 +121,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     if (currentY < 0) currentY = FIELD_SIZE_Y - 1;
                     if (currentY >= FIELD_SIZE_Y) currentY = 0;
                     Coordinate nCoordinate = new Coordinate(currentX, currentY);
-                    if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetIn(activeBlock.getCoordinate())) {
+                    if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetFrom(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
                         ant.registerEntityModifier(new MoveModifier(ant.getSpeed(), ant.getX(), activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), ant.getY(), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2)));
                         System.out.println("get in");
