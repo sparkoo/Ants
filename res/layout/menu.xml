@@ -9,5 +9,15 @@
             android:layout_height="wrap_content"
             android:text="Hello World, MyActivity"
             />
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="play"
+            android:id="@+id/btnPlay"/>
+    <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Exit"
+            android:id="@+id/exitButton"/>
 </LinearLayout>
 

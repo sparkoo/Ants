@@ -1,5 +1,6 @@
 package cz.sparko.Ants;
 
+import android.content.Intent;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -16,7 +17,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
-public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListener {
+//TODO: refactor - was renamed from Field. Make new class Field
+public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
 
@@ -38,7 +40,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
     private static Ant staticAnt = null;
     private static boolean refreshField = false;
 
-    public Field() {
+    public Game() {
     }
 
     public static int getCameraWidth() {
@@ -84,7 +86,7 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     mScene.attachChild(nBlock);
                     mScene.registerTouchArea(nBlock);
                 } catch(NotDefinedBlockException e) {
-
+                    //TODO: some ingelligent catch
                 }
             }
         }
@@ -137,7 +139,6 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
             float timeCounter = 0;
             @Override
             public void onUpdate(float pSecondsElapsed) {
-                System.out.println(timeCounter + "         " + pSecondsElapsed + "           " + ant.getSpeed());
                 if (refreshField) {
                     refreshField(mScene);
                     refreshField = false;
@@ -153,12 +154,10 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
                     Coordinate nCoordinate = new Coordinate(currentX, currentY);
                     if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetInFrom(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
-                        //ant.registerEntityModifier();
                         ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
                         activeBlock.delete();
                         System.out.println("get in");
                     } else {
-                        //running = false;
                         reset();
                     }
                 } else {
@@ -168,7 +167,8 @@ public class Field extends SimpleBaseGameActivity implements IOnSceneTouchListen
 
             @Override
             public void reset() {
-                //System.exit(0);
+                Game.this.startActivity(new Intent(Game.this, Menu.class));
+                Game.this.finish();
             }
         });
         mScene.attachChild(ant);

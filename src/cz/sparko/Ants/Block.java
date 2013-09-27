@@ -43,7 +43,6 @@ public abstract class Block extends AnimatedSprite {
         this.setOutWays();
         this.setZIndex(Z_INDEX);
     }
-    //private Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager){}
 
     public boolean isActive() {
         return this.active;
@@ -60,7 +59,7 @@ public abstract class Block extends AnimatedSprite {
     public void delete() {
         this.deleted = true;
         this.active = false;
-        this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Field.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Field.getAnt().getSpeed() / 4, 1f, 0f)));
+        this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Game.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Game.getAnt().getSpeed() / 4, 1f, 0f)));
     }
 
     public Coordinate getCoordinate() { return coordinate; }
@@ -97,7 +96,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown()/* && !collidesWith(Field.getAnt())*/) {
+        if (pSceneTouchEvent.isActionDown() && !collidesWith(Game.getAnt())) {
             this.rotate();
             return true;
         }
@@ -114,7 +113,9 @@ public abstract class Block extends AnimatedSprite {
         //walking through side walls
         int directionX = fromCoordinate.getX() - coordinate.getX();
         int directionY = fromCoordinate.getY() - coordinate.getY();
-        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Field.needRefreshField(); //refresh field on walk through wall
+
+        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Game.needRefreshField(); //refresh field on walk through wall
+
         if (directionX < -1) directionX = 1;
         if (directionX > 1) directionX = -1;
         if (directionY < -1) directionY = 1;
