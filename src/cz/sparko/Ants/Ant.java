@@ -11,8 +11,9 @@ public class Ant extends AnimatedSprite {
 
     public static final int Z_INDEX = 100;
 
-    private float speed = 1;
+    private static final float baseSpeed = 1;
 
+    private float speed = baseSpeed;
 
     public Ant(float pX, float pY, final TiledTextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
         super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
@@ -22,6 +23,13 @@ public class Ant extends AnimatedSprite {
     @Override
     protected void onManagedUpdate(final float pSecondsElapsed) {
         super.onManagedUpdate(pSecondsElapsed);
+    }
+
+    public void switchSpeed() {
+        if (speed == baseSpeed)
+            speed = speed / 2;
+        else
+            speed = baseSpeed;
     }
 
     public float getSpeed() { return speed; }

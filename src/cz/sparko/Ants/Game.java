@@ -5,10 +5,12 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
@@ -22,18 +24,20 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
 
-    private static final int FIELD_SIZE_X = 10;
+    private static final int FIELD_SIZE_X = 9;
     private static final int FIELD_SIZE_Y = 6;
 
 
     private BitmapTextureAtlas mBitmapTextureAtlas;
     private TiledTextureRegion mAntTextRegion;
+    private TiledTextureRegion m2xButtonTextureRegion;
 
     private Scene mScene;
 
     private Block[][] blocks;
     private Ant ant;
     private Block activeBlock;
+    private AnimatedSprite x2btn;
 
     private boolean running = true;
 
@@ -61,16 +65,18 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public EngineOptions onCreateEngineOptions() {
         final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
+        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
     }
 
     @Override
     public void onCreateResources() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 224, 64, TextureOptions.BILINEAR);
+        //TODO: solve better texture handling
+        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 288, 64, TextureOptions.BILINEAR);
         this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 0, 0, 1, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
+        this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 224, 0, 2, 1);
         this.mBitmapTextureAtlas.load();
     }
 
@@ -133,6 +139,19 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         activeBlock = blocks[0][0];
         ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
 
+        x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                if (pSceneTouchEvent.isActionDown()) {
+                    ant.switchSpeed();
+                    x2btn.setCurrentTileIndex(x2btn.getCurrentTileIndex() == 0 ? 1 : 0);
+                    return true;
+                }
+                return false;
+            }
+        };
+        x2btn.setScale(2);
+
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
         mScene.registerUpdateHandler(new IUpdateHandler() {
@@ -171,6 +190,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 Game.this.finish();
             }
         });
+        mScene.registerTouchArea(x2btn);
+        mScene.attachChild(x2btn);
         mScene.attachChild(ant);
 
         return mScene;
