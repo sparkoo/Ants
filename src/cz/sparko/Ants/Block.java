@@ -94,6 +94,14 @@ public abstract class Block extends AnimatedSprite {
         return nBlock;
     }
 
+    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) {
+        Block nBlock = new BlockStart(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager);
+        for (int i = 0; i < new Random().nextInt(4); i++) {
+            nBlock.rotate();
+        }
+        return nBlock;
+    }
+
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
         if (pSceneTouchEvent.isActionDown() && !collidesWith(Game.getAnt())) {

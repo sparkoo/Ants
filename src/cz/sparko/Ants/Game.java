@@ -19,6 +19,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import java.util.Random;
+
 //TODO: refactor - was renamed from Field. Make new class Field
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
     private static final int CAMERA_WIDTH = 720;
@@ -35,6 +37,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Scene mScene;
 
     private Block[][] blocks;
+    private Coordinate startBlock;
     private Ant ant;
     private Block activeBlock;
     private AnimatedSprite x2btn;
@@ -84,18 +87,28 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
         int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[FIELD_SIZE_X][FIELD_SIZE_Y];
+        Random rnd = new Random();
+        startBlock = new Coordinate(rnd.nextInt(FIELD_SIZE_X), rnd.nextInt(FIELD_SIZE_Y));
         for (int x = 0; x < FIELD_SIZE_X; x++) {
             for (int y = 0; y < FIELD_SIZE_Y; y++) {
                 try {
-                    Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                    Block nBlock;
+                    Coordinate nCoordinate = new Coordinate(x, y);
+                    if (!nCoordinate.equals(startBlock)) {
+                        nBlock = Block.createRandomBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                        mScene.registerTouchArea(nBlock);
+                    } else {
+                        nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                    }
+
                     blocks[x][y] = nBlock;
                     mScene.attachChild(nBlock);
-                    mScene.registerTouchArea(nBlock);
                 } catch(NotDefinedBlockException e) {
                     //TODO: some ingelligent catch
                 }
             }
         }
+
     }
 
     private void refreshField(Scene mScene) {
