@@ -76,10 +76,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         //TODO: solve better texture handling
-        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 288, 64, TextureOptions.BILINEAR);
+        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 352, 64, TextureOptions.BILINEAR);
         this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 0, 0, 1, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
-        this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 224, 0, 2, 1);
+        this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
         this.mBitmapTextureAtlas.load();
     }
 
@@ -149,7 +149,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         createRandomField(mScene);
 
-        activeBlock = blocks[0][0];
+        activeBlock = blocks[startBlock.getX()][startBlock.getY()];
         ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
 
         x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {

@@ -65,10 +65,11 @@ public abstract class Block extends AnimatedSprite {
     public Coordinate getCoordinate() { return coordinate; }
 
     public static void loadResources(BitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
-        blockTextureRegions = new ITiledTextureRegion[3];
+        blockTextureRegions = new ITiledTextureRegion[4];
         blockTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "corner.png", 32, 0, 1, 1);
         blockTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "cross.png", 96, 0, 1, 1);
         blockTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "line.png", 160, 0, 1, 1);
+        blockTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "start.png", 224, 0, 1, 1);
     }
 
 
@@ -95,7 +96,7 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) {
-        Block nBlock = new BlockStart(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager);
+        Block nBlock = new BlockStart(coordinate, posX, posY, blockTextureRegions[3], vertexBufferObjectManager);
         for (int i = 0; i < new Random().nextInt(4); i++) {
             nBlock.rotate();
         }
