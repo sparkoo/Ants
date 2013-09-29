@@ -146,13 +146,10 @@ public abstract class Block extends AnimatedSprite {
 
     public void rotate() {
         this.setRotation(this.getRotation() + 90);
-        for (int i = 0; i < outWays.size(); i++) {
+        for (int i = 0; i < outWays.size(); i++)
             outWays.set(i, (outWays.get(i) + 1) % 4);
-        }
-
-        for (int i = 0; i < sourceWays.size(); i++) {
+        for (int i = 0; i < sourceWays.size(); i++)
             sourceWays.set(i, (sourceWays.get(i) + 1) % 4);
-        }
     }
 
     public abstract SequenceEntityModifier getMoveHandler(Ant ant);

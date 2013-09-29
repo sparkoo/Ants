@@ -20,7 +20,7 @@ public class BlockStart extends Block {
         final float outPositionX = centerX + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getX());
         final float outPositionY = centerY + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getY());
 
-        return new SequenceEntityModifier(new MoveModifier(5, centerX, centerX, centerY, centerY), new MoveModifier(ant.getSpeed() / 2, centerX, outPositionX, centerY, outPositionY));
+        return new SequenceEntityModifier(new MoveModifier(ant.getSpeed() / 2, centerX, centerX, centerY, centerY), new MoveModifier(ant.getSpeed() / 2, centerX, outPositionX, centerY, outPositionY));
     }
 
     @Override

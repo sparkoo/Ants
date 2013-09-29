@@ -42,7 +42,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Block activeBlock;
     private AnimatedSprite x2btn;
 
-    private boolean running = true;
+    private boolean running = false;
+    private float startDelay = 5;
 
     private static Ant staticAnt = null;
     private static boolean refreshField = false;
@@ -117,7 +118,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         for (int x = 0; x < FIELD_SIZE_X; x++) {
             for (int y = 0; y < FIELD_SIZE_Y; y++) {
-                if (blocks[x][y].isDeleted()) {
+                if (blocks[x][y].isDeleted() && blocks[x][y] != activeBlock) {
                     try {
                         mScene.detachChild(blocks[x][y]);
                         mScene.unregisterTouchArea(blocks[x][y]);
@@ -188,12 +189,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
                         ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
                         activeBlock.delete();
-                        System.out.println("get in");
                     } else {
                         reset();
                     }
                 } else {
                     timeCounter += pSecondsElapsed;
+                    if (!running && timeCounter > startDelay) { //first step after start delay
+                        running = true;
+                        ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
+                        activeBlock.delete();
+                        timeCounter = 0;
+                    }
                 }
             }
 
