@@ -56,10 +56,11 @@ public abstract class Block extends AnimatedSprite {
         return this.deleted;
     }
 
-    public void delete() {
+    public boolean delete() {
         this.deleted = true;
         this.active = false;
         this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Game.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Game.getAnt().getSpeed() / 4, 1f, 0f)));
+        return deleted;
     }
 
     public Coordinate getCoordinate() { return coordinate; }

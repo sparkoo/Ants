@@ -21,6 +21,14 @@ public class Menu extends Activity {
             }
         });
 
+        Button btnScore = (Button)findViewById(R.id.btnScore);
+        btnScore.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Menu.this.startActivity(new Intent(Menu.this, HighScore.class));
+                Menu.this.finish();
+            }
+        });
+
         Button closeButton = (Button)findViewById(R.id.exitButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

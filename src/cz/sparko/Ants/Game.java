@@ -1,6 +1,9 @@
 package cz.sparko.Ants;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -11,13 +14,18 @@ import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.HorizontalAlign;
 
 import java.util.Random;
 
@@ -29,6 +37,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private static final int FIELD_SIZE_X = 9;
     private static final int FIELD_SIZE_Y = 6;
 
+    private int score = 0;
+    private Font mScoreFont;
+    private Text mScoreText;
 
     private BitmapTextureAtlas mBitmapTextureAtlas;
     private TiledTextureRegion mAntTextRegion;
@@ -49,6 +60,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private static boolean refreshField = false;
 
     public Game() {
+    }
+
+    //TODO: text handle
+    public void increaseScore() {
+        mScoreText.setText("Score: " + ++score);
     }
 
     public static int getCameraWidth() {
@@ -82,6 +98,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         Block.loadResources(this.mBitmapTextureAtlas, this);
         this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
         this.mBitmapTextureAtlas.load();
+
+        this.mScoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
+        this.mScoreFont.load();
     }
 
     private void createRandomField(Scene mScene) {
@@ -109,7 +128,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 }
             }
         }
-
     }
 
     private void refreshField(Scene mScene) {
@@ -153,6 +171,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         activeBlock = blocks[startBlock.getX()][startBlock.getY()];
         ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
 
+        mScoreText = new Text(500, 10, this.mScoreFont, "Score: " + score, new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScene.attachChild(mScoreText);
+
         x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -168,6 +189,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
+        //TODO: update handler to own class
         mScene.registerUpdateHandler(new IUpdateHandler() {
             float timeCounter = 0;
             @Override
@@ -188,7 +210,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetInFrom(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
                         ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
-                        activeBlock.delete();
+                        if (activeBlock.delete())
+                            increaseScore();
                     } else {
                         reset();
                     }
@@ -205,6 +228,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
             @Override
             public void reset() {
+                saveScore();
                 Game.this.startActivity(new Intent(Game.this, Menu.class));
                 Game.this.finish();
             }
@@ -214,6 +238,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         mScene.attachChild(ant);
 
         return mScene;
+    }
+
+    public void saveScore() {
+        //TODO: probably not a good way to save scores. http://scoreninja.appspot.com/ or SQLite ?
+        SharedPreferences prefs = this.getSharedPreferences("scoreTable", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(((Long)System.currentTimeMillis()).toString(), score);
+        editor.commit();
     }
 
     @Override
