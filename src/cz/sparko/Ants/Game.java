@@ -43,7 +43,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private BitmapTextureAtlas mBitmapTextureAtlas;
     private TiledTextureRegion mAntTextRegion;
-    private TiledTextureRegion m2xButtonTextureRegion;
+    //private TiledTextureRegion m2xButtonTextureRegion;
 
     private Scene mScene;
 
@@ -51,7 +51,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Coordinate startBlock;
     private Ant ant;
     private Block activeBlock;
-    private AnimatedSprite x2btn;
+    //private AnimatedSprite x2btn;
 
     private boolean running = false;
     private float startDelay = 5;
@@ -96,7 +96,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 352, 64, TextureOptions.BILINEAR);
         this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 0, 0, 1, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
-        this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
+        //this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
         this.mBitmapTextureAtlas.load();
 
         this.mScoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
@@ -174,6 +174,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         mScoreText = new Text(500, 10, this.mScoreFont, "Score: " + score, new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         mScene.attachChild(mScoreText);
 
+        /*
         x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
@@ -186,6 +187,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
             }
         };
         x2btn.setScale(2);
+        */
 
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
@@ -233,8 +235,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 Game.this.finish();
             }
         });
-        mScene.registerTouchArea(x2btn);
-        mScene.attachChild(x2btn);
+        //mScene.registerTouchArea(x2btn);
+        //mScene.attachChild(x2btn);
         mScene.attachChild(ant);
 
         return mScene;
