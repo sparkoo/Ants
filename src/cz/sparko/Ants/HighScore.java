@@ -2,7 +2,6 @@ package cz.sparko.Ants;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import java.util.List;
 
 public class HighScore extends Activity {
 
+    //TODO: db handler
     private ScoreModel scoreModel;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class HighScore extends Activity {
         for (ScoreDTO score : scores)
             scoreView.append(score.getTimestamp() + ": " + score.getScore() + " ( " + score.getId() + " )\n");
 
-        //TODO: display score list
+        //TODO: display score list in ListView
     }
 
     @Override

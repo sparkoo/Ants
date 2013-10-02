@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//TODO: better handling DB. Make just ScoreModel without ScoreDTO! insert/update/delete make static
 public class ScoreModel {
     private static final String TABLE_NAME = "score";
     private static final String[] COLUMN_NAMES = {"_id", "score", "timestamp"};
