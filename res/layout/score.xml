@@ -14,4 +14,8 @@
             android:layout_height="wrap_content"
             android:text="back"
             android:id="@+id/btnBack"/>
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"/>
 </LinearLayout>

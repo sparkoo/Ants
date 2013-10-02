@@ -10,8 +10,7 @@ public class Schema implements cz.sparko.Database.Schema {
 
     private Schema(){}
 
-    @Override
-    public Schema getInstance() {
+    public static Schema getInstance() {
         if (instance == null)
             instance = new Schema();
         return instance;

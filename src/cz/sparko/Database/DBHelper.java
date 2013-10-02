@@ -4,11 +4,12 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DBHandler extends SQLiteOpenHelper {
+public class DBHelper extends SQLiteOpenHelper {
     private Schema schema;
 
-    public DBHandler(Context context, Schema schema) {
+    public DBHelper(Context context, Schema schema) {
         super(context, schema.getName(), null, schema.getVersion());
+        this.schema = schema;
     }
 
     @Override

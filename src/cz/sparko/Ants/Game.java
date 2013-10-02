@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import cz.sparko.Ants.Models.ScoreDTO;
+import cz.sparko.Ants.Models.ScoreModel;
+import cz.sparko.Database.DBHelper;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -27,6 +31,7 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.HorizontalAlign;
 
+import java.sql.SQLException;
 import java.util.Random;
 
 //TODO: refactor - was renamed from Field. Make new class Field
@@ -36,6 +41,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     private static final int FIELD_SIZE_X = 9;
     private static final int FIELD_SIZE_Y = 6;
+
+    private ScoreModel scoreModel;
 
     private int score = 0;
     private Font mScoreFont;
@@ -60,6 +67,33 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private static boolean refreshField = false;
 
     public Game() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        scoreModel = new ScoreModel(this);
+        try {
+            scoreModel.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        try {
+            scoreModel.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        scoreModel.close();
+        super.onPause();
     }
 
     //TODO: text handle
@@ -244,10 +278,13 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     public void saveScore() {
         //TODO: probably not a good way to save scores. http://scoreninja.appspot.com/ or SQLite ?
-        SharedPreferences prefs = this.getSharedPreferences("scoreTable", Context.MODE_PRIVATE);
+        /*SharedPreferences prefs = this.getSharedPreferences("scoreTable", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(((Long)System.currentTimeMillis()).toString(), score);
-        editor.commit();
+        editor.commit();*/
+
+        //SQLite
+        scoreModel.insertScore(new ScoreDTO(score, ((Long)System.currentTimeMillis()).toString()));
     }
 
     @Override
