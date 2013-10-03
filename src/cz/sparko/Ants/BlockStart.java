@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class BlockStart extends Block {
     public BlockStart(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
-        super(coordinate, pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
+        super(coordinate, pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, 1);
     }
 
     @Override

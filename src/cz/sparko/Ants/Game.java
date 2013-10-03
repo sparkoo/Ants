@@ -246,8 +246,8 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                     if (blocks[nCoordinate.getX()][nCoordinate.getY()].canGetInFrom(activeBlock.getCoordinate())) {
                         activeBlock = blocks[nCoordinate.getX()][nCoordinate.getY()];
                         ant.registerEntityModifier(activeBlock.getMoveHandler(ant));
-                        if (activeBlock.delete())
-                            increaseScore();
+                        activeBlock.delete();
+                        increaseScore();
                     } else {
                         reset();
                     }
@@ -277,12 +277,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     }
 
     public void saveScore() {
-        //TODO: probably not a good way to save scores. http://scoreninja.appspot.com/ or SQLite ?
-        /*SharedPreferences prefs = this.getSharedPreferences("scoreTable", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(((Long)System.currentTimeMillis()).toString(), score);
-        editor.commit();*/
-
         //SQLite
         scoreModel.insertScore(new ScoreDTO(score, ((Long)System.currentTimeMillis()).toString()));
     }

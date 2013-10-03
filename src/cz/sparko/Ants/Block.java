@@ -31,17 +31,20 @@ public abstract class Block extends AnimatedSprite {
     protected ArrayList<Integer> outWays;
     protected int wayNo = 0;
 
+    private int walkThroughs;
+
     private boolean active = false;
     private boolean deleted = false;
 
     private static ITiledTextureRegion[] blockTextureRegions;
 
-    public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
+    public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
         super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
         this.coordinate = coordinate;
         this.setPossibleSourceWays();
         this.setOutWays();
         this.setZIndex(Z_INDEX);
+        this.walkThroughs = walkThroughs;
     }
 
     public boolean isActive() {
@@ -57,9 +60,14 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public boolean delete() {
-        this.deleted = true;
-        this.active = false;
-        this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Game.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Game.getAnt().getSpeed() / 4, 1f, 0f)));
+        if (walkThroughs == 1) {
+            this.deleted = true;
+            this.active = false;
+            this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Game.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Game.getAnt().getSpeed() / 4, 1f, 0f)));
+            walkThroughs = 0;
+            return deleted;
+        }
+        walkThroughs--;
         return deleted;
     }
 
@@ -79,13 +87,13 @@ public abstract class Block extends AnimatedSprite {
         Block nBlock;
         switch(rnd.nextInt(3)) {
             case 0:
-                nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager);
+                nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager, 1);
                 break;
             case 1:
-                nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager);
+                nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager, 1);
                 break;
             case 2:
-                nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager);
+                nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager, 2);
                 break;
             default:
                 throw new NotDefinedBlockException();
