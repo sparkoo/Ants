@@ -82,22 +82,17 @@ public abstract class Block extends AnimatedSprite {
     }
 
 
-    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) throws NotDefinedBlockException{
+    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) {
         Random rnd = new Random();
         Block nBlock;
-        switch(rnd.nextInt(3)) {
-            case 0:
-                nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager, 1);
-                break;
-            case 1:
-                nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager, 1);
-                break;
-            case 2:
-                nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager, 2);
-                break;
-            default:
-                throw new NotDefinedBlockException();
-        }
+        float pickBlock = rnd.nextFloat();
+        if (pickBlock < 0.5)
+            nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager, 1);
+        else if (pickBlock < 0.8)
+            nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager, 1);
+        else
+            nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager, 2);
+
         for (int i = 0; i < rnd.nextInt(4); i++) {
             nBlock.rotate();
         }

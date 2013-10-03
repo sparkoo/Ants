@@ -145,21 +145,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         startBlock = new Coordinate(rnd.nextInt(FIELD_SIZE_X), rnd.nextInt(FIELD_SIZE_Y));
         for (int x = 0; x < FIELD_SIZE_X; x++) {
             for (int y = 0; y < FIELD_SIZE_Y; y++) {
-                try {
-                    Block nBlock;
-                    Coordinate nCoordinate = new Coordinate(x, y);
-                    if (!nCoordinate.equals(startBlock)) {
-                        nBlock = Block.createRandomBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
-                        mScene.registerTouchArea(nBlock);
-                    } else {
-                        nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
-                    }
-
-                    blocks[x][y] = nBlock;
-                    mScene.attachChild(nBlock);
-                } catch(NotDefinedBlockException e) {
-                    //TODO: some ingelligent catch
+                Block nBlock;
+                Coordinate nCoordinate = new Coordinate(x, y);
+                if (!nCoordinate.equals(startBlock)) {
+                    nBlock = Block.createRandomBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                    mScene.registerTouchArea(nBlock);
+                } else {
+                    nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
                 }
+
+                blocks[x][y] = nBlock;
+                mScene.attachChild(nBlock);
             }
         }
     }
@@ -171,16 +167,12 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         for (int x = 0; x < FIELD_SIZE_X; x++) {
             for (int y = 0; y < FIELD_SIZE_Y; y++) {
                 if (blocks[x][y].isDeleted() && blocks[x][y] != activeBlock) {
-                    try {
-                        mScene.detachChild(blocks[x][y]);
-                        mScene.unregisterTouchArea(blocks[x][y]);
-                        Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
-                        blocks[x][y] = nBlock;
-                        mScene.attachChild(nBlock);
-                        mScene.registerTouchArea(nBlock);
-                    } catch(NotDefinedBlockException e) {
-
-                    }
+                    mScene.detachChild(blocks[x][y]);
+                    mScene.unregisterTouchArea(blocks[x][y]);
+                    Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
+                    blocks[x][y] = nBlock;
+                    mScene.attachChild(nBlock);
+                    mScene.registerTouchArea(nBlock);
                 }
             }
         }
