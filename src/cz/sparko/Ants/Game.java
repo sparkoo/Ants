@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.util.Random;
 
 //TODO: refactor - was renamed from Field. Make new class Field
+//TODO: make some universal gameactivity
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
     private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
