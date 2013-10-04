@@ -13,11 +13,11 @@ public class Coordinate {
     public int getY() { return y; }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == null) return false;
-        if (other == this) return true;
-        if (!(other instanceof Coordinate)) return false;
-        Coordinate c = (Coordinate)other;
+    public boolean equals(Object that) {
+        if (that == null) return false;
+        if (that == this) return true;
+        if (!(that instanceof Coordinate)) return false;
+        Coordinate c = (Coordinate)that;
         if (c.getX() == x && c.getY() == y) return true;
         return false;
     }

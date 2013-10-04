@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         for (String sqlUpdateQuery : schema.getUpdateQuery())
             db.execSQL(sqlUpdateQuery);
     }
