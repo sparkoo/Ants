@@ -31,14 +31,14 @@ public class BlockLine extends Block{
     @Override
     public void setPossibleSourceWays() {
         sourceWays = new ArrayList<Integer>(2);
-        sourceWays.add(0, Block.DOWN);
-        sourceWays.add(1, Block.UP);
+        sourceWays.add(0, Block.LEFT);
+        sourceWays.add(1, Block.RIGHT);
     }
 
     @Override
     public void setOutWays() {
         outWays = new ArrayList<Integer>(2);
-        outWays.add(0, Block.UP);
-        outWays.add(1, Block.DOWN);
+        outWays.add(0, Block.RIGHT);
+        outWays.add(1, Block.LEFT);
     }
 }

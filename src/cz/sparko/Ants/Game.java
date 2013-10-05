@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.widget.Toast;
 import cz.sparko.Ants.Models.ScoreDTO;
 import cz.sparko.Ants.Models.ScoreModel;
 import cz.sparko.Database.DBHelper;
@@ -13,6 +14,7 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.engine.options.resolutionpolicy.FixedResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -25,8 +27,10 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.HorizontalAlign;
@@ -37,7 +41,7 @@ import java.util.Random;
 //TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
-    private static final int CAMERA_WIDTH = 720;
+    private static final int CAMERA_WIDTH = 800;
     private static final int CAMERA_HEIGHT = 480;
 
     private static final int FIELD_SIZE_X = 9;
@@ -120,7 +124,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public EngineOptions onCreateEngineOptions() {
         final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
 
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
     }
 
     @Override
@@ -128,7 +132,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         //TODO: solve better texture handling
-        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 352, 64, TextureOptions.BILINEAR);
+        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
         this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 0, 0, 1, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
         //this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
@@ -200,6 +204,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         mScoreText = new Text(500, 10, this.mScoreFont, "Score: " + score, new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         mScene.attachChild(mScoreText);
+        mScoreText.setAlpha(0);
 
         /*
         x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {
