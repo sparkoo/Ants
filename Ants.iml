@@ -15,8 +15,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="AndEngine" />
     <orderEntry type="module" module-name="AndEnginePhysicsBox2DExtension" />
+    <orderEntry type="module" module-name="AndEngine" />
   </component>
 </module>
 

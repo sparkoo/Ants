@@ -30,7 +30,11 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.HorizontalAlign;
@@ -41,7 +45,7 @@ import java.util.Random;
 //TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
-    private static final int CAMERA_WIDTH = 800;
+    private static final int CAMERA_WIDTH = 720;
     private static final int CAMERA_HEIGHT = 480;
 
     private static final int FIELD_SIZE_X = 9;
@@ -53,7 +57,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Font mScoreFont;
     private Text mScoreText;
 
-    private BitmapTextureAtlas mBitmapTextureAtlas;
+    private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
     private TiledTextureRegion mAntTextRegion;
     //private TiledTextureRegion m2xButtonTextureRegion;
 
@@ -132,11 +136,17 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
         //TODO: solve better texture handling
-        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.NEAREST_PREMULTIPLYALPHA);
-        this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 0, 0, 1, 1);
+        this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        this.mBitmapTextureAtlas.clearTextureAtlasSources();
+        this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 2, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
-        //this.m2xButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "x2btn.png", 288, 0, 2, 1);
-        this.mBitmapTextureAtlas.load();
+
+        try {
+            this.mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            this.mBitmapTextureAtlas.load();
+        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
+            e.printStackTrace();
+        }
 
         this.mScoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
         this.mScoreFont.load();
@@ -158,7 +168,6 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 } else {
                     nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), this.getVertexBufferObjectManager());
                 }
-
                 blocks[x][y] = nBlock;
                 mScene.attachChild(nBlock);
             }
