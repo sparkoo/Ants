@@ -34,36 +34,4 @@ public class Ant extends AnimatedSprite {
     }
 
     public float getSpeed() { return speed; }
-
-    public void rotate(Direction direction) {
-        switch(direction) {
-            case RIGHT:
-                this.setRotation(90);
-                break;
-            case DOWN:
-                this.setRotation(180);
-                break;
-            case LEFT:
-                this.setRotation(270);
-                break;
-            case UP:
-                this.setRotation(0);
-                break;
-        }
-    }
-
-    public float getRotation(Direction direction) {
-        switch(direction) {
-            case RIGHT:
-                return 90;
-            case DOWN:
-                return 180;
-            case LEFT:
-                return 270;
-            case UP:
-                return 0;
-            default:
-                return 0;
-        }
-    }
 }
