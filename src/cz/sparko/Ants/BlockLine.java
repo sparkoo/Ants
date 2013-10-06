@@ -20,25 +20,25 @@ public class BlockLine extends Block{
         final float centerX = this.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2);
         final float centerY = this.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2);
 
-        final float sourcePositionX = centerX + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getX());
-        final float sourcePositionY = centerY + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getY());
-        final float outPositionX = centerX + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getX());
-        final float outPositionY = centerY + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getY());
+        final float sourcePositionX = centerX + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
+        final float sourcePositionY = centerY + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
+        final float outPositionX = centerX + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
+        final float outPositionY = centerY + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(new MoveModifier(ant.getSpeed(), sourcePositionX, outPositionX, sourcePositionY, outPositionY));
     }
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays = new ArrayList<Integer>(2);
-        sourceWays.add(0, Block.LEFT);
-        sourceWays.add(1, Block.RIGHT);
+        sourceWays = new ArrayList<Direction>(2);
+        sourceWays.add(0, Direction.LEFT);
+        sourceWays.add(1, Direction.RIGHT);
     }
 
     @Override
     public void setOutWays() {
-        outWays = new ArrayList<Integer>(2);
-        outWays.add(0, Block.RIGHT);
-        outWays.add(1, Block.LEFT);
+        outWays = new ArrayList<Direction>(2);
+        outWays.add(0, Direction.RIGHT);
+        outWays.add(1, Direction.LEFT);
     }
 }

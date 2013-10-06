@@ -1,6 +1,8 @@
 package cz.sparko.Ants;
 
 import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.RotationByModifier;
+import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
@@ -17,27 +19,28 @@ public class BlockCorner extends Block {
         final float centerX = this.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2);
         final float centerY = this.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2);
 
-        final float sourcePositionX = centerX + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getX());
-        final float sourcePositionY = centerY + ((Block.SIZE / 2) * directions[sourceWays.get(wayNo)].getY());
-        final float outPositionX = centerX + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getX());
-        final float outPositionY = centerY + ((Block.SIZE / 2) * directions[outWays.get(wayNo)].getY());
+        final float sourcePositionX = centerX + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
+        final float sourcePositionY = centerY + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
+        final float outPositionX = centerX + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
+        final float outPositionY = centerY + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(
-                new MoveModifier(ant.getSpeed() / 2, sourcePositionX, centerX, sourcePositionY, centerY),
-                new MoveModifier(ant.getSpeed() / 2, centerX, outPositionX, centerY, outPositionY));
+                new MoveModifier(ant.getSpeed() * 0.5f, sourcePositionX, centerX, sourcePositionY, centerY),
+                //new RotationModifier(ant.getSpeed() * 0.2f, sourceWays.get(wayNo).getDegree(), outWays.get(wayNo).getDegree()),
+                new MoveModifier(ant.getSpeed() * 0.5f, centerX, outPositionX, centerY, outPositionY));
     }
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays = new ArrayList<Integer>(2);
-        sourceWays.add(0, Block.LEFT);
-        sourceWays.add(1, Block.DOWN);
+        sourceWays = new ArrayList<Direction>(2);
+        sourceWays.add(0, Direction.DOWN);
+        sourceWays.add(1, Direction.RIGHT);
     }
 
     @Override
     public void setOutWays() {
-        outWays = new ArrayList<Integer>(2);
-        outWays.add(0, Block.DOWN);
-        outWays.add(1, Block.LEFT);
+        outWays = new ArrayList<Direction>(2);
+        outWays.add(0, Direction.RIGHT);
+        outWays.add(1, Direction.DOWN);
     }
 }

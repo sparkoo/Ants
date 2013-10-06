@@ -1,25 +1,18 @@
 package cz.sparko.Ants;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.Toast;
 import cz.sparko.Ants.Models.ScoreDTO;
 import cz.sparko.Ants.Models.ScoreModel;
-import cz.sparko.Database.DBHelper;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.engine.options.resolutionpolicy.FixedResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.entity.util.FPSLogger;
@@ -27,12 +20,10 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.ITextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.BuildableTextureAtlas;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
@@ -45,7 +36,7 @@ import java.util.Random;
 //TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
 public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
-    private static final int CAMERA_WIDTH = 720;
+    private static final int CAMERA_WIDTH = 800;
     private static final int CAMERA_HEIGHT = 480;
 
     private static final int FIELD_SIZE_X = 9;
@@ -91,12 +82,18 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     @Override
     protected void onResume() {
+        super.onResume();
         try {
             scoreModel.open();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        super.onResume();
+    }
+
+    @Override
+    public synchronized void onResumeGame() {
+        if (this.mEngine != null)
+            super.onResumeGame();
     }
 
     @Override

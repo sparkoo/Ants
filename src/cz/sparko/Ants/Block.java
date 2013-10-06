@@ -21,18 +21,9 @@ public abstract class Block extends AnimatedSprite {
     public static final int SIZE = 64;
     public static final int Z_INDEX = 10;
 
-    /*
-    TODO: enum ?
-     */
-    protected static final int UP = 0;
-    protected static final int RIGHT = 1;
-    protected static final int DOWN = 2;
-    protected static final int LEFT = 3;
-    protected static final Coordinate[] directions = {new Coordinate(0, -1),  new Coordinate(1, 0), new Coordinate(0, 1), new Coordinate(-1, 0)};
-
     protected Coordinate coordinate;
-    protected ArrayList<Integer> sourceWays;
-    protected ArrayList<Integer> outWays;
+    protected ArrayList<Direction> sourceWays;
+    protected ArrayList<Direction> outWays;
     protected int wayNo = 0;
 
     private int walkThroughs;
@@ -122,7 +113,7 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public Coordinate getOutCoordinate() {
-        return directions[outWays.get(wayNo)];
+        return outWays.get(wayNo).getCoordinate();
     }
 
     public boolean canGetInFrom(Coordinate fromCoordinate) {
@@ -140,25 +131,25 @@ public abstract class Block extends AnimatedSprite {
         if (directionY > 1) directionY = -1;
 
         Coordinate fromDirection = new Coordinate(directionX, directionY);
-        int from = -1;
-        for (int i = 0; i < directions.length; i++) {
-            if (directions[i].equals(fromDirection)) {
-                from = i;
+        Direction from = null;
+        for (int i = 0; i < Direction.values().length; i++) {
+            if (Direction.fromInt(i).getCoordinate().equals(fromDirection)) {
+                from = Direction.fromInt(i);
                 break;
             }
         }
+        if (from == null) return false;
         wayNo = sourceWays.indexOf(from);
-        if (wayNo > -1)
-            return true;
+        if (wayNo > -1) return true;
         return false;
     }
 
     public void rotate() {
         this.setCurrentTileIndex((this.getCurrentTileIndex() + 1) % this.getTileCount());
         for (int i = 0; i < outWays.size(); i++)
-            outWays.set(i, (outWays.get(i) + 1) % 4);
+            outWays.set(i, Direction.fromInt((outWays.get(i).getValue() + 1) % 4));
         for (int i = 0; i < sourceWays.size(); i++)
-            sourceWays.set(i, (sourceWays.get(i) + 1) % 4);
+            sourceWays.set(i, Direction.fromInt((sourceWays.get(i).getValue() + 1) % 4));
     }
 
     public abstract SequenceEntityModifier getMoveHandler(Ant ant);
