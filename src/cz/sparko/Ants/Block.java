@@ -116,6 +116,10 @@ public abstract class Block extends AnimatedSprite {
         return outWays.get(wayNo).getCoordinate();
     }
 
+    public Direction getOutDirection() {
+        return outWays.get(wayNo);
+    }
+
     public boolean canGetInFrom(Coordinate fromCoordinate) {
         if (deleted) return false;
 

@@ -25,9 +25,9 @@ public class BlockCorner extends Block {
         final float outPositionY = centerY + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(
-                new MoveModifier(ant.getSpeed() * 0.5f, sourcePositionX, centerX, sourcePositionY, centerY),
-                //new RotationModifier(ant.getSpeed() * 0.2f, sourceWays.get(wayNo).getDegree(), outWays.get(wayNo).getDegree()),
-                new MoveModifier(ant.getSpeed() * 0.5f, centerX, outPositionX, centerY, outPositionY));
+                new MoveModifier(ant.getSpeed() * 0.4f, sourcePositionX, centerX, sourcePositionY, centerY),
+                new RotationModifier(ant.getSpeed() * 0.2f, ant.getRotation(), wayNo == 0 ? ant.getRotation() + 90f : ant.getRotation() - 90f),
+                new MoveModifier(ant.getSpeed() * 0.4f, centerX, outPositionX, centerY, outPositionY));
     }
 
     @Override

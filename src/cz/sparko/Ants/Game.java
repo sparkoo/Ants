@@ -104,7 +104,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //TODO: text handle
     public void increaseScore() {
-        mScoreText.setText("Score: " + ++score);
+        mScoreText.setText(String.format("%09d", ++score));
     }
 
     public static int getCameraWidth() {
@@ -207,10 +207,10 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
         activeBlock = blocks[startBlock.getX()][startBlock.getY()];
         ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
+        ant.setRotation(activeBlock.getOutDirection().getDegree());
 
-        mScoreText = new Text(500, 10, this.mScoreFont, "Score: " + score, new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText = new Text(500, 10, this.mScoreFont, String.format("%09d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         mScene.attachChild(mScoreText);
-        mScoreText.setAlpha(0);
 
         /*
         x2btn = new AnimatedSprite(20, 20, this.m2xButtonTextureRegion, this.getVertexBufferObjectManager()) {
