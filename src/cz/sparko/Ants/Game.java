@@ -45,6 +45,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private ScoreModel scoreModel;
 
     private int score = 0;
+    private int tmpScore = 0;
     private Font mScoreFont;
     private Text mScoreText;
 
@@ -104,7 +105,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
 
     //TODO: text handle
     public void increaseScore() {
-        mScoreText.setText(String.format("%09d", ++score));
+        tmpScore++;
+        mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
+    }
+
+    public void countScore() {
+        score += tmpScore * tmpScore;
+        tmpScore = 0;
+        mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
     }
 
     public static int getCameraWidth() {
@@ -209,7 +217,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         ant.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2));
         ant.setRotation(activeBlock.getOutDirection().getDegree());
 
-        mScoreText = new Text(500, 10, this.mScoreFont, String.format("%09d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText = new Text(10, 10, this.mScoreFont, String.format("%09d + %09d", tmpScore * tmpScore, score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         mScene.attachChild(mScoreText);
 
         /*
@@ -237,6 +245,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
                 if (refreshField) {
                     refreshField(mScene);
                     refreshField = false;
+                    countScore();
                 }
                 if (running && timeCounter > ant.getSpeed()) {
                     timeCounter = 0;
