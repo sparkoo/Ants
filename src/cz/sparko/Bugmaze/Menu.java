@@ -1,4 +1,4 @@
-package cz.sparko.Ants;
+package cz.sparko.Bugmaze;
 
 import android.app.Activity;
 import android.content.Intent;

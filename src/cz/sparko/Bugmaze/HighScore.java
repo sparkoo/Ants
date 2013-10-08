@@ -1,4 +1,4 @@
-package cz.sparko.Ants;
+package cz.sparko.Bugmaze;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import cz.sparko.Ants.Models.ScoreDTO;
-import cz.sparko.Ants.Models.ScoreModel;
+import cz.sparko.Bugmaze.Models.ScoreDTO;
+import cz.sparko.Bugmaze.Models.ScoreModel;
 
 import java.sql.SQLException;
 import java.util.List;

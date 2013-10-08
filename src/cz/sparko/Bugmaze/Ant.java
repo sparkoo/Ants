@@ -1,4 +1,4 @@
-package cz.sparko.Ants;
+package cz.sparko.Bugmaze;
 
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.TiledTextureRegion;

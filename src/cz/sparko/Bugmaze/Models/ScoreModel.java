@@ -1,4 +1,4 @@
-package cz.sparko.Ants.Models;
+package cz.sparko.Bugmaze.Models;
 
 import android.content.ContentValues;
 import android.content.Context;

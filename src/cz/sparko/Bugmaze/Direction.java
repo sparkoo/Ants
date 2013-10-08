@@ -1,4 +1,4 @@
-package cz.sparko.Ants;
+package cz.sparko.Bugmaze;
 
 import java.util.HashMap;
 import java.util.Map;

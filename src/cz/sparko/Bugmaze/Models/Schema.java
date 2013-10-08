@@ -1,4 +1,4 @@
-package cz.sparko.Ants.Models;
+package cz.sparko.Bugmaze.Models;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class Schema implements cz.sparko.Database.Schema {
     @Override
     public String getName() {
         //TODO: read from file assets/db/NAME
-        return "Ants";
+        return "Bugmaze";
     }
 
     @Override

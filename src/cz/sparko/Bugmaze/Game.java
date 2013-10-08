@@ -1,10 +1,10 @@
-package cz.sparko.Ants;
+package cz.sparko.Bugmaze;
 
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import cz.sparko.Ants.Models.ScoreDTO;
-import cz.sparko.Ants.Models.ScoreModel;
+import cz.sparko.Bugmaze.Models.ScoreDTO;
+import cz.sparko.Bugmaze.Models.ScoreModel;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
