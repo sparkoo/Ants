@@ -3,3 +3,4 @@ out/
 local.properties
 bin/
 *.zip
+res/values/
