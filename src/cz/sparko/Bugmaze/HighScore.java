@@ -1,18 +1,19 @@
 package cz.sparko.Bugmaze;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.gms.common.SignInButton;
+import com.google.example.games.basegameutils.BaseGameActivity;
 import cz.sparko.Bugmaze.Models.ScoreDTO;
 import cz.sparko.Bugmaze.Models.ScoreModel;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class HighScore extends Activity {
+public class HighScore extends BaseGameActivity {
 
     //TODO: db handler
     private ScoreModel scoreModel;
@@ -30,6 +31,15 @@ public class HighScore extends Activity {
         });
 
         TextView scoreView = (TextView)findViewById(R.id.textView);
+
+        SignInButton signInButton = (SignInButton)findViewById(R.id.signInButton);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                beginUserInitiatedSignIn();
+            }
+        });
+
+
 
 
 
@@ -62,5 +72,15 @@ public class HighScore extends Activity {
     protected void onPause() {
         scoreModel.close();
         super.onPause();
+    }
+
+    @Override
+    public void onSignInFailed() {
+        System.out.println("Sign-in failed.");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        System.out.println("Sign-in succeeded.");
     }
 }
