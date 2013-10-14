@@ -18,7 +18,6 @@ public class Ant extends AnimatedSprite {
     public Ant(float pX, float pY, final TiledTextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
         super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
         this.setZIndex(Z_INDEX);
-        this.animate(200);
     }
 
     @Override

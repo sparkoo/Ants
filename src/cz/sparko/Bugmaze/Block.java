@@ -1,6 +1,9 @@
 package cz.sparko.Bugmaze;
 
+import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
@@ -9,6 +12,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.modifier.IModifier;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -55,8 +59,17 @@ public abstract class Block extends AnimatedSprite {
         if (walkThroughs == 1) {
             this.deleted = true;
             this.active = false;
-            this.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-            this.registerEntityModifier(new SequenceEntityModifier(new AlphaModifier(Game.getAnt().getSpeed(), 1f, 1f), new AlphaModifier(Game.getAnt().getSpeed() / 4, 1f, 0f)));
+
+            this.registerEntityModifier(new DelayModifier(Game.getAnt().getSpeed(), new IEntityModifier.IEntityModifierListener() {
+                @Override
+                public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                }
+
+                @Override
+                public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                    setCurrentTileIndex(getCurrentTileIndex() + (getTileCount() / 2));
+                }
+            }));
             walkThroughs = 0;
             return deleted;
         }
@@ -68,10 +81,10 @@ public abstract class Block extends AnimatedSprite {
 
     public static void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
         blockTextureRegions = new ITiledTextureRegion[4];
-        blockTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "corner.png", 4, 1);
-        blockTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "cross.png", 1, 1);
-        blockTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "line.png", 2, 1);
-        blockTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "start.png", 2, 1);
+        blockTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "corner.png", 4, 2);
+        blockTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "cross.png", 1, 2);
+        blockTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "line.png", 2, 2);
+        blockTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "start.png", 4, 2);
     }
 
 
@@ -146,7 +159,7 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public void rotate() {
-        this.setCurrentTileIndex((this.getCurrentTileIndex() + 1) % this.getTileCount());
+        this.setCurrentTileIndex((this.getCurrentTileIndex() + 1) % (this.getTileCount() / 2));
         for (int i = 0; i < outWays.size(); i++)
             outWays.set(i, Direction.fromInt((outWays.get(i).getValue() + 1) % 4));
         for (int i = 0; i < sourceWays.size(); i++)

@@ -13,6 +13,8 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.scene.background.SpriteBackground;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.entity.util.FPSLogger;
@@ -26,9 +28,12 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.HorizontalAlign;
+import org.andengine.util.color.Color;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -50,7 +55,9 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     private Text mScoreText;
 
     private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
+    private BitmapTextureAtlas mBackgroundTextureAtlas;
     private TiledTextureRegion mAntTextRegion;
+    private ITextureRegion mBackgroundTexture;
     //private TiledTextureRegion m2xButtonTextureRegion;
 
     private Scene mScene;
@@ -140,10 +147,14 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public void onCreateResources() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
+        this.mBackgroundTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 1024, 512);
+        this.mBackgroundTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBackgroundTextureAtlas, this, "playgroundBack.png", 0, 0);
+        this.mBackgroundTextureAtlas.load();
+
         //TODO: solve better texture handling
         this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         this.mBitmapTextureAtlas.clearTextureAtlasSources();
-        this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 2, 1);
+        this.mAntTextRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(this.mBitmapTextureAtlas, this, "ant.png", 1, 1);
         Block.loadResources(this.mBitmapTextureAtlas, this);
 
         try {
@@ -158,7 +169,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     }
 
     private void createRandomField(Scene mScene) {
-        int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
+        int startX = 60;
         int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[FIELD_SIZE_X][FIELD_SIZE_Y];
         Random rnd = new Random();
@@ -180,7 +191,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     }
 
     private void refreshField(Scene mScene) {
-        int startX = CAMERA_WIDTH - (FIELD_SIZE_X * Block.SIZE);
+        int startX = 60;
         int startY = (CAMERA_HEIGHT - (FIELD_SIZE_Y * Block.SIZE)) / 2;
 
         for (int x = 0; x < FIELD_SIZE_X; x++) {
@@ -202,12 +213,18 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public Scene onCreateScene() {
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
-        mScene = new Scene();
-        mScene.setBackground(new Background(0.22f, 0.22f, 0.22f));
-        mScene.setOnSceneTouchListener(this);
-
         final float centerX = (CAMERA_WIDTH - this.mAntTextRegion.getWidth()) / 2;
         final float centerY = (CAMERA_HEIGHT - this.mAntTextRegion.getHeight()) / 2;
+
+        mScene = new Scene();
+
+        mScene.setBackground(new Background(0.17f, 0.61f, 0f));
+        Sprite background = new Sprite(0, 0, this.mBackgroundTexture, this.getVertexBufferObjectManager());
+        background.setZIndex(99);
+        this.mScene.attachChild(background);
+
+        mScene.setOnSceneTouchListener(this);
+
         ant = new Ant(centerX, centerY, this.mAntTextRegion, this.getVertexBufferObjectManager());
         staticAnt = ant;
 
@@ -286,6 +303,7 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         //mScene.attachChild(x2btn);
         mScene.attachChild(ant);
 
+        mScene.sortChildren();
         return mScene;
     }
 
