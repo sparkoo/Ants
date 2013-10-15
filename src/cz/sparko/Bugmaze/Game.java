@@ -163,6 +163,7 @@ public class Game extends GBaseGameActivityAND {
         ant.setRotation(gameField.getActiveBlock().getOutDirection().getDegree());
 
         mScoreText = new Text(10, 10, this.mScoreFont, String.format("%09d + %09d", tmpScore * tmpScore, score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText.setZIndex(101);
         mScene.attachChild(mScoreText);
 
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
