@@ -139,7 +139,7 @@ public abstract class Block extends AnimatedSprite {
         int directionX = fromCoordinate.getX() - coordinate.getX();
         int directionY = fromCoordinate.getY() - coordinate.getY();
 
-        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Game.needRefreshField(); //refresh field on walk through wall
+        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Game.getGameField().needRefreshField(); //refresh field on walk through wall
 
         if (directionX < -1) directionX = 1;
         if (directionX > 1) directionX = -1;
