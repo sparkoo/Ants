@@ -180,7 +180,6 @@ public class Game extends GBaseGameActivityAND {
         scoreModel.insertScore(new ScoreDTO(score, ((Long)System.currentTimeMillis()).toString()));
         if (mHelper.isSignedIn()) {
             getGamesClient().submitScore(getString(R.string.leaderboard_id), score);
-            startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
         }
     }
 
