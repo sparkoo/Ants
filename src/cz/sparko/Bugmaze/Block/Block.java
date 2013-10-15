@@ -1,7 +1,10 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Block;
 
+import cz.sparko.Bugmaze.Ant;
+import cz.sparko.Bugmaze.Coordinate;
+import cz.sparko.Bugmaze.Direction;
+import cz.sparko.Bugmaze.Game;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.AlphaModifier;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -14,7 +17,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.modifier.IModifier;
 
-import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
 import java.util.Random;
 

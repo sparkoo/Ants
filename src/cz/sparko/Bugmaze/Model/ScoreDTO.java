@@ -1,4 +1,4 @@
-package cz.sparko.Bugmaze.Models;
+package cz.sparko.Bugmaze.Model;
 
 public class ScoreDTO implements Comparable {
     private long id;

@@ -6,15 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.games.GamesClient;
-import com.google.example.games.basegameutils.BaseGameActivity;
-import cz.sparko.Bugmaze.Models.ScoreDTO;
-import cz.sparko.Bugmaze.Models.ScoreModel;
+import com.google.example.games.basegameutils.GBaseGameActivity;
+import cz.sparko.Bugmaze.Model.ScoreDTO;
+import cz.sparko.Bugmaze.Model.ScoreModel;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public class HighScore extends BaseGameActivity {
+public class HighScore extends GBaseGameActivity {
 
     //TODO: db handler
     private ScoreModel scoreModel;

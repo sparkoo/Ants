@@ -3,8 +3,10 @@ package cz.sparko.Bugmaze;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import cz.sparko.Bugmaze.Models.ScoreDTO;
-import cz.sparko.Bugmaze.Models.ScoreModel;
+import com.google.example.games.basegameutils.GBaseGameActivityAND;
+import cz.sparko.Bugmaze.Block.Block;
+import cz.sparko.Bugmaze.Model.ScoreDTO;
+import cz.sparko.Bugmaze.Model.ScoreModel;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -37,7 +39,7 @@ import java.util.Random;
 
 //TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
-public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListener {
+public class Game extends GBaseGameActivityAND implements IOnSceneTouchListener {
     private static final int CAMERA_WIDTH = 800;
     private static final int CAMERA_HEIGHT = 480;
 
@@ -307,6 +309,11 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
     public void saveScore() {
         //SQLite
         scoreModel.insertScore(new ScoreDTO(score, ((Long)System.currentTimeMillis()).toString()));
+        if (!mHelper.isSignedIn()) {
+            beginUserInitiatedSignIn();
+        }
+        getGamesClient().submitScore(getString(R.string.leaderboard_id), score);
+        startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
     }
 
     @Override
@@ -315,5 +322,15 @@ public class Game extends SimpleBaseGameActivity implements IOnSceneTouchListene
         /*if (pSceneTouchEvent.isActionUp())
             ant.registerEntityModifier(new MoveModifier(0.5f, ant.getX(), pSceneTouchEvent.getX(), ant.getY(), pSceneTouchEvent.getY()));*/
         return false;
+    }
+
+    @Override
+    public void onSignInFailed() {
+        System.out.println("Sign-in failed.");
+    }
+
+    @Override
+    public void onSignInSucceeded() {
+        System.out.println("Sign-in succeeded.");
     }
 }

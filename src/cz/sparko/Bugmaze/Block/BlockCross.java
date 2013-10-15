@@ -1,5 +1,8 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Block;
 
+import cz.sparko.Bugmaze.Ant;
+import cz.sparko.Bugmaze.Coordinate;
+import cz.sparko.Bugmaze.Direction;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -17,13 +20,13 @@ public class BlockCross extends Block {
     TODO: same as BlockLine ==> refactor ?
      */
     public SequenceEntityModifier getMoveHandler(Ant ant) {
-        final float centerX = this.getX() + (Block.SIZE / 2) - (Ant.SIZE_X / 2);
-        final float centerY = this.getY() + (Block.SIZE / 2) - (Ant.SIZE_Y / 2);
+        final float centerX = this.getX() + (SIZE / 2) - (Ant.SIZE_X / 2);
+        final float centerY = this.getY() + (SIZE / 2) - (Ant.SIZE_Y / 2);
 
-        final float sourcePositionX = centerX + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
-        final float sourcePositionY = centerY + ((Block.SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
-        final float outPositionX = centerX + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
-        final float outPositionY = centerY + ((Block.SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
+        final float sourcePositionX = centerX + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
+        final float sourcePositionY = centerY + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
+        final float outPositionX = centerX + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
+        final float outPositionY = centerY + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(new MoveModifier(ant.getSpeed(), sourcePositionX, outPositionX, sourcePositionY, outPositionY));
     }

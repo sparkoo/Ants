@@ -18,10 +18,10 @@ package com.google.example.games.basegameutils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.plus.PlusClient;
+import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 /**
  * Example base class for games. This implementation takes care of setting up
@@ -30,17 +30,17 @@ import com.google.android.gms.plus.PlusClient;
  * methods. To initiate the sign-in flow when the user clicks the sign-in
  * button, subclasses should call @link{#beginUserInitiatedSignIn}. By default,
  * this class only instantiates the GamesClient object. If the PlusClient or
- * AppStateClient objects are also wanted, call the BaseGameActivity(int)
+ * AppStateClient objects are also wanted, call the GBaseGameActivity(int)
  * constructor and specify the requested clients. For example, to request
- * PlusClient and GamesClient, use BaseGameActivity(CLIENT_GAMES | CLIENT_PLUS).
- * To request all available clients, use BaseGameActivity(CLIENT_ALL).
+ * PlusClient and GamesClient, use GBaseGameActivity(CLIENT_GAMES | CLIENT_PLUS).
+ * To request all available clients, use GBaseGameActivity(CLIENT_ALL).
  * Alternatively, you can also specify the requested clients via
  * @link{#setRequestedClients}, but you must do so before @link{#onCreate}
  * gets called, otherwise the call will have no effect.
  *
  * @author Bruno Oliveira (Google)
  */
-public abstract class BaseGameActivity extends FragmentActivity implements
+public abstract class GBaseGameActivityAND extends SimpleBaseGameActivity implements
         GameHelper.GameHelperListener {
 
     // The game helper object. This class is mainly a wrapper around this object.
@@ -59,21 +59,21 @@ public abstract class BaseGameActivity extends FragmentActivity implements
     // stores any additional scopes.
     private String[] mAdditionalScopes;
 
-    protected String mDebugTag = "BaseGameActivity";
+    protected String mDebugTag = "GBaseGameActivity";
     protected boolean mDebugLog = false;
 
-    /** Constructs a BaseGameActivity with default client (GamesClient). */
-    protected BaseGameActivity() {
+    /** Constructs a GBaseGameActivity with default client (GamesClient). */
+    protected GBaseGameActivityAND() {
         super();
         mHelper = new GameHelper(this);
     }
 
     /**
-     * Constructs a BaseGameActivity with the requested clients.
+     * Constructs a GBaseGameActivity with the requested clients.
      * @param requestedClients The requested clients (a combination of CLIENT_GAMES,
      *         CLIENT_PLUS and CLIENT_APPSTATE).
      */
-    protected BaseGameActivity(int requestedClients) {
+    protected GBaseGameActivityAND(int requestedClients) {
         super();
         setRequestedClients(requestedClients);
     }
