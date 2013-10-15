@@ -115,7 +115,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (pSceneTouchEvent.isActionDown() && !collidesWith(Game.getAnt())) {
+        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(Game.getAnt())) {
             this.rotate();
             return true;
         }

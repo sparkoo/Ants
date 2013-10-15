@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.games.GamesClient;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import cz.sparko.Bugmaze.Models.ScoreDTO;
 import cz.sparko.Bugmaze.Models.ScoreModel;
@@ -20,6 +21,7 @@ public class HighScore extends BaseGameActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.score);
 
         Button btnBack = (Button)findViewById(R.id.btnBack);

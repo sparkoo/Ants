@@ -13,7 +13,6 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -29,11 +28,9 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.HorizontalAlign;
-import org.andengine.util.color.Color;
 
 import java.sql.SQLException;
 import java.util.Random;
