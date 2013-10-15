@@ -50,8 +50,8 @@ public class Menu extends GBaseGameActivity {
     public void onSignInSucceeded() {
         SignInButton signInButton = (SignInButton)findViewById(R.id.signInButton);
         Button btnScore = (Button)findViewById(R.id.btnScore);
+        btnScore.setText("Leaderboard");
         if (justLoggedIn) {
-            System.out.println("gggggggggggggggggggggggggggggggggggg");
             finish();
             startActivity(getIntent());
             justLoggedIn = false;

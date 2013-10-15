@@ -11,7 +11,7 @@ public class Ant extends AnimatedSprite {
 
     public static final int Z_INDEX = 100;
 
-    private static final float baseSpeed = 0.9f;
+    private static final float baseSpeed = 0.7f;
 
     private float speed = baseSpeed;
 
