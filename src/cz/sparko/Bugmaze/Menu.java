@@ -3,17 +3,21 @@ package cz.sparko.Bugmaze;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.Button;
 import com.google.android.gms.common.SignInButton;
 import com.google.example.games.basegameutils.GBaseGameActivity;
-
+//TODO: strings to some strings.xml
 public class Menu extends GBaseGameActivity {
-    private boolean justLoggedIn = false;
+    Button scoreBtn = null;
+    SignInButton signInBtn = null;
 
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
+
+        scoreBtn = (Button)findViewById(R.id.btnScore);
+        signInBtn = (SignInButton)findViewById(R.id.signInButton);
 
         Button btnPlay = (Button)findViewById(R.id.btnPlay);
         btnPlay.setOnClickListener(new View.OnClickListener() {
@@ -23,14 +27,10 @@ public class Menu extends GBaseGameActivity {
             }
         });
 
-        SignInButton signInButton = (SignInButton)findViewById(R.id.signInButton);
-        Button btnScore = (Button)findViewById(R.id.btnScore);
-
-        btnScore.setText("to enable leaderboard please log in to g+");
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        scoreBtn.setText("signing in ...");
+        signInBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 beginUserInitiatedSignIn();
-                justLoggedIn = true;
             }
         });
 
@@ -44,24 +44,21 @@ public class Menu extends GBaseGameActivity {
 
     @Override
     public void onSignInFailed() {
+        if (scoreBtn == null || signInBtn == null)  return;
+        scoreBtn.setText("to enable leaderboard please log in to g+");
+        scoreBtn.setOnClickListener(null);
+        signInBtn.setVisibility(ViewStub.VISIBLE);
     }
 
     @Override
     public void onSignInSucceeded() {
-        SignInButton signInButton = (SignInButton)findViewById(R.id.signInButton);
-        Button btnScore = (Button)findViewById(R.id.btnScore);
-        btnScore.setText("Leaderboard");
-        if (justLoggedIn) {
-            finish();
-            startActivity(getIntent());
-            justLoggedIn = false;
-        } else {
-            btnScore.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
-                }
-            });
-            signInButton.setVisibility(View.GONE);
-        }
+        if (scoreBtn == null || signInBtn == null)  return;
+        scoreBtn.setText("Leaderboard");
+        scoreBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
+            }
+        });
+        signInBtn.setVisibility(View.GONE);
     }
 }

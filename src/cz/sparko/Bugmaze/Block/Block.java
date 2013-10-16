@@ -1,6 +1,6 @@
 package cz.sparko.Bugmaze.Block;
 
-import cz.sparko.Bugmaze.Ant;
+import cz.sparko.Bugmaze.Character;
 import cz.sparko.Bugmaze.Coordinate;
 import cz.sparko.Bugmaze.Direction;
 import cz.sparko.Bugmaze.Game;
@@ -62,7 +62,7 @@ public abstract class Block extends AnimatedSprite {
             this.deleted = true;
             this.active = false;
 
-            this.registerEntityModifier(new DelayModifier(Game.getAnt().getSpeed(), new IEntityModifier.IEntityModifierListener() {
+            this.registerEntityModifier(new DelayModifier(Game.getCharacter().getSpeed(), new IEntityModifier.IEntityModifierListener() {
                 @Override
                 public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
                 }
@@ -117,7 +117,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(Game.getAnt())) {
+        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(Game.getCharacter())) {
             this.rotate();
             return true;
         }
@@ -168,7 +168,7 @@ public abstract class Block extends AnimatedSprite {
             sourceWays.set(i, Direction.fromInt((sourceWays.get(i).getValue() + 1) % 4));
     }
 
-    public abstract SequenceEntityModifier getMoveHandler(Ant ant);
+    public abstract SequenceEntityModifier getMoveHandler(Character character);
     public abstract void setPossibleSourceWays();
     public abstract void setOutWays();
 }

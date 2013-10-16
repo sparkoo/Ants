@@ -2,6 +2,11 @@ package cz.sparko.Bugmaze;
 
 import cz.sparko.Bugmaze.Block.Block;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.TextureManager;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import java.util.Random;
@@ -10,8 +15,12 @@ public class GameField {
     public static final int FIELD_SIZE_X = 9;
     public static final int FIELD_SIZE_Y = 6;
 
-    private Scene mScene;
+    private Scene scene;
     private BaseGameActivity context;
+
+    private Sprite background;
+    private ITextureRegion backgroundTexture;
+    private BitmapTextureAtlas mBackgroundTextureAtlas;
 
     private Block[][] blocks;
     private Coordinate startBlock;
@@ -19,9 +28,19 @@ public class GameField {
 
     private boolean refreshField = false;
 
-    public GameField(Scene mScene, BaseGameActivity context) {
-        this.mScene = mScene;
+    public GameField(BaseGameActivity context) {
         this.context = context;
+
+    }
+
+    public void loadResources(TextureManager textureManager) {
+        this.mBackgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 512);
+        backgroundTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTextureAtlas, context, "playgroundBack.png", 0, 0);
+        this.mBackgroundTextureAtlas.load();
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
     }
 
     public void needRefreshField() {
@@ -45,6 +64,11 @@ public class GameField {
     }
 
     public void createField() {
+        if (scene == null)  return;
+        background = new Sprite(0, 0, this.backgroundTexture, context.getVertexBufferObjectManager());
+        background.setZIndex(99);
+        scene.attachChild(background);
+
         int startX = 60;
         int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[GameField.FIELD_SIZE_X][GameField.FIELD_SIZE_Y];
@@ -56,12 +80,12 @@ public class GameField {
                 Coordinate nCoordinate = new Coordinate(x, y);
                 if (!nCoordinate.equals(startBlock)) {
                     nBlock = Block.createRandomBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), context.getVertexBufferObjectManager());
-                    mScene.registerTouchArea(nBlock);
+                    scene.registerTouchArea(nBlock);
                 } else {
                     nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), context.getVertexBufferObjectManager());
                 }
                 blocks[x][y] = nBlock;
-                mScene.attachChild(nBlock);
+                scene.attachChild(nBlock);
             }
         }
 
@@ -75,15 +99,15 @@ public class GameField {
         for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
             for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
                 if (blocks[x][y].isDeleted() && blocks[x][y] != activeBlock) {
-                    mScene.detachChild(blocks[x][y]);
-                    mScene.unregisterTouchArea(blocks[x][y]);
+                    scene.detachChild(blocks[x][y]);
+                    scene.unregisterTouchArea(blocks[x][y]);
                     Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), context.getVertexBufferObjectManager());
                     blocks[x][y] = nBlock;
-                    mScene.attachChild(nBlock);
-                    mScene.registerTouchArea(nBlock);
+                    scene.attachChild(nBlock);
+                    scene.registerTouchArea(nBlock);
                 }
             }
         }
-        mScene.sortChildren();
+        scene.sortChildren();
     }
 }
