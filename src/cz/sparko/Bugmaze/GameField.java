@@ -69,7 +69,7 @@ public class GameField {
         background.setZIndex(99);
         scene.attachChild(background);
 
-        int startX = 60;
+        int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
         int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
         blocks = new Block[GameField.FIELD_SIZE_X][GameField.FIELD_SIZE_Y];
         Random rnd = new Random();
@@ -93,7 +93,7 @@ public class GameField {
     }
 
     public void refreshField() {
-        int startX = 60;
+        int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
         int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
         refreshField = false;
         for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
