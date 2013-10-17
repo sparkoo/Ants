@@ -107,7 +107,6 @@ public class Game extends GBaseGameActivityAND {
     @Override
     public EngineOptions onCreateEngineOptions() {
         final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
         return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
     }
 
