@@ -1,6 +1,5 @@
 package cz.sparko.Bugmaze;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import com.google.example.games.basegameutils.GBaseGameActivityAND;
 import cz.sparko.Bugmaze.Block.Block;
@@ -10,6 +9,8 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.modifier.ScaleModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.text.Text;
@@ -25,6 +26,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.util.HorizontalAlign;
+import org.andengine.util.color.Color;
 
 import java.sql.SQLException;
 
@@ -39,6 +41,8 @@ public class Game extends GBaseGameActivityAND {
 
     private int score = 0;
     private int tmpScore = 0;
+    //TODO: move score to gamefield ?
+    private BitmapTextureAtlas mFontTexture;
     private Font mScoreFont;
     private Text mScoreText;
 
@@ -89,13 +93,15 @@ public class Game extends GBaseGameActivityAND {
     //TODO: text handle
     public void increaseScore() {
         tmpScore++;
-        mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
+        //mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
     }
 
     public void countScore() {
         score += tmpScore * tmpScore;
         tmpScore = 0;
-        mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
+        printScore();
+        mScoreText.registerEntityModifier(new SequenceEntityModifier(new ScaleModifier(0.1f, 1f, 1.5f), new ScaleModifier(0.3f, 1.5f, 1f)));
+        mScoreText.setScale(1.2f);
     }
 
     public static Character getCharacter() { return character; }
@@ -125,8 +131,11 @@ public class Game extends GBaseGameActivityAND {
             e.printStackTrace();
         }
 
-        this.mScoreFont = FontFactory.create(this.getFontManager(), this.getTextureManager(), 256, 256, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
-        this.mScoreFont.load();
+        this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        FontFactory.setAssetBasePath("font/");
+        this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
+        this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+        this.getFontManager().loadFont(this.mScoreFont);
     }
 
 
@@ -148,7 +157,8 @@ public class Game extends GBaseGameActivityAND {
         character.setPosition(gameField.getActiveBlock().getX() + (Block.SIZE / 2) - (Character.SIZE_X / 2), gameField.getActiveBlock().getY() + (Block.SIZE / 2) - (Character.SIZE_Y / 2));
         character.setRotation(gameField.getActiveBlock().getOutDirection().getDegree());
 
-        mScoreText = new Text(10, 10, this.mScoreFont, String.format("%09d + %09d", tmpScore * tmpScore, score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText = new Text(20, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        printScore();
         mScoreText.setZIndex(101);
 
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
@@ -160,6 +170,10 @@ public class Game extends GBaseGameActivityAND {
         mScene.sortChildren();
 
         return mScene;
+    }
+
+    private void printScore() {
+        mScoreText.setText(String.format("%s%d", getString(R.string.score_text), score));
     }
 
     public void saveScore() {
