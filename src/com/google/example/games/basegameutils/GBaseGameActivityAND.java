@@ -59,7 +59,7 @@ public abstract class GBaseGameActivityAND extends SimpleBaseGameActivity implem
     // stores any additional scopes.
     private String[] mAdditionalScopes;
 
-    protected String mDebugTag = "GBaseGameActivity";
+    protected String mDebugTag = "GBaseGameActivityAND";
     protected boolean mDebugLog = false;
 
     /** Constructs a GBaseGameActivity with default client (GamesClient). */
