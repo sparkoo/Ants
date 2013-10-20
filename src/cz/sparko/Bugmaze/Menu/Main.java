@@ -3,10 +3,12 @@ package cz.sparko.Bugmaze.Menu;
 import cz.sparko.Bugmaze.MenuActivity;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.TextMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.ColorMenuItemDecorator;
+import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
 
-import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
 
 public class Main extends Menu {
@@ -16,11 +18,11 @@ public class Main extends Menu {
 
     @Override
     protected void setMenuItems() {
-        menuItems = new ArrayList<IMenuItem>(4);
-        menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(0, menuActivity.getMenuFont(), "Play", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
-        menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(1, menuActivity.getMenuFont(), "Leaderboard", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
-        menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(2, menuActivity.getMenuFont(), "Options", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
-        menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(3, menuActivity.getMenuFont(), "Help", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
+        menuItems = new ArrayList<SpriteMenuItem>(4);
+        menuItems.add(new SpriteMenuItem(0, menuItemsTextures.get(0), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new SpriteMenuItem(1, menuItemsTextures.get(1), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new SpriteMenuItem(2, menuItemsTextures.get(2), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new SpriteMenuItem(3, menuItemsTextures.get(3), menuActivity.getVertexBufferObjectManager()));
     }
 
     @Override
@@ -43,5 +45,13 @@ public class Main extends Menu {
                 break;
         }
         return false;
+    }
+
+    protected static void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
+        menuItemsTextures = new ArrayList<ITiledTextureRegion>(4);
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "mainPlay.png", 1, 2));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "mainLeaderboard.png", 1, 2));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "mainOptions.png", 1, 2));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "mainHelp.png", 1, 2));
     }
 }

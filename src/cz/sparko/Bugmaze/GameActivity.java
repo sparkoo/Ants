@@ -1,13 +1,18 @@
 package cz.sparko.Bugmaze;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.google.example.games.basegameutils.GBaseGameActivityAND;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Model.ScoreDTO;
 import cz.sparko.Bugmaze.Model.ScoreModel;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -28,7 +33,10 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Random;
 
 //TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
@@ -38,6 +46,12 @@ public class GameActivity extends GBaseGameActivityAND {
 
     private ScoreModel scoreModel;
 
+    private SharedPreferences prefs;
+    private final String SHARED_PREFS_KEY = "settings";
+    public static final String SETTINGS_MUSIC = "music";
+    public static final String SETTINGS_EFFECTS = "effects";
+    public static final String SETTINGS_GRAPHICS = "graphics";
+    private boolean playSoundEffects = true;
 
     private int score = 0;
     private int tmpScore = 0;
@@ -45,6 +59,8 @@ public class GameActivity extends GBaseGameActivityAND {
     private BitmapTextureAtlas mFontTexture;
     private Font mScoreFont;
     private Text mScoreText;
+
+    private ArrayList<Sound> rebuildSounds;
 
     private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
 
@@ -61,6 +77,8 @@ public class GameActivity extends GBaseGameActivityAND {
         super.onCreate(savedInstanceState);
         scoreModel = new ScoreModel(this);
         gameField = new GameField(this);
+        prefs = getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
+        playSoundEffects = prefs.getBoolean(SETTINGS_EFFECTS, true);
         try {
             scoreModel.open();
         } catch (SQLException e) {
@@ -109,8 +127,11 @@ public class GameActivity extends GBaseGameActivityAND {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+        final Camera camera = new Camera(0, 0, GameActivity.CAMERA_WIDTH, GameActivity.CAMERA_HEIGHT);
+        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
+        engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
+        engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+        return engineOptions;
     }
 
     @Override
@@ -136,8 +157,21 @@ public class GameActivity extends GBaseGameActivityAND {
         this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
         this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
         this.getFontManager().loadFont(this.mScoreFont);
+
+        rebuildSounds = new ArrayList<Sound>(5);
+        SoundFactory.setAssetBasePath("sfx/");
+        try {
+            rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild1.ogg"));
+            rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild2.ogg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public void playRebuildSound() {
+        if (playSoundEffects)
+            rebuildSounds.get(new Random().nextInt(rebuildSounds.size())).play();
+    }
 
     @Override
     public Scene onCreateScene() {

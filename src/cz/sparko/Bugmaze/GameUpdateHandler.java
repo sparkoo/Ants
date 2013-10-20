@@ -8,7 +8,7 @@ public class GameUpdateHandler implements IUpdateHandler {
     private GameField gameField;
     private Character character;
     private boolean running = false;
-    private float startDelay = 5;
+    private float startDelay = 3;
     float timeCounter = 0;
     public GameUpdateHandler(GameActivity gameActivity, GameField gameField, Character character) {
         this.gameActivity = gameActivity;
@@ -20,6 +20,7 @@ public class GameUpdateHandler implements IUpdateHandler {
     public void onUpdate(float pSecondsElapsed) {
         if (gameField.isNeedRefreshField()) {
             gameField.refreshField();
+            gameActivity.playRebuildSound();
             gameActivity.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {

@@ -1,12 +1,14 @@
 package cz.sparko.Bugmaze.Menu;
 
-import android.content.SharedPreferences;
 import cz.sparko.Bugmaze.GameActivity;
 import cz.sparko.Bugmaze.MenuActivity;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -20,7 +22,10 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     protected Menu prev;
     protected MenuScene menuScene;
     protected MenuActivity menuActivity;
-    protected ArrayList<IMenuItem> menuItems;
+    protected static ArrayList<ITiledTextureRegion> menuItemsTextures;
+    protected static ArrayList<ITiledTextureRegion> menuIconsTextures;
+    protected static ArrayList<SpriteMenuItem> menuItems;
+    protected static ArrayList<SpriteMenuItem> menuIcons;
 
     protected final Color TEXT_COLOR = new Color(0.9f, 0.9f, 0.9f);
     protected final Color TEXT_COLOR_SELECTED = new Color(0.2f, 0.2f, 0.2f);
@@ -32,12 +37,18 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         createMenuScene();
     }
 
+    public static void loadMenuResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
+        Main.loadResources(mBitmapTextureAtlas, gameActivity);
+        Options.loadResources(mBitmapTextureAtlas, gameActivity);
+        Play.loadResources(mBitmapTextureAtlas, gameActivity);
+    }
+
     private void createMenuScene() {
         menuScene = new MenuScene(menuActivity.getCamera());
         menuScene.setBackgroundEnabled(false);
 
         int yPosition = 150;
-        for (IMenuItem menuItem : menuItems) {
+        for (SpriteMenuItem menuItem : menuItems) {
             menuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
             menuItem.setPosition(180, yPosition);
             yPosition += 70;
