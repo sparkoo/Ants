@@ -5,6 +5,7 @@ import cz.sparko.Bugmaze.MenuActivity;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -24,7 +25,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     protected MenuActivity menuActivity;
     protected static ArrayList<ITiledTextureRegion> menuItemsTextures;
     protected static ArrayList<ITiledTextureRegion> menuIconsTextures;
-    protected static ArrayList<SpriteMenuItem> menuItems;
+    protected static ArrayList<AnimatedSpriteMenuItem> menuItems;
     protected static ArrayList<SpriteMenuItem> menuIcons;
 
     protected final Color TEXT_COLOR = new Color(0.9f, 0.9f, 0.9f);
@@ -48,7 +49,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         menuScene.setBackgroundEnabled(false);
 
         int yPosition = 150;
-        for (SpriteMenuItem menuItem : menuItems) {
+        for (AnimatedSpriteMenuItem menuItem : menuItems) {
             menuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
             menuItem.setPosition(180, yPosition);
             yPosition += 70;

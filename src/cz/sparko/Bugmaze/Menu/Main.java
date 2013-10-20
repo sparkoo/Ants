@@ -2,8 +2,8 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.MenuActivity;
 import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -18,11 +18,11 @@ public class Main extends Menu {
 
     @Override
     protected void setMenuItems() {
-        menuItems = new ArrayList<SpriteMenuItem>(4);
-        menuItems.add(new SpriteMenuItem(0, menuItemsTextures.get(0), menuActivity.getVertexBufferObjectManager()));
-        menuItems.add(new SpriteMenuItem(1, menuItemsTextures.get(1), menuActivity.getVertexBufferObjectManager()));
-        menuItems.add(new SpriteMenuItem(2, menuItemsTextures.get(2), menuActivity.getVertexBufferObjectManager()));
-        menuItems.add(new SpriteMenuItem(3, menuItemsTextures.get(3), menuActivity.getVertexBufferObjectManager()));
+        menuItems = new ArrayList<AnimatedSpriteMenuItem>(4);
+        menuItems.add(new MenuButton(0, menuItemsTextures.get(0), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new MenuButton(1, menuItemsTextures.get(1), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new MenuButton(2, menuItemsTextures.get(2), menuActivity.getVertexBufferObjectManager()));
+        menuItems.add(new MenuButton(3, menuItemsTextures.get(3), menuActivity.getVertexBufferObjectManager()));
     }
 
     @Override
