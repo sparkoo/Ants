@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze.Menu;
 
+import android.content.SharedPreferences;
 import cz.sparko.Bugmaze.GameActivity;
 import cz.sparko.Bugmaze.MenuActivity;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -42,7 +43,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
             yPosition += 70;
             menuScene.addMenuItem(menuItem);
         }
-
+        createCustomItems();
         menuScene.setOnMenuItemClickListener(this);
     }
 
@@ -54,13 +55,14 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         goToMenu(newMenu, MENU_SWITCH_NEXT);
     }
 
-    protected void goBack() {
+    public void goBack() {
         if (prev != null) {
             goToMenu(prev, MENU_SWITCH_PREV);
         }
     }
 
     protected void goToMenu(final Menu newMenu, final int direction) {
+        menuActivity.setCurrentMenu(newMenu);
         this.getMenuScene().registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, 0, -GameActivity.CAMERA_WIDTH * direction, 0, 0));
         IUpdateHandler moveMenuHandler = new IUpdateHandler() {
             float timeElapsed = 0;
@@ -84,4 +86,5 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     protected abstract void setMenuItems();
+    protected abstract void createCustomItems();
 }

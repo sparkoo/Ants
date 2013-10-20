@@ -6,6 +6,7 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ColorMenuItemDecorator;
 
+import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
 
 public class Main extends Menu {
@@ -20,6 +21,10 @@ public class Main extends Menu {
         menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(1, menuActivity.getMenuFont(), "Leaderboard", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
         menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(2, menuActivity.getMenuFont(), "Options", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
         menuItems.add(new ColorMenuItemDecorator(new TextMenuItem(3, menuActivity.getMenuFont(), "Help", menuActivity.getVertexBufferObjectManager()), TEXT_COLOR_SELECTED, TEXT_COLOR));
+    }
+
+    @Override
+    protected void createCustomItems() {
     }
 
     @Override
