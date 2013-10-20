@@ -1,33 +1,25 @@
 package cz.sparko.Bugmaze;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.Button;
-import com.google.android.gms.common.SignInButton;
 import com.google.example.games.basegameutils.GBaseGameActivityAND;
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ColorMenuItemDecorator;
-import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.color.Color;
 
@@ -35,11 +27,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 //TODO: strings to some strings.xml
 public class Menu extends GBaseGameActivityAND implements MenuScene.IOnMenuItemClickListener {
+    private final float MENU_SWITCH_SPEED = 0.2f;
+    private final int MENU_SWITCH_NEXT = 1;
+    private final int MENU_SWITCH_PREV = -1;
 
     private boolean googleServicesConnected = false;
 
     private Camera camera;
-    private MenuScene menuScene;
     private Scene scene;
 
     private BitmapTextureAtlas mFontTexture;
@@ -48,58 +42,14 @@ public class Menu extends GBaseGameActivityAND implements MenuScene.IOnMenuItemC
     private ITextureRegion backgroundTexture;
     private BitmapTextureAtlas mBackgroundTextureAtlas;
 
-    /*
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu);
-
-        scoreBtn = (Button)findViewById(R.id.btnScore);
-        signInBtn = (SignInButton)findViewById(R.id.signInButton);
-
-        Button btnPlay = (Button)findViewById(R.id.btnPlay);
-        btnPlay.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Menu.this.startActivity(new Intent(Menu.this, Game.class));
-                Menu.this.finish();
-            }
-        });
-
-        scoreBtn.setText("signing in ...");
-        signInBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                beginUserInitiatedSignIn();
-            }
-        });
-
-        Button closeButton = (Button)findViewById(R.id.exitButton);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Menu.this.finish();
-            }
-        });
-    }
-*/
     @Override
     public void onSignInFailed() {
         googleServicesConnected = false;
-        /*if (scoreBtn == null || signInBtn == null)  return;
-        scoreBtn.setText("to enable leaderboard please log in to g+");
-        scoreBtn.setOnClickListener(null);
-        signInBtn.setVisibility(ViewStub.VISIBLE);
-        */
     }
 
     @Override
     public void onSignInSucceeded() {
         googleServicesConnected = true;
-        /*if (scoreBtn == null || signInBtn == null)  return;
-        scoreBtn.setText("Leaderboard");
-        scoreBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
-            }
-        });
-        signInBtn.setVisibility(View.GONE);*/
     }
 
     @Override
@@ -121,33 +71,9 @@ public class Menu extends GBaseGameActivityAND implements MenuScene.IOnMenuItemC
     @Override
     protected Scene onCreateScene() {
         scene = new Scene();
+        scene.setBackground(new SpriteBackground(new Sprite(0, 0, backgroundTexture, this.getVertexBufferObjectManager())));
 
-        menuScene = new MenuScene(camera);
-        menuScene.setBackground(new SpriteBackground(new Sprite(0, 0, backgroundTexture, this.getVertexBufferObjectManager())));
-
-        final IMenuItem playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, this.mFont, "Play", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
-        playMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        playMenuItem.setPosition(180, 150);
-        menuScene.addMenuItem(playMenuItem);
-
-        final IMenuItem leaderboardMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, this.mFont, "Leaderboard", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
-        leaderboardMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        leaderboardMenuItem.setPosition(180, 220);
-        menuScene.addMenuItem(leaderboardMenuItem);
-
-        final IMenuItem optionsMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2, this.mFont, "Options", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
-        optionsMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        optionsMenuItem.setPosition(180, 290);
-        menuScene.addMenuItem(optionsMenuItem);
-
-        final IMenuItem helpMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3, this.mFont, "Help", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
-        helpMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-        helpMenuItem.setPosition(180, 360);
-        menuScene.addMenuItem(helpMenuItem);
-
-        menuScene.setOnMenuItemClickListener(this);
-
-        scene.setChildScene(menuScene);
+        scene.setChildScene(getMainMenuScene());
 
         return scene;
     }
@@ -172,7 +98,91 @@ public class Menu extends GBaseGameActivityAND implements MenuScene.IOnMenuItemC
                     startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
                 }
                 break;
+            case 2:
+                goToMenu(getOptionsMenuScene(), MENU_SWITCH_NEXT);
+                break;
+            case 3:
+                goToMenu(getOptionsMenuScene(), MENU_SWITCH_PREV);
+                break;
         }
         return false;
+    }
+
+    private void goToMenu(final MenuScene newMenuScene, final int direction) {
+        Scene currentMenu = scene.getChildScene();
+        currentMenu.registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, 0, - Game.CAMERA_WIDTH * direction, 0, 0));
+        currentMenu.registerUpdateHandler(new IUpdateHandler() {
+            float timeElapsed = 0;
+            @Override
+            public void onUpdate(float pSecondsElapsed) {
+                if (timeElapsed < MENU_SWITCH_SPEED)
+                    timeElapsed += pSecondsElapsed;
+                else {
+                    scene.clearChildScene();
+                    scene.setChildScene(newMenuScene);
+                    newMenuScene.setPosition(Game.CAMERA_WIDTH * direction, 0);
+                    newMenuScene.registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, Game.CAMERA_WIDTH * direction, 0, 0, 0));
+                }
+            }
+            @Override
+            public void reset() {
+            }
+        });
+    }
+
+    private MenuScene getMainMenuScene() {
+        MenuScene menuScene = new MenuScene(camera);
+        menuScene.setBackgroundEnabled(false);
+
+        final IMenuItem playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, this.mFont, "Play", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        playMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        playMenuItem.setPosition(180, 150);
+        menuScene.addMenuItem(playMenuItem);
+
+        final IMenuItem leaderboardMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, this.mFont, "Leaderboard", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        leaderboardMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        leaderboardMenuItem.setPosition(180, 220);
+        menuScene.addMenuItem(leaderboardMenuItem);
+
+        final IMenuItem optionsMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2, this.mFont, "Options", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        optionsMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        optionsMenuItem.setPosition(180, 290);
+        menuScene.addMenuItem(optionsMenuItem);
+
+        final IMenuItem helpMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3, this.mFont, "Help", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        helpMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        helpMenuItem.setPosition(180, 360);
+        menuScene.addMenuItem(helpMenuItem);
+
+        menuScene.setOnMenuItemClickListener(this);
+        return menuScene;
+    }
+
+    private MenuScene getOptionsMenuScene() {
+        MenuScene menuScene = new MenuScene(camera);
+        menuScene.setBackgroundEnabled(false);
+
+        final IMenuItem playMenuItem = new ColorMenuItemDecorator(new TextMenuItem(0, this.mFont, "options 1", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        playMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        playMenuItem.setPosition(180, 150);
+        menuScene.addMenuItem(playMenuItem);
+
+        final IMenuItem leaderboardMenuItem = new ColorMenuItemDecorator(new TextMenuItem(1, this.mFont, "options 2", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        leaderboardMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        leaderboardMenuItem.setPosition(180, 220);
+        menuScene.addMenuItem(leaderboardMenuItem);
+
+        final IMenuItem optionsMenuItem = new ColorMenuItemDecorator(new TextMenuItem(2, this.mFont, "options 3", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        optionsMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        optionsMenuItem.setPosition(180, 290);
+        menuScene.addMenuItem(optionsMenuItem);
+
+        final IMenuItem helpMenuItem = new ColorMenuItemDecorator(new TextMenuItem(3, this.mFont, "options 4", this.getVertexBufferObjectManager()), new Color(0.2f, 0.2f, 0.2f), new Color(0.9f, 0.9f, 0.9f));
+        helpMenuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        helpMenuItem.setPosition(180, 360);
+        menuScene.addMenuItem(helpMenuItem);
+
+        menuScene.setOnMenuItemClickListener(this);
+        return menuScene;
     }
 }

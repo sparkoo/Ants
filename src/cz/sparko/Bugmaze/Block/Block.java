@@ -94,7 +94,7 @@ public abstract class Block extends AnimatedSprite {
         Random rnd = new Random();
         Block nBlock;
         float pickBlock = rnd.nextFloat();
-        if (pickBlock < 0.5)
+        if (pickBlock < 0.6)
             nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager, 1);
         else if (pickBlock < 0.8)
             nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager, 1);

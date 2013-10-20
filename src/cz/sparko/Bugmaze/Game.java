@@ -157,7 +157,7 @@ public class Game extends GBaseGameActivityAND {
         character.setPosition(gameField.getActiveBlock().getX() + (Block.SIZE / 2) - (Character.SIZE_X / 2), gameField.getActiveBlock().getY() + (Block.SIZE / 2) - (Character.SIZE_Y / 2));
         character.setRotation(gameField.getActiveBlock().getOutDirection().getDegree());
 
-        mScoreText = new Text(20, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText = new Text((Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         printScore();
         mScoreText.setZIndex(101);
 
