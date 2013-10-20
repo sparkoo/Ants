@@ -4,14 +4,14 @@ import android.content.Intent;
 import org.andengine.engine.handler.IUpdateHandler;
 
 public class GameUpdateHandler implements IUpdateHandler {
-    private Game game;
+    private GameActivity gameActivity;
     private GameField gameField;
     private Character character;
     private boolean running = false;
     private float startDelay = 5;
     float timeCounter = 0;
-    public GameUpdateHandler(Game game, GameField gameField, Character character) {
-        this.game = game;
+    public GameUpdateHandler(GameActivity gameActivity, GameField gameField, Character character) {
+        this.gameActivity = gameActivity;
         this.gameField = gameField;
         this.character = character;
     }
@@ -20,7 +20,7 @@ public class GameUpdateHandler implements IUpdateHandler {
     public void onUpdate(float pSecondsElapsed) {
         if (gameField.isNeedRefreshField()) {
             gameField.refreshField();
-            game.countScore();
+            gameActivity.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {
             timeCounter = 0;
@@ -35,7 +35,7 @@ public class GameUpdateHandler implements IUpdateHandler {
                 gameField.setActiveBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()));
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
-                game.increaseScore();
+                gameActivity.increaseScore();
             } else {
                 reset();
             }
@@ -52,8 +52,8 @@ public class GameUpdateHandler implements IUpdateHandler {
 
     @Override
     public void reset() {
-        game.saveScore();
-        game.startActivity(new Intent(game, Menu.class));
-        game.finish();
+        gameActivity.saveScore();
+        gameActivity.startActivity(new Intent(gameActivity, MenuActivity.class));
+        gameActivity.finish();
     }
 }

@@ -3,7 +3,7 @@ package cz.sparko.Bugmaze.Block;
 import cz.sparko.Bugmaze.Character;
 import cz.sparko.Bugmaze.Coordinate;
 import cz.sparko.Bugmaze.Direction;
-import cz.sparko.Bugmaze.Game;
+import cz.sparko.Bugmaze.GameActivity;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier;
@@ -62,7 +62,7 @@ public abstract class Block extends AnimatedSprite {
             this.deleted = true;
             this.active = false;
 
-            this.registerEntityModifier(new DelayModifier(Game.getCharacter().getSpeed(), new IEntityModifier.IEntityModifierListener() {
+            this.registerEntityModifier(new DelayModifier(GameActivity.getCharacter().getSpeed(), new IEntityModifier.IEntityModifierListener() {
                 @Override
                 public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
                 }
@@ -117,7 +117,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(Game.getCharacter())) {
+        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(GameActivity.getCharacter())) {
             this.rotate();
             return true;
         }
@@ -139,7 +139,7 @@ public abstract class Block extends AnimatedSprite {
         int directionX = fromCoordinate.getX() - coordinate.getX();
         int directionY = fromCoordinate.getY() - coordinate.getY();
 
-        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) Game.getGameField().needRefreshField(); //refresh field on walk through wall
+        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) GameActivity.getGameField().needRefreshField(); //refresh field on walk through wall
 
         if (directionX < -1) directionX = 1;
         if (directionX > 1) directionX = -1;
