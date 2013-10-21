@@ -140,7 +140,7 @@ public class GameActivity extends GBaseGameActivityAND {
 
         gameField.loadResources(this.getTextureManager());
 
-        this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         this.mBitmapTextureAtlas.clearTextureAtlasSources();
         Character.loadResources(this.mBitmapTextureAtlas, this);
         Block.loadResources(this.mBitmapTextureAtlas, this);
@@ -152,7 +152,7 @@ public class GameActivity extends GBaseGameActivityAND {
             e.printStackTrace();
         }
 
-        this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         FontFactory.setAssetBasePath("font/");
         this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
         this.mEngine.getTextureManager().loadTexture(this.mFontTexture);

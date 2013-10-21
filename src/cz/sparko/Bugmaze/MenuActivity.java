@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import com.google.example.games.basegameutils.GBaseGameActivityAND;
 import cz.sparko.Bugmaze.Menu.Main;
 import cz.sparko.Bugmaze.Menu.Menu;
+import cz.sparko.Bugmaze.Menu.MenuEnum;
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.SoundFactory;
@@ -102,7 +103,6 @@ public class MenuActivity extends GBaseGameActivityAND {
 
     @Override
     protected void onCreateResources() {
-        /* Load Font/Textures. */
         this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         FontFactory.setAssetBasePath("font/");
@@ -171,7 +171,7 @@ public class MenuActivity extends GBaseGameActivityAND {
         scene = new Scene();
         scene.setBackground(new SpriteBackground(new Sprite(0, 0, backgroundTexture, this.getVertexBufferObjectManager())));
 
-        currentMenu = new Main(this);
+        currentMenu = Menu.getMenu(MenuEnum.MAIN);
         scene.setChildScene(currentMenu.getMenuScene());
 
         return scene;

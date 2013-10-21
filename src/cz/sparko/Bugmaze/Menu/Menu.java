@@ -6,11 +6,12 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.color.Color;
+import org.andengine.opengl.texture.region.TextureRegion;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -21,32 +22,47 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     protected final int MENU_SWITCH_PREV = -1;
 
     protected Menu prev;
-    protected MenuScene menuScene;
+    protected MenuScene menuScene = null;
     protected MenuActivity menuActivity;
-    protected static ArrayList<ITiledTextureRegion> menuItemsTextures;
-    protected static ArrayList<ITiledTextureRegion> menuIconsTextures;
-    protected static ArrayList<AnimatedSpriteMenuItem> menuItems;
-    protected static ArrayList<SpriteMenuItem> menuIcons;
+    protected ArrayList<ITiledTextureRegion> menuItemsTextures;
+    protected ArrayList<ITiledTextureRegion> menuIconsTextures;
+    protected ArrayList<AnimatedSpriteMenuItem> menuItems;
+    protected ArrayList<AnimatedSpriteMenuItem> menuIcons;
+    protected ITextureRegion headerTexture;
+    protected Sprite header;
 
-    protected final Color TEXT_COLOR = new Color(0.9f, 0.9f, 0.9f);
-    protected final Color TEXT_COLOR_SELECTED = new Color(0.2f, 0.2f, 0.2f);
+    protected AnimatedSpriteMenuItem back;
+    protected ITiledTextureRegion backTexture;
 
-    public Menu(Menu prev, MenuActivity menuActivity) {
-        this.prev = prev;
+    protected static ArrayList<Menu> menuList;
+
+    public Menu(MenuActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
         this.menuActivity = menuActivity;
-        setMenuItems();
-        createMenuScene();
+        loadResources(mBitmapTextureAtlas);
     }
 
-    public static void loadMenuResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
-        Main.loadResources(mBitmapTextureAtlas, gameActivity);
-        Options.loadResources(mBitmapTextureAtlas, gameActivity);
-        Play.loadResources(mBitmapTextureAtlas, gameActivity);
+    public static void loadMenuResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, MenuActivity menuActivity) {
+        menuList = new ArrayList<Menu>(3);
+        menuList.add(0, new Main(menuActivity, mBitmapTextureAtlas));
+        menuList.add(1, new Play(menuActivity, mBitmapTextureAtlas));
+        menuList.add(2, new Options(menuActivity, mBitmapTextureAtlas));
+    }
+
+    public static Menu getMenu(MenuEnum menu) {
+        return Menu.menuList.get(menu.getValue());
     }
 
     private void createMenuScene() {
         menuScene = new MenuScene(menuActivity.getCamera());
         menuScene.setBackgroundEnabled(false);
+
+        header = new Sprite(180, 30, headerTexture, menuActivity.getVertexBufferObjectManager());
+        menuScene.attachChild(header);
+
+        if (prev != null) {
+            back.setPosition(100, 50);
+            menuScene.addMenuItem(back);
+        }
 
         int yPosition = 150;
         for (AnimatedSpriteMenuItem menuItem : menuItems) {
@@ -55,16 +71,34 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
             yPosition += 70;
             menuScene.addMenuItem(menuItem);
         }
+
+        yPosition = 160;
+        for (AnimatedSpriteMenuItem menuItem : menuIcons) {
+            menuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+            menuItem.setPosition(100, yPosition);
+            yPosition += 70;
+            menuScene.addMenuItem(menuItem);
+        }
+
         createCustomItems();
         menuScene.setOnMenuItemClickListener(this);
     }
 
     public MenuScene getMenuScene() {
+        if (menuScene == null) {
+            setItems();
+            createMenuScene();
+        }
         return menuScene;
     }
 
-    protected void goToMenu(final Menu newMenu) {
+    protected void goToMenu(Menu prev, final Menu newMenu) {
+        newMenu.setPrev(prev);
         goToMenu(newMenu, MENU_SWITCH_NEXT);
+    }
+
+    protected void setPrev(Menu prev) {
+        this.prev = prev;
     }
 
     public void goBack() {
@@ -73,7 +107,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         }
     }
 
-    protected void goToMenu(final Menu newMenu, final int direction) {
+    private void goToMenu(final Menu newMenu, final int direction) {
         menuActivity.setCurrentMenu(newMenu);
         this.getMenuScene().registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, 0, -GameActivity.CAMERA_WIDTH * direction, 0, 0));
         IUpdateHandler moveMenuHandler = new IUpdateHandler() {
@@ -97,6 +131,19 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         this.getMenuScene().registerUpdateHandler(moveMenuHandler);
     }
 
-    protected abstract void setMenuItems();
+    protected void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
+        backTexture = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "backIcon.png", 1, 2);
+    }
+
+    protected void setItems() {
+        back = new TwoStateMenuButton(-1, backTexture, menuActivity.getVertexBufferObjectManager());
+
+        menuItems = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());
+        menuIcons = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());
+        for (int i = 0; i < menuItemsTextures.size(); i++) {
+            menuItems.add(new TwoStateMenuButton(i, menuItemsTextures.get(i), menuActivity.getVertexBufferObjectManager()));
+            menuIcons.add(new AnimatedSpriteMenuItem(i, menuIconsTextures.get(i), menuActivity.getVertexBufferObjectManager()));
+        }
+    }
     protected abstract void createCustomItems();
 }
