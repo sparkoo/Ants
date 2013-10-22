@@ -33,14 +33,12 @@ public class BlockCorner extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays = new ArrayList<Direction>(2);
         sourceWays.add(0, Direction.DOWN);
         sourceWays.add(1, Direction.RIGHT);
     }
 
     @Override
     public void setOutWays() {
-        outWays = new ArrayList<Direction>(2);
         outWays.add(0, Direction.RIGHT);
         outWays.add(1, Direction.DOWN);
     }

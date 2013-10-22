@@ -14,6 +14,8 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.scene.Scene;
@@ -32,14 +34,15 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
+import org.andengine.util.modifier.LoopModifier;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
-//TODO: refactor - was renamed from Field. Make new class Field
 //TODO: make some universal gameactivity
+//TODO: make GameHandler which will handle logic
 public class GameActivity extends GBaseGameActivityAND {
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
@@ -55,10 +58,12 @@ public class GameActivity extends GBaseGameActivityAND {
 
     private int score = 0;
     private int tmpScore = 0;
-    //TODO: move score to gamefield ?
     private BitmapTextureAtlas mFontTexture;
     private Font mScoreFont;
     private Text mScoreText;
+
+    private Font mCountDownFont;
+    private Text mCountDownText;
 
     private ArrayList<Sound> rebuildSounds;
 
@@ -154,9 +159,13 @@ public class GameActivity extends GBaseGameActivityAND {
 
         this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         FontFactory.setAssetBasePath("font/");
-        this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
         this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+
+        this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
+        this.mCountDownFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 100, true, Color.WHITE.getABGRPackedInt());
+
         this.getFontManager().loadFont(this.mScoreFont);
+        this.getFontManager().loadFont(this.mCountDownFont);
 
         rebuildSounds = new ArrayList<Sound>(5);
         SoundFactory.setAssetBasePath("sfx/");
@@ -191,19 +200,43 @@ public class GameActivity extends GBaseGameActivityAND {
         character.setPosition(gameField.getActiveBlock().getX() + (Block.SIZE / 2) - (Character.SIZE_X / 2), gameField.getActiveBlock().getY() + (Block.SIZE / 2) - (Character.SIZE_Y / 2));
         character.setRotation(gameField.getActiveBlock().getOutDirection().getDegree());
 
-        mScoreText = new Text((GameActivity.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
+        mScoreText = new Text((CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         printScore();
         mScoreText.setZIndex(101);
+
+        mCountDownText = new Text(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mScoreFont, String.format("  "), new TextOptions(HorizontalAlign.CENTER), this.getVertexBufferObjectManager());
+        mCountDownText.setZIndex(101);
+        mCountDownText.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1f, 1f, 10f), GameUpdateHandler.START_DELAY_SECONDS + 1, new LoopEntityModifier.ILoopEntityModifierListener() {
+            @Override
+            public void onLoopStarted(LoopModifier<IEntity> pLoopModifier, int pLoop, int pLoopCount) {
+                if (pLoop < pLoopCount - 1) {
+                    mCountDownText.setText(String.format("%d", GameUpdateHandler.START_DELAY_SECONDS - pLoop));
+                } else {
+                    mCountDownText.setText(String.format("GO"));
+                }
+            }
+
+            @Override
+            public void onLoopFinished(LoopModifier<IEntity> pLoopModifier, int pLoop, int pLoopCount) {
+                if (pLoop == pLoopCount - 1)
+                    mCountDownText.setText("");
+            }
+        }));
 
         mScene.setTouchAreaBindingOnActionDownEnabled(true);
         mScene.registerUpdateHandler(new GameUpdateHandler(this, gameField, character));
 
+        mScene.attachChild(mCountDownText);
         mScene.attachChild(mScoreText);
         mScene.attachChild(character);
 
         mScene.sortChildren();
 
         return mScene;
+    }
+
+    public Text getmCountDownText() {
+        return mCountDownText;
     }
 
     private void printScore() {

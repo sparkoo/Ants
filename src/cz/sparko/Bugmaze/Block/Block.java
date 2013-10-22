@@ -38,10 +38,12 @@ public abstract class Block extends AnimatedSprite {
 
     public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
         super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
+        sourceWays = new ArrayList<Direction>();
+        outWays = new ArrayList<Direction>();
         this.coordinate = coordinate;
-        this.setPossibleSourceWays();
-        this.setOutWays();
-        this.setZIndex(Z_INDEX);
+        setPossibleSourceWays();
+        setOutWays();
+        setZIndex(Z_INDEX);
         this.walkThroughs = walkThroughs;
     }
 

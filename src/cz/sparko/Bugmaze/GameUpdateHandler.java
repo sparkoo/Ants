@@ -4,11 +4,12 @@ import android.content.Intent;
 import org.andengine.engine.handler.IUpdateHandler;
 
 public class GameUpdateHandler implements IUpdateHandler {
+    public static final int START_DELAY_SECONDS = 3;
+
     private GameActivity gameActivity;
     private GameField gameField;
     private Character character;
     private boolean running = false;
-    private float startDelay = 3;
     float timeCounter = 0;
     public GameUpdateHandler(GameActivity gameActivity, GameField gameField, Character character) {
         this.gameActivity = gameActivity;
@@ -32,17 +33,18 @@ public class GameUpdateHandler implements IUpdateHandler {
             if (currentY < 0) currentY = GameField.FIELD_SIZE_Y - 1;
             if (currentY >= GameField.FIELD_SIZE_Y) currentY = 0;
             Coordinate nCoordinate = new Coordinate(currentX, currentY);
+
             if (gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()).canGetInFrom(gameField.getActiveBlock().getCoordinate())) {
                 gameField.setActiveBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()));
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
                 gameActivity.increaseScore();
             } else {
-                reset();
+                gameOver();
             }
         } else {
             timeCounter += pSecondsElapsed;
-            if (!running && timeCounter > startDelay) { //first step after start delay
+            if (!running && timeCounter > START_DELAY_SECONDS) { //first step after start delay
                 running = true;
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
@@ -51,10 +53,13 @@ public class GameUpdateHandler implements IUpdateHandler {
         }
     }
 
-    @Override
-    public void reset() {
+    private void gameOver() {
         gameActivity.saveScore();
         gameActivity.startActivity(new Intent(gameActivity, MenuActivity.class));
         gameActivity.finish();
+    }
+
+    @Override
+    public void reset() {
     }
 }

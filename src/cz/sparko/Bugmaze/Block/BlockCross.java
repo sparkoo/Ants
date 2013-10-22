@@ -32,7 +32,6 @@ public class BlockCross extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays = new ArrayList<Direction>(4);
         sourceWays.add(0, Direction.UP);
         sourceWays.add(1, Direction.DOWN);
         sourceWays.add(2, Direction.LEFT);
@@ -41,7 +40,6 @@ public class BlockCross extends Block {
 
     @Override
     public void setOutWays() {
-        outWays = new ArrayList<Direction>(4);
         outWays.add(0, Direction.DOWN);
         outWays.add(1, Direction.UP);
         outWays.add(2, Direction.RIGHT);

@@ -27,12 +27,10 @@ public class BlockStart extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays = new ArrayList<Direction>(0);
     }
 
     @Override
     public void setOutWays() {
-        outWays = new ArrayList<Direction>(1);
         outWays.add(0, Direction.RIGHT);
     }
 }
