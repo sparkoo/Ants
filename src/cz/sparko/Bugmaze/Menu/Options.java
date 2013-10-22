@@ -22,11 +22,6 @@ public class Options extends Menu {
     private final String SHARED_PREFS_KEY = "settings";
     private SharedPreferences prefs;
 
-    private final String ON = "On";
-    private final String OFF = "Off";
-    private final String LOW = "Low";
-    private final String HIGH = "High";
-
     ArrayList<AnimatedSpriteMenuItem> menuCustom;
     ArrayList<ITiledTextureRegion> menuCustomTextures;
 
@@ -124,9 +119,9 @@ public class Options extends Menu {
         super.loadResources(mBitmapTextureAtlas);
 
         menuItemsTextures = new ArrayList<ITiledTextureRegion>(3);
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusic.png", 1, 1));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsEffects.png", 1, 1));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsGraphics.png", 1, 1));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusic.png", 1, 2));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsEffects.png", 1, 2));
+        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsGraphics.png", 1, 2));
 
         menuIconsTextures = new ArrayList<ITiledTextureRegion>(3);
         menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusicIcon.png", 1, 2));
