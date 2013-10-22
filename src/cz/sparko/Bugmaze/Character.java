@@ -41,7 +41,7 @@ public class Character extends AnimatedSprite {
     public float getSpeed() { return speed; }
 
     public static void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
-        texture = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "ant.png", 1, 1);
+        texture = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "characterLadybug.png", 1, 1);
     }
 
     public static ITiledTextureRegion getTexture() { return texture; }
