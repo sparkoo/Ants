@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze;
 
+import cz.sparko.Bugmaze.Block.Block;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
@@ -42,6 +43,11 @@ public class Character extends AnimatedSprite {
 
     public static void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
         texture = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "characterLadybug.png", 1, 1);
+    }
+
+    public void setStartPosition(Block activeBlock) {
+        this.setPosition(activeBlock.getX() + (Block.SIZE / 2) - (Character.SIZE_X / 2), activeBlock.getY() + (Block.SIZE / 2) - (Character.SIZE_Y / 2));
+        this.setRotation(activeBlock.getOutDirection().getDegree());
     }
 
     public static ITiledTextureRegion getTexture() { return texture; }

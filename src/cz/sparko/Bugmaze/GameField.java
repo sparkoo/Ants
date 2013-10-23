@@ -34,9 +34,9 @@ public class GameField {
     }
 
     public void loadResources(TextureManager textureManager) {
-        this.mBackgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 512);
+        mBackgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 512);
         backgroundTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTextureAtlas, context, "playgroundBack.png", 0, 0);
-        this.mBackgroundTextureAtlas.load();
+        mBackgroundTextureAtlas.load();
     }
 
     public void setScene(Scene scene) {
@@ -64,7 +64,6 @@ public class GameField {
     }
 
     public void createField() {
-        if (scene == null)  return;
         background = new Sprite(0, 0, this.backgroundTexture, context.getVertexBufferObjectManager());
         background.setZIndex(99);
         scene.attachChild(background);

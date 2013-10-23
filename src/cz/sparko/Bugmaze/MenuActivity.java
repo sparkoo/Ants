@@ -168,6 +168,7 @@ public class MenuActivity extends GBaseGameActivityAND {
     protected Scene onCreateScene() {
         if (prefs.getBoolean(SETTINGS_MUSIC, true))
             mMusic.play();
+
         scene = new Scene();
         scene.setBackground(new SpriteBackground(new Sprite(0, 0, backgroundTexture, this.getVertexBufferObjectManager())));
 

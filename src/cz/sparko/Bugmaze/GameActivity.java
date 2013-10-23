@@ -19,10 +19,8 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
-import org.andengine.entity.scene.CameraScene;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.entity.util.FPSLogger;
@@ -35,7 +33,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.color.Color;
 import org.andengine.util.modifier.LoopModifier;
@@ -76,8 +73,7 @@ public class GameActivity extends GBaseGameActivityAND {
     Camera camera;
     private Scene mScene;
 
-    private Scene pauseScene;
-    private ITextureRegion pauseBackground;
+    private GamePause pauseScene;
 
     private static Character character = null;
     private static GameField gameField;
@@ -147,18 +143,23 @@ public class GameActivity extends GBaseGameActivityAND {
         return engineOptions;
     }
 
+    //TODO: refactor
     @Override
     public void onCreateResources() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+        FontFactory.setAssetBasePath("font/");
+        SoundFactory.setAssetBasePath("sfx/");
 
+        /*
+        GRAPHICS
+         */
+        //TODO: shouldn't this be also static ???
         gameField.loadResources(this.getTextureManager());
-
         this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         this.mBitmapTextureAtlas.clearTextureAtlasSources();
         Character.loadResources(this.mBitmapTextureAtlas, this);
         Block.loadResources(this.mBitmapTextureAtlas, this);
-        pauseBackground = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBitmapTextureAtlas, this, "pauseBackground.png");
-
+        GamePause.loadResources(this.mBitmapTextureAtlas, this);
         try {
             this.mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
             this.mBitmapTextureAtlas.load();
@@ -166,18 +167,20 @@ public class GameActivity extends GBaseGameActivityAND {
             e.printStackTrace();
         }
 
+        /*
+        FONTS
+         */
         this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
-        FontFactory.setAssetBasePath("font/");
-        this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
-
+        this.getTextureManager().loadTexture(mFontTexture);
         this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
         this.mCountDownFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 100, true, Color.WHITE.getABGRPackedInt());
-
         this.getFontManager().loadFont(this.mScoreFont);
         this.getFontManager().loadFont(this.mCountDownFont);
 
-        rebuildSounds = new ArrayList<Sound>(5);
-        SoundFactory.setAssetBasePath("sfx/");
+        /*
+        SOUNDS
+         */
+        rebuildSounds = new ArrayList<Sound>();
         try {
             rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild1.ogg"));
             rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild2.ogg"));
@@ -194,29 +197,17 @@ public class GameActivity extends GBaseGameActivityAND {
     @Override
     public Scene onCreateScene() {
         this.mEngine.registerUpdateHandler(new FPSLogger());
-
-        pauseScene = new CameraScene(camera);
-        /* Make the 'PAUSED'-label centered on the camera. */
-        final int x = (int)(CAMERA_WIDTH / 2 - pauseBackground.getWidth() / 2);
-        final int y = (int)(CAMERA_HEIGHT / 2 - pauseBackground.getHeight() / 2);
-        final Sprite pausedSprite = new Sprite(x, y, pauseBackground, this.getVertexBufferObjectManager());
-        this.pauseScene.attachChild(pausedSprite);
-                /* Makes the paused Game look through. */
-        this.pauseScene.setBackgroundEnabled(false);
-
-        final float centerX = (CAMERA_WIDTH - Character.getTexture().getWidth()) / 2;
-        final float centerY = (CAMERA_HEIGHT - Character.getTexture().getHeight()) / 2;
-
         mScene = new Scene();
+
+        pauseScene = new GamePause(camera, mScene, this.getVertexBufferObjectManager());
 
         gameField.setScene(mScene);
         gameField.createField();
 
         mScene.setBackground(new Background(0.17f, 0.61f, 0f));
 
-        character = new Character(centerX, centerY, this.getVertexBufferObjectManager());
-        character.setPosition(gameField.getActiveBlock().getX() + (Block.SIZE / 2) - (Character.SIZE_X / 2), gameField.getActiveBlock().getY() + (Block.SIZE / 2) - (Character.SIZE_Y / 2));
-        character.setRotation(gameField.getActiveBlock().getOutDirection().getDegree());
+        character = new Character(0, 0, this.getVertexBufferObjectManager());
+        character.setStartPosition(gameField.getActiveBlock());
 
         mScoreText = new Text((CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, this.mScoreFont, String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), this.getVertexBufferObjectManager());
         printScore();
