@@ -1,11 +1,15 @@
 package cz.sparko.Bugmaze;
 
 import cz.sparko.Bugmaze.Block.Block;
+import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
+import cz.sparko.Bugmaze.Resource.ResourceHandler;
+import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
@@ -18,9 +22,8 @@ public class GameField {
     private Scene scene;
     private BaseGameActivity context;
 
+    private TextureResource textureResource;
     private Sprite background;
-    private ITextureRegion backgroundTexture;
-    private BitmapTextureAtlas mBackgroundTextureAtlas;
 
     private Block[][] blocks;
     private Coordinate startBlock;
@@ -30,13 +33,7 @@ public class GameField {
 
     public GameField(BaseGameActivity context) {
         this.context = context;
-
-    }
-
-    public void loadResources(TextureManager textureManager) {
-        mBackgroundTextureAtlas = new BitmapTextureAtlas(textureManager, 1024, 512);
-        backgroundTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTextureAtlas, context, "playgroundBack.png", 0, 0);
-        mBackgroundTextureAtlas.load();
+        textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
     }
 
     public void setScene(Scene scene) {
@@ -64,7 +61,7 @@ public class GameField {
     }
 
     public void createField() {
-        background = new Sprite(0, 0, this.backgroundTexture, context.getVertexBufferObjectManager());
+        background = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), context.getVertexBufferObjectManager());
         background.setZIndex(99);
         scene.attachChild(background);
 

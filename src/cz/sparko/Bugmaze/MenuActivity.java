@@ -37,22 +37,11 @@ import java.io.IOException;
 //TODO: strings to some strings.xml
 public class MenuActivity extends GBaseGameActivityAND {
 
-    private boolean googleServicesConnected = false;
 
     private Camera camera;
     private Scene scene;
 
-    private BitmapTextureAtlas mFontTexture;
-    private Font mFont;
-
-    private Menu currentMenu;
-
     Music mMusic;
-
-    private ITextureRegion backgroundTexture;
-    private BitmapTextureAtlas mBackgroundTextureAtlas;
-
-    private BuildableBitmapTextureAtlas mMenuTextureAtlas;
 
     private SharedPreferences prefs;
     private final String SHARED_PREFS_KEY = "settings";
@@ -64,24 +53,6 @@ public class MenuActivity extends GBaseGameActivityAND {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
-    }
-
-    @Override
-    public void onSignInFailed() {
-        googleServicesConnected = false;
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-        googleServicesConnected = true;
-    }
-
-    public void handleLeaderboard() {
-        if (!googleServicesConnected) {
-            beginUserInitiatedSignIn();
-        } else {
-            startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
-        }
     }
 
     public void startGame() {
@@ -103,34 +74,7 @@ public class MenuActivity extends GBaseGameActivityAND {
 
     @Override
     protected void onCreateResources() {
-        this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        FontFactory.setAssetBasePath("font/");
-        this.mFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 40, true, Color.WHITE.getABGRPackedInt());
-        this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
-        this.getFontManager().loadFont(this.mFont);
-
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        this.mBackgroundTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 1024, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        backgroundTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBackgroundTextureAtlas, this, "menuBack.png", 0, 0);
-        this.mBackgroundTextureAtlas.load();
-
-        mMenuTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        Menu.loadMenuResources(mMenuTextureAtlas, this);
-        try {
-            mMenuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-            mMenuTextureAtlas.load();
-        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
-        }
-
-        SoundFactory.setAssetBasePath("sfx/");
-        MusicFactory.setAssetBasePath("sfx/");
-        try {
-            mMusic = MusicFactory.createMusicFromAsset(getMusicManager(), this, "menuMusic.ogg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void playMusic() {

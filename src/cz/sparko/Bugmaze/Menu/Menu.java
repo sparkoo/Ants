@@ -2,6 +2,8 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.GameActivity;
 import cz.sparko.Bugmaze.MenuActivity;
+import cz.sparko.Bugmaze.MenuManager;
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.scene.menu.MenuScene;
@@ -12,6 +14,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -23,7 +26,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
 
     protected Menu prev;
     protected MenuScene menuScene = null;
-    protected MenuActivity menuActivity;
+    protected BaseGameActivity menuActivity;
     protected ArrayList<ITiledTextureRegion> menuItemsTextures;
     protected ArrayList<ITiledTextureRegion> menuIconsTextures;
     protected ArrayList<AnimatedSpriteMenuItem> menuItems;
@@ -34,18 +37,21 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     protected AnimatedSpriteMenuItem back;
     protected ITiledTextureRegion backTexture;
 
+    protected Camera camera;
+
     protected static ArrayList<Menu> menuList;
 
-    public Menu(MenuActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
+    public Menu(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
         this.menuActivity = menuActivity;
+        this.camera = camera;
         loadResources(mBitmapTextureAtlas);
     }
 
-    public static void loadMenuResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, MenuActivity menuActivity) {
+    public static void loadMenuResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity menuActivity, Camera camera) {
         menuList = new ArrayList<Menu>(3);
-        menuList.add(0, new Main(menuActivity, mBitmapTextureAtlas));
-        menuList.add(1, new Play(menuActivity, mBitmapTextureAtlas));
-        menuList.add(2, new Options(menuActivity, mBitmapTextureAtlas));
+        menuList.add(0, new Main(menuActivity, mBitmapTextureAtlas, camera));
+        menuList.add(1, new Play(menuActivity, mBitmapTextureAtlas, camera));
+        menuList.add(2, new Options(menuActivity, mBitmapTextureAtlas, camera));
     }
 
     public static Menu getMenu(MenuEnum menu) {
@@ -53,7 +59,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     private void createMenuScene() {
-        menuScene = new MenuScene(menuActivity.getCamera());
+        menuScene = new MenuScene(camera);
         menuScene.setBackgroundEnabled(false);
 
         header = new Sprite(180, 30, headerTexture, menuActivity.getVertexBufferObjectManager());
@@ -108,7 +114,7 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     private void goToMenu(final Menu newMenu, final int direction) {
-        menuActivity.setCurrentMenu(newMenu);
+        MenuManager.getInstance().setCurrentMenu(newMenu);
         this.getMenuScene().registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, 0, -GameActivity.CAMERA_WIDTH * direction, 0, 0));
         IUpdateHandler moveMenuHandler = new IUpdateHandler() {
             float timeElapsed = 0;
@@ -117,8 +123,8 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
                 if (timeElapsed < MENU_SWITCH_SPEED)
                     timeElapsed += pSecondsElapsed;
                 else {
-                    menuActivity.getScene().clearChildScene();
-                    menuActivity.getScene().setChildScene(newMenu.getMenuScene());
+                    MenuManager.getInstance().getActivity().getScene().clearChildScene();
+                    MenuManager.getInstance().getActivity().getScene().setChildScene(newMenu.getMenuScene());
                     newMenu.getMenuScene().setPosition(GameActivity.CAMERA_WIDTH * direction, 0);
                     newMenu.getMenuScene().registerEntityModifier(new MoveModifier(MENU_SWITCH_SPEED, GameActivity.CAMERA_WIDTH * direction, 0, 0, 0));
                     getMenuScene().unregisterUpdateHandler(this);

@@ -4,6 +4,9 @@ import cz.sparko.Bugmaze.Character;
 import cz.sparko.Bugmaze.Coordinate;
 import cz.sparko.Bugmaze.Direction;
 import cz.sparko.Bugmaze.GameActivity;
+import cz.sparko.Bugmaze.Resource.BlockTextureResource;
+import cz.sparko.Bugmaze.Resource.ResourceHandler;
+import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier;
@@ -33,8 +36,6 @@ public abstract class Block extends AnimatedSprite {
 
     private boolean active = false;
     private boolean deleted = false;
-
-    private static ITiledTextureRegion[] blockTextureRegions;
 
     public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
         super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
@@ -83,25 +84,16 @@ public abstract class Block extends AnimatedSprite {
 
     public Coordinate getCoordinate() { return coordinate; }
 
-    public static void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas, BaseGameActivity gameActivity) {
-        blockTextureRegions = new ITiledTextureRegion[4];
-        blockTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "corner.png", 4, 2);
-        blockTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "cross.png", 1, 2);
-        blockTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "line.png", 2, 2);
-        blockTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, gameActivity, "start.png", 4, 2);
-    }
-
-
-    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) {
+    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
         Random rnd = new Random();
         Block nBlock;
         float pickBlock = rnd.nextFloat();
         if (pickBlock < 0.7)
-            nBlock = new BlockCorner(coordinate, posX, posY, blockTextureRegions[0], vertexBufferObjectManager, 1);
+            nBlock = new BlockCorner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.CORNER), vertexBufferObjectManager, 1);
         else if (pickBlock < 0.9)
-            nBlock = new BlockLine(coordinate, posX, posY, blockTextureRegions[2], vertexBufferObjectManager, 1);
+            nBlock = new BlockLine(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.LINE), vertexBufferObjectManager, 1);
         else
-            nBlock = new BlockCross(coordinate, posX, posY, blockTextureRegions[1], vertexBufferObjectManager, 2);
+            nBlock = new BlockCross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.CROSS), vertexBufferObjectManager, 2);
 
         for (int i = 0; i < rnd.nextInt(4); i++)
             nBlock.rotate();
@@ -109,8 +101,8 @@ public abstract class Block extends AnimatedSprite {
         return nBlock;
     }
 
-    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager) {
-        Block nBlock = new BlockStart(coordinate, posX, posY, blockTextureRegions[3], vertexBufferObjectManager);
+    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
+        Block nBlock = new BlockStart(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.START), vertexBufferObjectManager);
         for (int i = 0; i < new Random().nextInt(4); i++) {
             nBlock.rotate();
         }

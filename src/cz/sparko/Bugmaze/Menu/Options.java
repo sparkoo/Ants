@@ -3,12 +3,14 @@ package cz.sparko.Bugmaze.Menu;
 import android.content.Context;
 import android.content.SharedPreferences;
 import cz.sparko.Bugmaze.MenuActivity;
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -25,8 +27,8 @@ public class Options extends Menu {
     ArrayList<AnimatedSpriteMenuItem> menuCustom;
     ArrayList<ITiledTextureRegion> menuCustomTextures;
 
-    public Options(MenuActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
-        super(menuActivity, mBitmapTextureAtlas);
+    public Options(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
+        super(menuActivity, mBitmapTextureAtlas, camera);
     }
 
     @Override

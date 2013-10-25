@@ -59,16 +59,7 @@ public class GameActivity extends GBaseGameActivityAND {
 
     private int score = 0;
     private int tmpScore = 0;
-    private BitmapTextureAtlas mFontTexture;
-    private Font mScoreFont;
-    private Text mScoreText;
 
-    private Font mCountDownFont;
-    private Text mCountDownText;
-
-    private ArrayList<Sound> rebuildSounds;
-
-    private BuildableBitmapTextureAtlas mBitmapTextureAtlas;
 
     Camera camera;
     private Scene mScene;
@@ -141,52 +132,6 @@ public class GameActivity extends GBaseGameActivityAND {
         engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         return engineOptions;
-    }
-
-    //TODO: refactor
-    @Override
-    public void onCreateResources() {
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        FontFactory.setAssetBasePath("font/");
-        SoundFactory.setAssetBasePath("sfx/");
-
-        /*
-        GRAPHICS
-         */
-        //TODO: shouldn't this be also static ???
-        gameField.loadResources(this.getTextureManager());
-        this.mBitmapTextureAtlas = new BuildableBitmapTextureAtlas(mEngine.getTextureManager(), 512, 512, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
-        this.mBitmapTextureAtlas.clearTextureAtlasSources();
-        Character.loadResources(this.mBitmapTextureAtlas, this);
-        Block.loadResources(this.mBitmapTextureAtlas, this);
-        GamePause.loadResources(this.mBitmapTextureAtlas, this);
-        try {
-            this.mBitmapTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-            this.mBitmapTextureAtlas.load();
-        } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            e.printStackTrace();
-        }
-
-        /*
-        FONTS
-         */
-        this.mFontTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 256, prefs.getBoolean(SETTINGS_GRAPHICS, true) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
-        this.getTextureManager().loadTexture(mFontTexture);
-        this.mScoreFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
-        this.mCountDownFont = FontFactory.createFromAsset(this.getFontManager(), this.mFontTexture, this.getAssets(), "Indie_Flower.ttf", 100, true, Color.WHITE.getABGRPackedInt());
-        this.getFontManager().loadFont(this.mScoreFont);
-        this.getFontManager().loadFont(this.mCountDownFont);
-
-        /*
-        SOUNDS
-         */
-        rebuildSounds = new ArrayList<Sound>();
-        try {
-            rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild1.ogg"));
-            rebuildSounds.add(SoundFactory.createSoundFromAsset(getSoundManager(), this, "rebuild2.ogg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void playRebuildSound() {

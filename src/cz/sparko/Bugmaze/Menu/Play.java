@@ -1,17 +1,19 @@
 package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.MenuActivity;
+import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
 
 import java.util.ArrayList;
 
 public class Play extends Menu {
-    public Play(MenuActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
-        super(menuActivity, mBitmapTextureAtlas);
+    public Play(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
+        super(menuActivity, mBitmapTextureAtlas, camera);
     }
 
     @Override
