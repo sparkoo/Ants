@@ -1,4 +1,4 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Helper;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,17 +1,17 @@
 package cz.sparko.Bugmaze.Block;
 
-import cz.sparko.Bugmaze.*;
 import cz.sparko.Bugmaze.Character;
+import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Helper.Direction;
+import cz.sparko.Bugmaze.Manager.GameManager;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import java.util.ArrayList;
-
 public class BlockLine extends Block{
-    public BlockLine(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
-        super(coordinate ,pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, walkThroughs);
+    public BlockLine(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, GameManager gameManager, int walkThroughs) {
+        super(coordinate ,pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, gameManager, walkThroughs);
     }
 
     @Override

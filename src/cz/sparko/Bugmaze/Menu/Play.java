@@ -1,19 +1,15 @@
 package cz.sparko.Bugmaze.Menu;
 
-import cz.sparko.Bugmaze.MenuActivity;
-import org.andengine.engine.camera.Camera;
+import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.Resource.MenuTextureResource;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
-
-import java.util.ArrayList;
 
 public class Play extends Menu {
-    public Play(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
-        super(menuActivity, mBitmapTextureAtlas, camera);
+    public Play(Game game) {
+        super(game);
     }
 
     @Override
@@ -27,7 +23,7 @@ public class Play extends Menu {
                 goBack();
                 break;
             case 0:
-                menuActivity.startGame();
+                GameManager.getInstance().startGame();
                 break;
             case 1:
                 //TODO: show some message comming soon ...
@@ -37,17 +33,15 @@ public class Play extends Menu {
     }
 
     @Override
-    protected void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
-        super.loadResources(mBitmapTextureAtlas);
+    protected void loadResources() {
+        super.loadResources();
 
-        menuItemsTextures = new ArrayList<ITiledTextureRegion>(2);
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "playEndlessMaze.png", 1, 2));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "playAdventure.png", 1, 1));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ENDLESS_MAZE));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ADVENTURE));
 
-        menuIconsTextures = new ArrayList<ITiledTextureRegion>(2);
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "playIcon.png", 1, 2));
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "playNotIcon.png", 1, 1));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ICON_NOT));
 
-        headerTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBitmapTextureAtlas, menuActivity.getAssets(), "playHeader.png", false);
+        headerTexture = textureResource.getResource(MenuTextureResource.PLAY_HEADER);
     }
 }

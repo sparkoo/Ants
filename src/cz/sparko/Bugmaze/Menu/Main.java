@@ -1,22 +1,15 @@
 package cz.sparko.Bugmaze.Menu;
 
-import cz.sparko.Bugmaze.MenuActivity;
-import org.andengine.engine.camera.Camera;
+import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Resource.MenuTextureResource;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
-
-import java.util.ArrayList;
 
 public class Main extends Menu {
-    public Main(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
-        super(menuActivity, mBitmapTextureAtlas, camera);
+    public Main(Game game) {
+        super(game);
     }
-
-
 
     @Override
     protected void createCustomItems() {
@@ -29,7 +22,7 @@ public class Main extends Menu {
                 goToMenu(this, menuList.get(MenuEnum.PLAY.getValue()));
                 break;
             case 1:
-                menuActivity.handleLeaderboard();
+                game.goToLeaderboard();
                 break;
             case 2:
                 goToMenu(this, menuList.get(MenuEnum.OPTIONS.getValue()));
@@ -39,21 +32,17 @@ public class Main extends Menu {
     }
 
     @Override
-    protected void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
-        super.loadResources(mBitmapTextureAtlas);
+    protected void loadResources() {
+        super.loadResources();
 
-        menuItemsTextures = new ArrayList<ITiledTextureRegion>(3);
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "mainPlay.png", 1, 2));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "mainLeaderboard.png", 1, 2));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "mainOptions.png", 1, 2));
-        //menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "mainHelp.png", 1, 2));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.MAIN_PLAY));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.MAIN_LEADERBOARD));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.MAIN_OPTIONS));
 
-        menuIconsTextures = new ArrayList<ITiledTextureRegion>(3);
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "bugIcon.png", 1, 1));
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "leaderboardIcon.png", 1, 1));
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsIcon.png", 1, 1));
-        //menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "helpIcon.png", 1, 1));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.BUG_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.LEADERBOARD_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ICON));
 
-        headerTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBitmapTextureAtlas, menuActivity.getAssets(), "mainHeader.png", false);
+        headerTexture = textureResource.getResource(MenuTextureResource.MAIN_HEADER);
     }
 }

@@ -1,11 +1,15 @@
 package cz.sparko.Bugmaze.Resource;
 
-import cz.sparko.Bugmaze.Game;
+import cz.sparko.Bugmaze.Activity.Game;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 
 public class GamefieldTextureResource extends TextureResource {
     public static final int BACKGROUND = 0;
+    public static final int BLOCK_CORNER = 1;
+    public static final int BLOCK_CROSS = 2;
+    public static final int BLOCK_LINE = 3;
+    public static final int BLOCK_START = 4;
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -14,5 +18,10 @@ public class GamefieldTextureResource extends TextureResource {
     @Override
     protected void loadResources() {
         textures.add(BACKGROUND, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "playgroundBack.png"));
+
+        textures.add(BLOCK_CORNER, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "corner.png", 4, 2));
+        textures.add(BLOCK_CROSS, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "cross.png", 1, 2));
+        textures.add(BLOCK_LINE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "line.png", 2, 2));
+        textures.add(BLOCK_START, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "start.png", 4, 2));
     }
 }

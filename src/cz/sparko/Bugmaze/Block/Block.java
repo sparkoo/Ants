@@ -1,11 +1,10 @@
 package cz.sparko.Bugmaze.Block;
 
 import cz.sparko.Bugmaze.Character;
-import cz.sparko.Bugmaze.Coordinate;
-import cz.sparko.Bugmaze.Direction;
-import cz.sparko.Bugmaze.GameActivity;
-import cz.sparko.Bugmaze.Resource.BlockTextureResource;
-import cz.sparko.Bugmaze.Resource.ResourceHandler;
+import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Helper.Direction;
+import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
@@ -13,11 +12,8 @@ import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.modifier.IModifier;
 
 import java.util.ArrayList;
@@ -37,8 +33,8 @@ public abstract class Block extends AnimatedSprite {
     private boolean active = false;
     private boolean deleted = false;
 
-    public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
-        super(pX, pY, pTiledTextureRegion, pVertexBufferObjectManager);
+    public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager vertexBufferObjectManager, GameManager gameManager, int walkThroughs) {
+        super(pX, pY, pTiledTextureRegion, vertexBufferObjectManager);
         sourceWays = new ArrayList<Direction>();
         outWays = new ArrayList<Direction>();
         this.coordinate = coordinate;
@@ -65,7 +61,7 @@ public abstract class Block extends AnimatedSprite {
             this.deleted = true;
             this.active = false;
 
-            this.registerEntityModifier(new DelayModifier(GameActivity.getCharacter().getSpeed(), new IEntityModifier.IEntityModifierListener() {
+            this.registerEntityModifier(new DelayModifier(GameManager.getInstance().getCharacter().getSpeed(), new IEntityModifier.IEntityModifierListener() {
                 @Override
                 public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
                 }
@@ -84,16 +80,16 @@ public abstract class Block extends AnimatedSprite {
 
     public Coordinate getCoordinate() { return coordinate; }
 
-    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
+    public static Block createRandomBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource, GameManager gameManager) {
         Random rnd = new Random();
         Block nBlock;
         float pickBlock = rnd.nextFloat();
         if (pickBlock < 0.7)
-            nBlock = new BlockCorner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.CORNER), vertexBufferObjectManager, 1);
+            nBlock = new BlockCorner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CORNER), vertexBufferObjectManager, gameManager, 1);
         else if (pickBlock < 0.9)
-            nBlock = new BlockLine(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.LINE), vertexBufferObjectManager, 1);
+            nBlock = new BlockLine(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_LINE), vertexBufferObjectManager, gameManager, 1);
         else
-            nBlock = new BlockCross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.CROSS), vertexBufferObjectManager, 2);
+            nBlock = new BlockCross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CROSS), vertexBufferObjectManager, gameManager, 2);
 
         for (int i = 0; i < rnd.nextInt(4); i++)
             nBlock.rotate();
@@ -101,8 +97,8 @@ public abstract class Block extends AnimatedSprite {
         return nBlock;
     }
 
-    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
-        Block nBlock = new BlockStart(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(BlockTextureResource.START), vertexBufferObjectManager);
+    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource, GameManager gameManager) {
+        Block nBlock = new BlockStart(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_START), vertexBufferObjectManager,  gameManager);
         for (int i = 0; i < new Random().nextInt(4); i++) {
             nBlock.rotate();
         }
@@ -111,7 +107,7 @@ public abstract class Block extends AnimatedSprite {
 
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(GameActivity.getCharacter())) {
+        if (!deleted && pSceneTouchEvent.isActionDown() && !collidesWith(GameManager.getInstance().getCharacter())) {
             this.rotate();
             return true;
         }
@@ -133,7 +129,7 @@ public abstract class Block extends AnimatedSprite {
         int directionX = fromCoordinate.getX() - coordinate.getX();
         int directionY = fromCoordinate.getY() - coordinate.getY();
 
-        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) GameActivity.getGameField().needRefreshField(); //refresh field on walk through wall
+        if (Math.abs(directionX) > 1 || Math.abs(directionY) > 1) GameManager.getInstance().needRefreshField(); //refresh field on walk through wall
 
         if (directionX < -1) directionX = 1;
         if (directionX > 1) directionX = -1;

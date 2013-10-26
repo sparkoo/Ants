@@ -1,18 +1,19 @@
 package cz.sparko.Bugmaze;
 
-import android.content.Intent;
+import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Manager.GameManager;
 import org.andengine.engine.handler.IUpdateHandler;
 
 public class GameUpdateHandler implements IUpdateHandler {
     public static final int START_DELAY_SECONDS = 3;
 
-    private GameActivity gameActivity;
+    private GameManager gameManager;
     private GameField gameField;
     private Character character;
     private boolean running = false;
     float timeCounter = 0;
-    public GameUpdateHandler(GameActivity gameActivity, GameField gameField, Character character) {
-        this.gameActivity = gameActivity;
+    public GameUpdateHandler(GameField gameField, Character character) {
+        this.gameManager = GameManager.getInstance();
         this.gameField = gameField;
         this.character = character;
     }
@@ -21,8 +22,8 @@ public class GameUpdateHandler implements IUpdateHandler {
     public void onUpdate(float pSecondsElapsed) {
         if (gameField.isNeedRefreshField()) {
             gameField.refreshField();
-            gameActivity.playRebuildSound();
-            gameActivity.countScore();
+            gameManager.playRebuildSound();
+            gameManager.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {
             timeCounter = 0;
@@ -38,7 +39,7 @@ public class GameUpdateHandler implements IUpdateHandler {
                 gameField.setActiveBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()));
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
-                gameActivity.increaseScore();
+                gameManager.increaseScore();
             } else {
                 gameOver();
             }
@@ -54,9 +55,8 @@ public class GameUpdateHandler implements IUpdateHandler {
     }
 
     private void gameOver() {
-        gameActivity.saveScore();
-        gameActivity.startActivity(new Intent(gameActivity, MenuActivity.class));
-        gameActivity.finish();
+        gameManager.saveScore();
+        gameManager.gameOver();
     }
 
     @Override

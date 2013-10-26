@@ -1,4 +1,4 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Helper;
 
 public class Coordinate {
     private final int x;

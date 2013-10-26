@@ -1,42 +1,31 @@
 package cz.sparko.Bugmaze.Menu;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import cz.sparko.Bugmaze.MenuActivity;
-import org.andengine.engine.camera.Camera;
+import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Manager.MenuManager;
+import cz.sparko.Bugmaze.Resource.MenuTextureResource;
+import cz.sparko.Bugmaze.Helper.Settings;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
 
 public class Options extends Menu {
-    //TODO: create options enum
-    public static final String SETTINGS_MUSIC = "music";
-    public static final String SETTINGS_EFFECTS = "effects";
-    public static final String SETTINGS_GRAPHICS = "graphics";
+    private ArrayList<AnimatedSpriteMenuItem> menuCustom;
+    private ArrayList<ITiledTextureRegion> menuCustomTextures;
 
-    private final String SHARED_PREFS_KEY = "settings";
-    private SharedPreferences prefs;
-
-    ArrayList<AnimatedSpriteMenuItem> menuCustom;
-    ArrayList<ITiledTextureRegion> menuCustomTextures;
-
-    public Options(BaseGameActivity menuActivity, BuildableBitmapTextureAtlas mBitmapTextureAtlas, Camera camera) {
-        super(menuActivity, mBitmapTextureAtlas, camera);
+    public Options(Game game) {
+        super(game);
     }
 
     @Override
     protected void createCustomItems() {
         menuCustom = new ArrayList<AnimatedSpriteMenuItem>(3);
-        menuCustom.add(new AnimatedSpriteMenuItem(0, menuCustomTextures.get(0), menuActivity.getVertexBufferObjectManager()));
-        menuCustom.add(new AnimatedSpriteMenuItem(1, menuCustomTextures.get(0), menuActivity.getVertexBufferObjectManager()));
-        menuCustom.add(new AnimatedSpriteMenuItem(2, menuCustomTextures.get(1), menuActivity.getVertexBufferObjectManager()));
+        menuCustom.add(new AnimatedSpriteMenuItem(0, menuCustomTextures.get(0), game.getVertexBufferObjectManager()));
+        menuCustom.add(new AnimatedSpriteMenuItem(1, menuCustomTextures.get(0), game.getVertexBufferObjectManager()));
+        menuCustom.add(new AnimatedSpriteMenuItem(2, menuCustomTextures.get(1), game.getVertexBufferObjectManager()));
         int yPosition = 150;
         for (IMenuItem menuItem : menuCustom) {
             menuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -54,16 +43,14 @@ public class Options extends Menu {
                 goBack();
                 break;
             case 0:
-                if (toogleSettings(SETTINGS_MUSIC))
-                    menuActivity.playMusic();
-                else
-                    menuActivity.pauseMusic();
+                toogleSettings(Settings.MUSIC);
+                MenuManager.getInstance().playOrPauseMusicBySettings();
                 break;
             case 1:
-                toogleSettings(SETTINGS_EFFECTS);
+                toogleSettings(Settings.EFFECTS);
                 break;
             case 2:
-                toogleSettings(SETTINGS_GRAPHICS);
+                toogleSettings(Settings.GRAPHICS);
                 break;
         }
         refresh();
@@ -71,7 +58,7 @@ public class Options extends Menu {
     }
 
     private void refresh() {
-        if (getSettings(SETTINGS_MUSIC)) {
+        if (game.getSettings(Settings.MUSIC)) {
             menuCustom.get(0).setCurrentTileIndex(0);
             menuIcons.get(0).setCurrentTileIndex(0);
         } else {
@@ -79,7 +66,7 @@ public class Options extends Menu {
             menuIcons.get(0).setCurrentTileIndex(1);
         }
 
-        if (getSettings(SETTINGS_EFFECTS)) {
+        if (game.getSettings(Settings.EFFECTS)) {
             menuCustom.get(1).setCurrentTileIndex(0);
             menuIcons.get(1).setCurrentTileIndex(0);
         } else {
@@ -87,7 +74,7 @@ public class Options extends Menu {
             menuIcons.get(1).setCurrentTileIndex(1);
         }
 
-        if (getSettings(SETTINGS_GRAPHICS)) {
+        if (game.getSettings(Settings.GRAPHICS)) {
             menuCustom.get(2).setCurrentTileIndex(0);
             menuIcons.get(2).setCurrentTileIndex(0);
         } else {
@@ -96,44 +83,29 @@ public class Options extends Menu {
         }
     }
 
-    private Boolean toogleSettings(String key) {
-        if (prefs == null)
-            prefs = menuActivity.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        Boolean newValue;
-        if (prefs.getBoolean(key, true))
-            newValue = false;
-        else
-            newValue = true;
-        editor.putBoolean(key, newValue);
-        editor.commit();
+    private Boolean toogleSettings(Settings key) {
+        boolean newValue = !game.getSettings(key);
+        game.setSettings(key, newValue);
         return newValue;
     }
 
-    private Boolean getSettings(String key) {
-        if (prefs == null)
-            prefs = menuActivity.getSharedPreferences(SHARED_PREFS_KEY, Context.MODE_PRIVATE);
-        return prefs.getBoolean(key, true);
-    }
-
     @Override
-    protected void loadResources(BuildableBitmapTextureAtlas mBitmapTextureAtlas) {
-        super.loadResources(mBitmapTextureAtlas);
+    protected void loadResources() {
+        super.loadResources();
 
-        menuItemsTextures = new ArrayList<ITiledTextureRegion>(3);
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusic.png", 1, 2));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsEffects.png", 1, 2));
-        menuItemsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsGraphics.png", 1, 2));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_EFFECTS));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_GRAPHICS));
 
-        menuIconsTextures = new ArrayList<ITiledTextureRegion>(3);
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusicIcon.png", 1, 2));
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsMusicIcon.png", 1, 2));
-        menuIconsTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsGraphicsIcon.png", 1, 2));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_GRAPHICS_ICON));
 
-        menuCustomTextures = new ArrayList<ITiledTextureRegion>(2);
-        menuCustomTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsOnOff.png", 1, 2));
-        menuCustomTextures.add(BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(mBitmapTextureAtlas, menuActivity, "optionsHighLow.png", 1, 2));
+        menuCustomTextures = new ArrayList<ITiledTextureRegion>();
+        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
+        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
+        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_HIGH_LOW));
 
-        headerTexture = BitmapTextureAtlasTextureRegionFactory.createFromAsset(mBitmapTextureAtlas, menuActivity.getAssets(), "optionsHeader.png", false);
+        headerTexture = textureResource.getResource(MenuTextureResource.MAIN_HEADER);
     }
 }

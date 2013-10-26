@@ -43,7 +43,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 public abstract class GBaseGameActivityAND extends SimpleBaseGameActivity implements
         GameHelper.GameHelperListener {
 
-    // The game helper object. This class is mainly a wrapper around this object.
+    // The gameManager helper object. This class is mainly a wrapper around this object.
     protected GameHelper mHelper;
 
     // We expose these constants here because we don't want users of this class

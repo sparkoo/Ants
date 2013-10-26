@@ -1,6 +1,6 @@
 package cz.sparko.Bugmaze.Resource;
 
-import cz.sparko.Bugmaze.Game;
+import cz.sparko.Bugmaze.Activity.Game;
 import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
