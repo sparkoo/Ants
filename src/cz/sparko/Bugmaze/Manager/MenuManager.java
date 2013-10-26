@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze.Manager;
 
+import android.view.KeyEvent;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Menu.Main;
 import cz.sparko.Bugmaze.Menu.Menu;
@@ -73,8 +74,12 @@ public class MenuManager extends Manager {
     @Override
     public void onSwitchOn() {
         game.setMusic(ResourceHandler.getInstance().getMenuMusic());
-        game.playMusic();
         playOrPauseMusicBySettings();
+    }
+
+    @Override
+    public void onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) currentMenu.goBack();
     }
 
     public void playOrPauseMusicBySettings() {

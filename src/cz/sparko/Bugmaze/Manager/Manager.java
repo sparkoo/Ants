@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze.Manager;
 
+import android.view.KeyEvent;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.scene.Scene;
@@ -21,4 +22,5 @@ public abstract class Manager {
     public abstract void onResume();
     public abstract void onSwitchOff();
     public abstract void onSwitchOn();
+    public abstract void onKeyDown(int keyCode, KeyEvent event);
 }

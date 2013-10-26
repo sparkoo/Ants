@@ -38,8 +38,6 @@ public class Game extends GBaseGameActivityAND {
 
     private Manager activeManager;
 
-    private ResourceHandler resourceHandler;
-
     private Music music;
 
     public Scene getScene() { return scene; }
@@ -73,11 +71,12 @@ public class Game extends GBaseGameActivityAND {
 
     @Override
     public void onCreateResources() {
-        resourceHandler.getInstance().loadResource(this);
+        ResourceHandler.getInstance().loadResource(this);
     }
 
     @Override
     protected void onResume() {
+        System.out.println("onResume");
         super.onResume();
         if (activeManager != null)
             activeManager.onResume();
@@ -90,6 +89,7 @@ public class Game extends GBaseGameActivityAND {
 
     @Override
     public synchronized void onResumeGame() {
+        System.out.println("onResumegame");
         if (this.mEngine != null)
             super.onResumeGame();
 
@@ -97,6 +97,7 @@ public class Game extends GBaseGameActivityAND {
 
     @Override
     protected void onPause() {
+        System.out.println("onPause");
         scoreModel.close();
         if (activeManager != null)
             activeManager.onPause();
@@ -157,17 +158,19 @@ public class Game extends GBaseGameActivityAND {
     }
 
     public void playMusic() {
-        music.play();
+        if (!music.isPlaying())
+            music.play();
     }
 
     public void pauseMusic() {
-        music.pause();
+        if (music.isPlaying())
+            music.pause();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        //if (keyCode == KeyEvent.KEYCODE_BACK) currentMenu.goBack();
+        activeManager.onKeyDown(keyCode, event);
         return false;
     }
 

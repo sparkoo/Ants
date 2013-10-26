@@ -56,7 +56,7 @@ public class GameUpdateHandler implements IUpdateHandler {
 
     private void gameOver() {
         gameManager.saveScore();
-        gameManager.gameOver();
+        gameManager.showResultScreen();
     }
 
     @Override

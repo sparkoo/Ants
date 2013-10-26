@@ -29,10 +29,8 @@ public class ResourceHandler {
     public final static int CHARACTER = 1;
     public final static int MENU = 2;
 
-    private BitmapTextureAtlas mBackgroundTextureAtlas;
     private ArrayList<TextureResource> textureResourcesList;
 
-    private BitmapTextureAtlas mFontTextureAtlas;
     private Font fontIndieFlower100;
     private Font fontIndieFlower36;
     private Font fontIndieFlower40;

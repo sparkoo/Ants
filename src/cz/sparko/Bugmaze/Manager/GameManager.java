@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze.Manager;
 
+import android.view.KeyEvent;
 import cz.sparko.Bugmaze.*;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
@@ -22,6 +23,7 @@ public class GameManager extends Manager {
     private static GameManager instance;
 
     private GamePause pauseScene;
+    private boolean paused = false;
 
     private static cz.sparko.Bugmaze.Character character = null;
     private static GameField gameField;
@@ -58,11 +60,25 @@ public class GameManager extends Manager {
         MenuManager.getInstance().goToMenu(MenuEnum.MAIN);
     }
 
+    public void showResultScreen() {
+        scene.setChildScene(new GameResults(game.getCamera(), scene, game.getVertexBufferObjectManager(), score));
+    }
+
+    public void pauseGame() {
+        paused = true;
+        scene.setChildScene(pauseScene, false, true, true);
+    }
+
+    public void unpauseGame() {
+        paused = false;
+        scene.clearChildScene();
+    }
+
     @Override
     protected void setScene() {
         scene = new Scene();
 
-        //pauseScene = new GamePause(game.getCamera(), scene, game.getVertexBufferObjectManager());
+        pauseScene = new GamePause(game.getCamera(), scene, game.getVertexBufferObjectManager());
 
         gameField = new GameField(game, scene);
         gameField.createField();
@@ -107,6 +123,7 @@ public class GameManager extends Manager {
 
     @Override
     public void onPause() {
+        pauseGame();
     }
 
     @Override
@@ -120,6 +137,12 @@ public class GameManager extends Manager {
     @Override
     public void onSwitchOn() {
         playSoundEffects = game.getSettings(Settings.EFFECTS);
+    }
+
+    @Override
+    public void onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && paused)
+            unpauseGame();
     }
 
     //TODO: text handle

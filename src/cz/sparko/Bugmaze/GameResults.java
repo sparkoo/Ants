@@ -15,27 +15,24 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
 
-public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickListener {
-    private int positionX;
-    private int positionY;
-
+public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClickListener {
     ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
 
-    public GamePause(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager) {
+    public GameResults(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager, int score) {
         super(camera);
         TextureResource textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
-        positionX = (int)(camera.getWidth() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getWidth() / 2);
-        positionY = (int)(camera.getHeight() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getHeight() / 2);
 
-        final Sprite pausedSprite = new Sprite(positionX, positionY, textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND), vertexBufferObjectManager);
+        final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), vertexBufferObjectManager);
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
-        menuItems.add(new TextMenuItem(1, ResourceHandler.getInstance().getFontIndieFlower36(), "Back to game", vertexBufferObjectManager));
-        menuItems.add(new TextMenuItem(2, ResourceHandler.getInstance().getFontIndieFlower36(), "Exit to menu", vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(0, ResourceHandler.getInstance().getFontIndieFlower36(), "Your score: " + score, vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(1, ResourceHandler.getInstance().getFontIndieFlower36(), "Play again", vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(2, ResourceHandler.getInstance().getFontIndieFlower36(), "Back to menu", vertexBufferObjectManager));
 
-        int posX = positionX;
-        int posY = positionY;
+        int posX = 100;
+        int posY = 200;
+
         for (TextMenuItem menuItem : menuItems) {
             menuItem.setPosition(posX, posY);
             posY += 50;
@@ -60,10 +57,10 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
             case 1:
-                GameManager.getInstance().unpauseGame();
+                GameManager.getInstance().startGame();
                 break;
             case 2:
-                GameManager.getInstance().showResultScreen();
+                GameManager.getInstance().gameOver();
                 break;
         }
         return false;
