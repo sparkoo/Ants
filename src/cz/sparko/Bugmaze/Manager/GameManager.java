@@ -24,6 +24,7 @@ public class GameManager extends Manager {
 
     private GamePause pauseScene;
     private boolean paused = false;
+    private boolean running = false;
 
     private static cz.sparko.Bugmaze.Character character = null;
     private static GameField gameField;
@@ -50,8 +51,14 @@ public class GameManager extends Manager {
     }
 
     public Character getCharacter() { return character; }
+    public boolean getRunning() { return running; }
+    public void stopRunning() { running = false; }
+    public void startRunning() { running = true; }
 
     public void startGame() {
+        score = 0;
+        tmpScore = 0;
+        startRunning();
         game.switchManager(this);
     }
 

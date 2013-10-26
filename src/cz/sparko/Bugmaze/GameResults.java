@@ -22,7 +22,7 @@ public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClick
         super(camera);
         TextureResource textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
 
-        final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), vertexBufferObjectManager);
+        final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.RESULTS_BACKGROUND), vertexBufferObjectManager);
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
@@ -30,8 +30,8 @@ public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClick
         menuItems.add(new TextMenuItem(1, ResourceHandler.getInstance().getFontIndieFlower36(), "Play again", vertexBufferObjectManager));
         menuItems.add(new TextMenuItem(2, ResourceHandler.getInstance().getFontIndieFlower36(), "Back to menu", vertexBufferObjectManager));
 
-        int posX = 100;
-        int posY = 200;
+        int posX = 0;
+        int posY = 0;
 
         for (TextMenuItem menuItem : menuItems) {
             menuItem.setPosition(posX, posY);

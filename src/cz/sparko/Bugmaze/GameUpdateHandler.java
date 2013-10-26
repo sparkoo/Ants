@@ -20,7 +20,10 @@ public class GameUpdateHandler implements IUpdateHandler {
 
     @Override
     public void onUpdate(float pSecondsElapsed) {
-        if (gameField.isNeedRefreshField()) {
+        if (!GameManager.getInstance().getRunning())
+            return;
+
+        if (gameField.isNeedRefreshField() && running) {
             gameField.refreshField();
             gameManager.playRebuildSound();
             gameManager.countScore();
@@ -55,6 +58,8 @@ public class GameUpdateHandler implements IUpdateHandler {
     }
 
     private void gameOver() {
+        running = false;
+        gameManager.stopRunning();
         gameManager.saveScore();
         gameManager.showResultScreen();
     }
