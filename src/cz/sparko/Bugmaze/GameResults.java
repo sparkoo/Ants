@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClickListener {
     ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
 
-    public GameResults(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager, int score) {
+    public GameResults(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager, long score) {
         super(camera);
         TextureResource textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
 

@@ -81,7 +81,7 @@ public class ResourceHandler {
     }
 
     private void loadFonts(Game game) {
-        this.fontTextureAtlas = new BitmapTextureAtlas(game.getTextureManager(), 256, 256, game.getSettings(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        this.fontTextureAtlas = new BitmapTextureAtlas(game.getTextureManager(), 256, 256, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         game.getTextureManager().loadTexture(fontTextureAtlas);
         fontIndieFlower36 = FontFactory.createFromAsset(game.getFontManager(), this.fontTextureAtlas, game.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
         fontIndieFlower40 = FontFactory.createFromAsset(game.getFontManager(), this.fontTextureAtlas, game.getAssets(), "Indie_Flower.ttf", 40, true, Color.WHITE.getABGRPackedInt());
@@ -90,7 +90,7 @@ public class ResourceHandler {
     }
 
     private void loadGraphics(Game game) {
-        textureAtlas = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 2048, 2048, game.getSettings(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlas = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 2048, 2048, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         textureAtlas.clearTextureAtlasSources();
 
         textureResourcesList.add(GAMEFIELD, new GamefieldTextureResource(textureAtlas, game));

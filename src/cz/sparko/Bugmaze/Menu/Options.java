@@ -25,7 +25,6 @@ public class Options extends Menu {
         menuCustom = new ArrayList<AnimatedSpriteMenuItem>(3);
         menuCustom.add(new AnimatedSpriteMenuItem(0, menuCustomTextures.get(0), game.getVertexBufferObjectManager()));
         menuCustom.add(new AnimatedSpriteMenuItem(1, menuCustomTextures.get(0), game.getVertexBufferObjectManager()));
-        menuCustom.add(new AnimatedSpriteMenuItem(2, menuCustomTextures.get(1), game.getVertexBufferObjectManager()));
         int yPosition = 150;
         for (IMenuItem menuItem : menuCustom) {
             menuItem.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
@@ -49,16 +48,13 @@ public class Options extends Menu {
             case 1:
                 toogleSettings(Settings.EFFECTS);
                 break;
-            case 2:
-                toogleSettings(Settings.GRAPHICS);
-                break;
         }
         refresh();
         return false;
     }
 
     private void refresh() {
-        if (game.getSettings(Settings.MUSIC)) {
+        if (game.getSettingsBoolean(Settings.MUSIC)) {
             menuCustom.get(0).setCurrentTileIndex(0);
             menuIcons.get(0).setCurrentTileIndex(0);
         } else {
@@ -66,26 +62,18 @@ public class Options extends Menu {
             menuIcons.get(0).setCurrentTileIndex(1);
         }
 
-        if (game.getSettings(Settings.EFFECTS)) {
+        if (game.getSettingsBoolean(Settings.EFFECTS)) {
             menuCustom.get(1).setCurrentTileIndex(0);
             menuIcons.get(1).setCurrentTileIndex(0);
         } else {
             menuCustom.get(1).setCurrentTileIndex(1);
             menuIcons.get(1).setCurrentTileIndex(1);
         }
-
-        if (game.getSettings(Settings.GRAPHICS)) {
-            menuCustom.get(2).setCurrentTileIndex(0);
-            menuIcons.get(2).setCurrentTileIndex(0);
-        } else {
-            menuCustom.get(2).setCurrentTileIndex(1);
-            menuIcons.get(2).setCurrentTileIndex(1);
-        }
     }
 
     private Boolean toogleSettings(Settings key) {
-        boolean newValue = !game.getSettings(key);
-        game.setSettings(key, newValue);
+        boolean newValue = !game.getSettingsBoolean(key);
+        game.setSettingsBoolean(key, newValue);
         return newValue;
     }
 
@@ -95,16 +83,13 @@ public class Options extends Menu {
 
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_EFFECTS));
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_GRAPHICS));
 
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_GRAPHICS_ICON));
 
         menuCustomTextures = new ArrayList<ITiledTextureRegion>();
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
-        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_HIGH_LOW));
 
         headerTexture = textureResource.getResource(MenuTextureResource.MAIN_HEADER);
     }

@@ -33,8 +33,8 @@ public class GameManager extends Manager {
 
     private Text mScoreText;
     private Text mCountDownText;
-    private int score = 0;
-    private int tmpScore = 0;
+    private long score = 0;
+    private long tmpScore = 0;
 
     public static GameManager createInstance(Game game) {
         if (instance == null)
@@ -143,7 +143,7 @@ public class GameManager extends Manager {
 
     @Override
     public void onSwitchOn() {
-        playSoundEffects = game.getSettings(Settings.EFFECTS);
+        playSoundEffects = game.getSettingsBoolean(Settings.EFFECTS);
     }
 
     @Override

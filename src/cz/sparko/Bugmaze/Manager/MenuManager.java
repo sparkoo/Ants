@@ -64,6 +64,7 @@ public class MenuManager extends Manager {
     @Override
     public void onResume() {
         playOrPauseMusicBySettings();
+        currentMenu.getMenuScene().setPosition(0, 0);
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MenuManager extends Manager {
     }
 
     public void playOrPauseMusicBySettings() {
-        if (game.getSettings(Settings.MUSIC))
+        if (game.getSettingsBoolean(Settings.MUSIC))
             game.playMusic();
         else
             game.pauseMusic();
