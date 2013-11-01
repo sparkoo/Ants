@@ -63,7 +63,7 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
                 GameManager.getInstance().unpauseGame();
                 break;
             case 2:
-                GameManager.getInstance().showResultScreen();
+                GameManager.getInstance().gameOver();
                 break;
         }
         return false;
