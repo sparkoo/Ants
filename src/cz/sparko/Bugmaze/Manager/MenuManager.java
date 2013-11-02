@@ -5,7 +5,7 @@ import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Menu.Main;
 import cz.sparko.Bugmaze.Menu.Menu;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
-import cz.sparko.Bugmaze.Resource.MenuTextureResource;
+import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
 import cz.sparko.Bugmaze.Helper.Settings;
@@ -32,7 +32,7 @@ public class MenuManager extends Manager {
 
     private MenuManager(Game game) {
         super(game);
-        textureResource = resourceHandler.getTextureResource(ResourceHandler.MENU);
+        textureResource = resourceHandler.getTextureResource(ResourceHandler.MENU_GENERAL);
         this.game = game;
         currentMenu = new Main(game);
     }
@@ -50,7 +50,7 @@ public class MenuManager extends Manager {
     @Override
     protected void setScene() {
         scene = new Scene();
-        scene.setBackground(new SpriteBackground(new Sprite(0, 0, textureResource.getResource(MenuTextureResource.BACKGROUND), game.getVertexBufferObjectManager())));
+        scene.setBackground(new SpriteBackground(new Sprite(0, 0, textureResource.getResource(MenuGeneralTextureResource.BACKGROUND), game.getVertexBufferObjectManager())));
 
         currentMenu = Menu.getMenu(MenuEnum.MAIN);
         scene.setChildScene(currentMenu.getMenuScene());
@@ -74,7 +74,7 @@ public class MenuManager extends Manager {
 
     @Override
     public void onSwitchOn() {
-        game.setMusic(ResourceHandler.getInstance().getMenuMusic());
+        game.setMusic(resourceHandler.getMenuMusic());
         playOrPauseMusicBySettings();
     }
 

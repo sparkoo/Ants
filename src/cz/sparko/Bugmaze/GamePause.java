@@ -1,6 +1,7 @@
 package cz.sparko.Bugmaze;
 
 import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -23,7 +24,7 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
 
     public GamePause(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager) {
         super(camera);
-        TextureResource textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
+        TextureResource textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
         positionX = (int)(camera.getWidth() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getWidth() / 2);
         positionY = (int)(camera.getHeight() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getHeight() / 2);
 
@@ -31,8 +32,8 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
-        menuItems.add(new TextMenuItem(1, ResourceHandler.getInstance().getFontIndieFlower36(), "Back to game", vertexBufferObjectManager));
-        menuItems.add(new TextMenuItem(2, ResourceHandler.getInstance().getFontIndieFlower36(), "Exit to menu", vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(1, Manager.getResourceHandler().getFontIndieFlower36(), "Back to game", vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(2, Manager.getResourceHandler().getFontIndieFlower36(), "Exit to menu", vertexBufferObjectManager));
 
         int posX = positionX;
         int posY = positionY;

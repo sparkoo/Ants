@@ -2,7 +2,7 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Manager.MenuManager;
-import cz.sparko.Bugmaze.Resource.MenuTextureResource;
+import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -36,7 +36,8 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
 
     protected static ArrayList<Menu> menuList;
 
-    protected TextureResource textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.MENU);
+    //TODO: do we need this ?
+    protected TextureResource textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
 
     public Menu(Game game) {
         this.game = game;
@@ -138,11 +139,11 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     protected void loadResources() {
-        textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.MENU);
+        textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
     }
 
     protected void setItems() {
-        backBtn = new TwoStateMenuButton(-1, (ITiledTextureRegion)textureResource.getResource(MenuTextureResource.BACK), game.getVertexBufferObjectManager());
+        backBtn = new TwoStateMenuButton(-1, (ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.BACK), game.getVertexBufferObjectManager());
 
         menuItems = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());
         menuIcons = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());

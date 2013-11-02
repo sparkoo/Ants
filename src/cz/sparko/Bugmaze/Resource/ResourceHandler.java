@@ -22,12 +22,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ResourceHandler {
-    private BuildableBitmapTextureAtlas textureAtlas;
+    private BuildableBitmapTextureAtlas textureAtlasMenu;
+    private BuildableBitmapTextureAtlas textureAtlasGameField;
+    private BuildableBitmapTextureAtlas textureAtlasMenuOptions;
     private BitmapTextureAtlas fontTextureAtlas;
 
     public final static int GAMEFIELD = 0;
     public final static int CHARACTER = 1;
-    public final static int MENU = 2;
+    public final static int MENU_GENERAL = 2;
+    public final static int MENU_OPTIONS = 3;
 
     private ArrayList<TextureResource> textureResourcesList;
 
@@ -39,16 +42,9 @@ public class ResourceHandler {
     private ArrayList<Sound> rebuildSounds;
     private Random randomGenerator = new Random();
 
-    private static ResourceHandler instance;
-
-    private ResourceHandler() {
+    public ResourceHandler(Game game) {
         textureResourcesList = new ArrayList<TextureResource>();
-    }
-    public static ResourceHandler getInstance() {
-        if (instance != null)
-            return instance;
-        instance = new ResourceHandler();
-        return instance;
+        loadResource(game);
     }
 
     public TextureResource getTextureResource(int textureResourceIndex) { return textureResourcesList.get(textureResourceIndex); }
@@ -90,18 +86,33 @@ public class ResourceHandler {
     }
 
     private void loadGraphics(Game game) {
-        textureAtlas = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 2048, 2048, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
-        textureAtlas.clearTextureAtlasSources();
+        textureAtlasGameField = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlasGameField.clearTextureAtlasSources();
 
-        textureResourcesList.add(GAMEFIELD, new GamefieldTextureResource(textureAtlas, game));
-        textureResourcesList.add(CHARACTER, new CharacterTextureResource(textureAtlas, game));
-        textureResourcesList.add(MENU, new MenuTextureResource(textureAtlas, game));
+        textureResourcesList.add(GAMEFIELD, new GamefieldTextureResource(textureAtlasGameField, game));
+        textureResourcesList.add(CHARACTER, new CharacterTextureResource(textureAtlasGameField, game));
+
+
+        textureAtlasMenu = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlasMenu.clearTextureAtlasSources();
+
+        textureResourcesList.add(MENU_GENERAL, new MenuGeneralTextureResource(textureAtlasMenu, game));
+
+        textureAtlasMenuOptions = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlasMenuOptions.clearTextureAtlasSources();
+        textureResourcesList.add(MENU_OPTIONS, new MenuOptionsTextureResource(textureAtlasMenuOptions, game));
+
 
         try {
-            textureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-            textureAtlas.load();
+            textureAtlasMenu.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            textureAtlasMenu.load();
+            textureAtlasGameField.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            textureAtlasGameField.load();
+            textureAtlasMenuOptions.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            textureAtlasMenuOptions.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
         }
     }
+
 }

@@ -2,8 +2,10 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Manager.MenuManager;
-import cz.sparko.Bugmaze.Resource.MenuTextureResource;
+import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Helper.Settings;
+import cz.sparko.Bugmaze.Resource.MenuOptionsTextureResource;
+import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -79,18 +81,18 @@ public class Options extends Menu {
 
     @Override
     protected void loadResources() {
-        super.loadResources();
+        textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_OPTIONS);
 
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC));
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_EFFECTS));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_MUSIC));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_EFFECTS));
 
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_MUSIC_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_MUSIC_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_MUSIC_ICON));
 
         menuCustomTextures = new ArrayList<ITiledTextureRegion>();
-        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
-        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.OPTIONS_ON_OFF));
+        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
+        menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
 
-        headerTexture = textureResource.getResource(MenuTextureResource.MAIN_HEADER);
+        headerTexture = textureResource.getResource(MenuGeneralTextureResource.MAIN_HEADER);
     }
 }

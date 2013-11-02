@@ -1,6 +1,7 @@
 package cz.sparko.Bugmaze;
 
 import cz.sparko.Bugmaze.Block.Block;
+import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.CharacterTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -24,7 +25,7 @@ public class Character extends AnimatedSprite {
     private float speed = baseSpeed;
 
     public Character(float pX, float pY, VertexBufferObjectManager pVertexBufferObjectManager) {
-        super(pX, pY, (ITiledTextureRegion)ResourceHandler.getInstance().getTextureResource(ResourceHandler.CHARACTER).getResource(CharacterTextureResource.LADYBUG), pVertexBufferObjectManager);
+        super(pX, pY, (ITiledTextureRegion)Manager.getResourceHandler().getTextureResource(ResourceHandler.CHARACTER).getResource(CharacterTextureResource.LADYBUG), pVertexBufferObjectManager);
         this.setZIndex(Z_INDEX);
     }
 

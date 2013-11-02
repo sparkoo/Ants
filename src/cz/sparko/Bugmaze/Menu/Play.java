@@ -2,7 +2,7 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Manager.GameManager;
-import cz.sparko.Bugmaze.Resource.MenuTextureResource;
+import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -36,12 +36,12 @@ public class Play extends Menu {
     protected void loadResources() {
         super.loadResources();
 
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ENDLESS_MAZE));
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ADVENTURE));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ENDLESS_MAZE));
+        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ADVENTURE));
 
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuTextureResource.PLAY_ICON_NOT));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ICON));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ICON_NOT));
 
-        headerTexture = textureResource.getResource(MenuTextureResource.PLAY_HEADER);
+        headerTexture = textureResource.getResource(MenuGeneralTextureResource.PLAY_HEADER);
     }
 }

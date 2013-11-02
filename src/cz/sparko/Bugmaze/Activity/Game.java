@@ -44,6 +44,8 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     private Scene scene;
     private Camera camera;
 
+    private ResourceHandler resourceHandler;
+
     private ScoreModel scoreModel;
 
     private SharedPreferences prefs;
@@ -56,6 +58,7 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     public Scene getScene() { return scene; }
     public Camera getCamera() { return camera; }
     public ScoreModel getScoreModel() { return scoreModel; }
+    public ResourceHandler getResourceHandler() { return resourceHandler; }
 
     public Game() {
         super(CLIENT_APPSTATE | CLIENT_GAMES);
@@ -63,6 +66,7 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.e("PRD", "onCreate");
         super.onCreate(savedInstanceState);
 
         scoreModel = new ScoreModel(this);
@@ -107,21 +111,22 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     }
 
     @Override
+    public void onGameCreated() {
+        Log.e("PRD", "onGameCreated");
+        super.onGameCreated();
+    }
+
+    @Override
     public void onCreateResources() {
-        ResourceHandler.getInstance().loadResource(this);
+        Log.e("PRD", "onCreateResources");
+        resourceHandler = new ResourceHandler(this);
+        Manager.setResourceHandler(resourceHandler);
     }
 
     @Override
     protected void onResume() {
         Log.e("PRD", "onResume");
         super.onResume();
-        if (activeManager != null)
-            activeManager.onResume();
-        try {
-            scoreModel.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -129,7 +134,18 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
         Log.e("PRD", "onResumeGame");
         if (this.mEngine != null)
             super.onResumeGame();
+        if (activeManager != null)
+            activeManager.onResume();
+        try {
+            scoreModel.open();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        /*if (!googleServicesConnected) {
+            beginUserInitiatedSignIn();
+        }*/
+        mEngine.start();
     }
 
     @Override
@@ -197,10 +213,10 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     }
 
     public void goToLeaderboard() {
-        if (!googleServicesConnected) {
-            beginUserInitiatedSignIn();
-        } else {
+        if (googleServicesConnected) {
             startActivityForResult(getGamesClient().getLeaderboardIntent(getString(R.string.leaderboard_id)), 1337);
+        } else {
+            beginUserInitiatedSignIn();
         }
     }
 
@@ -261,7 +277,8 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
-        Log.e("PRD", "onConnectionFailed: " + statusCode);
+        Log.e("PRD", "onStateLoaded: " + statusCode);
+
         if (statusCode == AppStateClient.STATUS_OK) {
             try {
                 MenuManager.setGameData(getSyncedGameData(GameData.getGameDataFromByteStream(data)));

@@ -4,6 +4,7 @@ import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -29,7 +30,7 @@ public class GameField {
     private boolean refreshField = false;
 
     public GameField(Game game, Scene scene) {
-        textureResource = ResourceHandler.getInstance().getTextureResource(ResourceHandler.GAMEFIELD);
+        textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
         this.game = game;
         this.scene = scene;
     }

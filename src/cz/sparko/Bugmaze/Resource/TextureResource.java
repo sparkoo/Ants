@@ -7,6 +7,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import java.util.ArrayList;
 
 public abstract class TextureResource {
+    //TODO: change to hashmap/set? ...
     protected ArrayList<ITextureRegion> textures;
     protected BuildableBitmapTextureAtlas textureAtlas;
     protected Game game;
