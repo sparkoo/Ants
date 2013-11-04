@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import com.google.android.gms.appstate.OnStateDeletedListener;
@@ -34,6 +35,7 @@ import com.google.android.gms.appstate.AppStateClient;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Collections;
 
 public class Game extends GBaseGameActivityAND implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, DialogInterface.OnCancelListener, OnStateLoadedListener, OnStateDeletedListener {
@@ -66,11 +68,13 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.e("PRD", "onCreate");
         super.onCreate(savedInstanceState);
 
         scoreModel = new ScoreModel(this);
         prefs = getSharedPreferences(getString(R.string.shared_preferences_settings_key), Context.MODE_PRIVATE);
+
+        MenuManager.setGameData(GameData.getGameDataFromSharedPreferences(this));
+        MenuManager.getGameData().saveGameDataToSharedPreferences(this);
 
         try {
             scoreModel.open();
@@ -93,6 +97,9 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     public int getGameDataInt(GameDataEnum key) {
         return prefs.getInt(key.toString(), 0);
     }
+    public long getGameDataTimestamp() {
+        return prefs.getLong(GameDataEnum.TIMESTAMP.toString(), Calendar.getInstance().getTimeInMillis());
+    }
     public void setGameData(GameDataEnum key, int value) {
         if (editor == null)
             editor = prefs.edit();
@@ -112,26 +119,22 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onGameCreated() {
-        Log.e("PRD", "onGameCreated");
         super.onGameCreated();
     }
 
     @Override
     public void onCreateResources() {
-        Log.e("PRD", "onCreateResources");
         resourceHandler = new ResourceHandler(this);
         Manager.setResourceHandler(resourceHandler);
     }
 
     @Override
     protected void onResume() {
-        Log.e("PRD", "onResume");
         super.onResume();
     }
 
     @Override
     public synchronized void onResumeGame() {
-        Log.e("PRD", "onResumeGame");
         if (this.mEngine != null)
             super.onResumeGame();
         if (activeManager != null)
@@ -142,15 +145,11 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
             e.printStackTrace();
         }
 
-        /*if (!googleServicesConnected) {
-            beginUserInitiatedSignIn();
-        }*/
         mEngine.start();
     }
 
     @Override
     protected void onPause() {
-        Log.e("PRD", "onPause");
         scoreModel.close();
         if (activeManager != null)
             activeManager.onPause();
@@ -164,9 +163,9 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onSignInSucceeded() {
-        Log.e("PRD", "onSignInSucceeded");
         googleServicesConnected = true;
         syncScoreWithGoogle();
+
         //getAppStateClient().deleteState(this, getInteger(R.integer.cloud_game_data_key));
 
         getAppStateClient().loadState(this, getInteger(R.integer.cloud_game_data_key));
@@ -250,17 +249,14 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.e("PRD", "onConnected");
     }
 
     @Override
     public void onDisconnected() {
-        Log.e("PRD", "onDisconnected");
     }
 
     @Override
     public void onCancel(DialogInterface dialogInterface) {
-        Log.e("PRD", "onCancel");
     }
 
     @Override
@@ -277,21 +273,20 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
-        Log.e("PRD", "onStateLoaded: " + statusCode);
-
         if (statusCode == AppStateClient.STATUS_OK) {
             try {
                 MenuManager.setGameData(getSyncedGameData(GameData.getGameDataFromByteStream(data)));
+                Log.e("GAMEDATA", MenuManager.getGameData().toString());
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.e("GAMEDATA", e.getMessage());
             } catch (ClassNotFoundException e) {
+                Log.e("GAMEDATA", e.getMessage());
                 e.printStackTrace();
             }
         } else {
-            MenuManager.setGameData(GameData.getGameDataFromSharedPreferences(this));
             try {
                 getAppStateClient().updateState(getInteger(R.integer.cloud_game_data_key), MenuManager.getGameData().getByteStream());
-                Log.e("PRD", "onStateConflict: " + stateKey);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -300,7 +295,6 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateConflict(int stateKey, String ver,  byte[] localData, byte[] serverData) {
-        Log.e("PRD", "onStateConflict: " + stateKey);
     }
 
     public int getInteger(int resId) {
@@ -309,6 +303,5 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateDeleted(int i, int i2) {
-        Log.e("PRD", "onStateDeleted");
     }
 }

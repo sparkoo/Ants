@@ -19,7 +19,6 @@ public abstract class Manager {
 
     public static void setGameData(GameData gameData) {
         Manager.gameData = gameData;
-
     }
     public static GameData getGameData() { return Manager.gameData; }
     public static ResourceHandler getResourceHandler() { return resourceHandler; }

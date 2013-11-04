@@ -1,6 +1,7 @@
 package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Manager.MenuManager;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Helper.Settings;
@@ -81,7 +82,7 @@ public class Options extends Menu {
 
     @Override
     protected void loadResources() {
-        textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_OPTIONS);
+        textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.MENU_OPTIONS);
 
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_MUSIC));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_EFFECTS));
@@ -93,6 +94,6 @@ public class Options extends Menu {
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
 
-        headerTexture = textureResource.getResource(MenuGeneralTextureResource.MAIN_HEADER);
+        headerTexture = Manager.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL).getResource(MenuGeneralTextureResource.MAIN_HEADER);
     }
 }

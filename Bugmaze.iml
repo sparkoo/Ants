@@ -26,10 +26,11 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="google-play-services_lib1" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../adt-bundle-windows-x86_64-20130219/sdk/extras/google/google_play_services/libproject/google-play-services_lib/libs/google-play-services.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../adt-bundle-windows-x86_64-20130219/sdk/extras/google/google_play_services_froyo/libproject/google-play-services_lib/libs/google-play-services.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
