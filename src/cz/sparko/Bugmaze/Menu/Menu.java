@@ -35,28 +35,26 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
 
     protected ITextureRegion headerTexture;
 
-    protected static ArrayList<Menu> menuList;
-
     //TODO: do we need this ?
-    protected TextureResource textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
+    protected TextureResource textureResource;
 
     public Menu(Game game) {
         this.game = game;
+        textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
         loadResources();
-        if (menuList == null) {
-            menuList = new ArrayList<Menu>(3);
-            initMenus();
+    }
+
+    public static Menu menuFactory(MenuEnum menu, Game game) {
+        switch (menu) {
+            case MAIN:
+                return new Main(game);
+            case PLAY:
+                return new Play(game);
+            case OPTIONS:
+                return new Options(game);
+            default:
+                return new Main(game);
         }
-    }
-
-    private void initMenus() {
-        menuList.add(MenuEnum.MAIN.getValue(), new Main(game));
-        menuList.add(MenuEnum.PLAY.getValue(), new Play(game));
-        menuList.add(MenuEnum.OPTIONS.getValue(), new Options(game));
-    }
-
-    public static Menu getMenu(MenuEnum menu) {
-        return Menu.menuList.get(menu.getValue());
     }
 
     private void createMenuScene() {
@@ -92,7 +90,11 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     public MenuScene getMenuScene() {
-        if (menuScene == null) {
+        return getMenuScene(false);
+    }
+
+    public MenuScene getMenuScene(boolean forceLoad) {
+        if (forceLoad || menuScene == null) {
             setItems();
             createMenuScene();
         }
@@ -140,11 +142,11 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
     }
 
     protected void loadResources() {
-        textureResource = MenuManager.getInstance().getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
+        textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
     }
 
     protected void setItems() {
-        backBtn = new TwoStateMenuButton(-1, (ITiledTextureRegion)Manager.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL).getResource(MenuGeneralTextureResource.BACK), game.getVertexBufferObjectManager());
+        backBtn = new TwoStateMenuButton(-1, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL).getResource(MenuGeneralTextureResource.BACK), game.getVertexBufferObjectManager());
 
         menuItems = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());
         menuIcons = new ArrayList<AnimatedSpriteMenuItem>(menuItemsTextures.size());

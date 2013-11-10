@@ -1,6 +1,6 @@
 package cz.sparko.Bugmaze.Block;
 
-import cz.sparko.Bugmaze.Character;
+import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
 import cz.sparko.Bugmaze.Manager.GameManager;
@@ -16,7 +16,7 @@ public class BlockCorner extends Block {
     }
 
     @Override
-    public SequenceEntityModifier getMoveHandler(cz.sparko.Bugmaze.Character character) {
+    public SequenceEntityModifier getMoveHandler(Character character) {
         final float centerX = this.getX() + (SIZE / 2) - (Character.SIZE_X / 2);
         final float centerY = this.getY() + (SIZE / 2) - (Character.SIZE_Y / 2);
 

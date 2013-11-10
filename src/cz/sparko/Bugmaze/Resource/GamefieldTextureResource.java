@@ -13,6 +13,7 @@ public class GamefieldTextureResource extends TextureResource {
     public static final int PAUSE_BUTTON = 5;
     public static final int PAUSE_BACKGROUND = 6;
     public static final int RESULTS_BACKGROUND = 7;
+    public static final int POWER_UP_BUTTON = 8;
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -29,5 +30,6 @@ public class GamefieldTextureResource extends TextureResource {
         textures.add(PAUSE_BUTTON, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "pauseIcon.png"));
         textures.add(PAUSE_BACKGROUND, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "pauseBackground.png"));
         textures.add(RESULTS_BACKGROUND, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "resultsBackground.png"));
+        textures.add(POWER_UP_BUTTON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "powerUpBtn.png", 2, 1));
     }
 }

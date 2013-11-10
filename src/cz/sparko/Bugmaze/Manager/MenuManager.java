@@ -2,9 +2,7 @@ package cz.sparko.Bugmaze.Manager;
 
 import android.view.KeyEvent;
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Menu.Main;
-import cz.sparko.Bugmaze.Menu.Menu;
-import cz.sparko.Bugmaze.Menu.MenuEnum;
+import cz.sparko.Bugmaze.Menu.*;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -21,8 +19,7 @@ public class MenuManager extends Manager {
     private TextureResource textureResource;
 
     public static MenuManager createInstance(Game game) {
-        if (instance == null)
-            instance = new MenuManager(game);
+        instance = new MenuManager(game);
         return instance;
     }
 
@@ -42,7 +39,8 @@ public class MenuManager extends Manager {
     }
 
     public void goToMenu(MenuEnum menu) {
-        currentMenu = Menu.getMenu(menu);
+        currentMenu = Menu.menuFactory(menu, game);
+
         scene.clearChildScene();
         scene.setChildScene(currentMenu.getMenuScene());
     }
@@ -52,8 +50,9 @@ public class MenuManager extends Manager {
         scene = new Scene();
         scene.setBackground(new SpriteBackground(new Sprite(0, 0, textureResource.getResource(MenuGeneralTextureResource.BACKGROUND), game.getVertexBufferObjectManager())));
 
-        currentMenu = Menu.getMenu(MenuEnum.MAIN);
-        scene.setChildScene(currentMenu.getMenuScene());
+        currentMenu = Menu.menuFactory(MenuEnum.MAIN, game);
+        scene.setChildScene(currentMenu.getMenuScene(true));
+        scene.sortChildren();
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.util.Random;
 public class GameField {
     public static final int FIELD_SIZE_X = 9;
     public static final int FIELD_SIZE_Y = 6;
+    public static final int Z_INDEX = 99;
 
     private Scene scene;
     private Game game;
@@ -30,7 +31,7 @@ public class GameField {
     private boolean refreshField = false;
 
     public GameField(Game game, Scene scene) {
-        textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
+        textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
         this.game = game;
         this.scene = scene;
     }
@@ -57,7 +58,7 @@ public class GameField {
 
     public void createField() {
         background = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), game.getVertexBufferObjectManager());
-        background.setZIndex(99);
+        background.setZIndex(Z_INDEX);
         scene.attachChild(background);
 
         int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;

@@ -1,6 +1,6 @@
 package cz.sparko.Bugmaze.Block;
 
-import cz.sparko.Bugmaze.Character;
+import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
 import cz.sparko.Bugmaze.Manager.GameManager;
@@ -20,7 +20,7 @@ public class BlockLine extends Block{
      */
     public SequenceEntityModifier getMoveHandler(Character character) {
         final float centerX = this.getX() + (SIZE / 2) - (Character.SIZE_X / 2);
-        final float centerY = this.getY() + (SIZE / 2) - (cz.sparko.Bugmaze.Character.SIZE_Y / 2);
+        final float centerY = this.getY() + (SIZE / 2) - (Character.SIZE_Y / 2);
 
         final float sourcePositionX = centerX + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
         final float sourcePositionY = centerY + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());

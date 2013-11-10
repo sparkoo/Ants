@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze;
 
+import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -9,7 +10,7 @@ public class GameUpdateHandler implements IUpdateHandler {
 
     private GameManager gameManager;
     private GameField gameField;
-    private Character character;
+    private cz.sparko.Bugmaze.Character.Character character;
     private boolean running = false;
     float timeCounter = 0;
     public GameUpdateHandler(GameField gameField, Character character) {

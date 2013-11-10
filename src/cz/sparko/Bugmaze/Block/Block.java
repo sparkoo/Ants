@@ -1,6 +1,6 @@
 package cz.sparko.Bugmaze.Block;
 
-import cz.sparko.Bugmaze.Character;
+import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
 import cz.sparko.Bugmaze.Manager.GameManager;

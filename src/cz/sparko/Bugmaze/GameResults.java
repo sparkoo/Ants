@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze;
 
+import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
@@ -19,17 +20,17 @@ import java.util.ArrayList;
 public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClickListener {
     ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
 
-    public GameResults(Camera camera, final Scene gameScene, VertexBufferObjectManager vertexBufferObjectManager, long score) {
+    public GameResults(Camera camera, final Scene gameScene, Game game, long score) {
         super(camera);
-        TextureResource textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
+        TextureResource textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
 
-        final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.RESULTS_BACKGROUND), vertexBufferObjectManager);
+        final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.RESULTS_BACKGROUND), game.getVertexBufferObjectManager());
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
-        menuItems.add(new TextMenuItem(0, Manager.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, vertexBufferObjectManager));
-        menuItems.add(new TextMenuItem(1, Manager.getResourceHandler().getFontIndieFlower36(), "Play again", vertexBufferObjectManager));
-        menuItems.add(new TextMenuItem(2, Manager.getResourceHandler().getFontIndieFlower36(), "Back to menu", vertexBufferObjectManager));
+        menuItems.add(new TextMenuItem(0, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager()));
+        menuItems.add(new TextMenuItem(1, game.getResourceHandler().getFontIndieFlower36(), "Play again", game.getVertexBufferObjectManager()));
+        menuItems.add(new TextMenuItem(2, game.getResourceHandler().getFontIndieFlower36(), "Back to menu", game.getVertexBufferObjectManager()));
 
         int posX = 0;
         int posY = 0;
@@ -41,7 +42,7 @@ public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClick
         }
         this.setOnMenuItemClickListener(this);
 
-        Sprite pauseBtn = new Sprite(700, 0, textureResource.getResource(GamefieldTextureResource.PAUSE_BUTTON), vertexBufferObjectManager) {
+        Sprite pauseBtn = new Sprite(700, 0, textureResource.getResource(GamefieldTextureResource.PAUSE_BUTTON), game.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                 if (pSceneTouchEvent.isActionDown() && !gameScene.hasChildScene())

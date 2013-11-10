@@ -1,19 +1,18 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Character;
 
+import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Manager.Manager;
+import cz.sparko.Bugmaze.PowerUp.PowerUp;
 import cz.sparko.Bugmaze.Resource.CharacterTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
-import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.ui.activity.BaseGameActivity;
 
-public class Character extends AnimatedSprite {
+import java.util.ArrayList;
+
+public abstract class Character extends AnimatedSprite {
 
     public static final int SIZE_X = 32;
     public static final int SIZE_Y = 32;
@@ -23,16 +22,27 @@ public class Character extends AnimatedSprite {
     private static final float baseSpeed = 0.7f;
 
     private float speed = baseSpeed;
+    
+    protected ArrayList<PowerUp> powerUps;
 
-    public Character(float pX, float pY, VertexBufferObjectManager pVertexBufferObjectManager) {
-        super(pX, pY, (ITiledTextureRegion)Manager.getResourceHandler().getTextureResource(ResourceHandler.CHARACTER).getResource(CharacterTextureResource.LADYBUG), pVertexBufferObjectManager);
+    protected Game game;
+
+    public Character(float pX, float pY, ITiledTextureRegion texture, Game game) {
+        super(pX, pY, texture, game.getVertexBufferObjectManager());
+        this.game = game;
         this.setZIndex(Z_INDEX);
+        powerUps = new ArrayList<PowerUp>();
+        setPowerUps();
     }
+
+    protected abstract void setPowerUps();
 
     @Override
     protected void onManagedUpdate(final float pSecondsElapsed) {
         super.onManagedUpdate(pSecondsElapsed);
     }
+
+    public ArrayList<PowerUp> getPowerUps() { return powerUps; }
 
     public void switchSpeed() {
         if (speed == baseSpeed)

@@ -4,10 +4,12 @@ import android.view.KeyEvent;
 import cz.sparko.Bugmaze.*;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
-import cz.sparko.Bugmaze.Character;
+import cz.sparko.Bugmaze.Character.Character;
+import cz.sparko.Bugmaze.Character.LadyBug;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Model.ScoreDTO;
+import cz.sparko.Bugmaze.PowerUp.PowerUp;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
@@ -19,14 +21,18 @@ import org.andengine.entity.text.TextOptions;
 import org.andengine.util.HorizontalAlign;
 import org.andengine.util.modifier.LoopModifier;
 
+import java.util.ArrayList;
+
 public class GameManager extends Manager {
     private static GameManager instance;
+
+    private GameUpdateHandler gameUpdateHandler;
 
     private GamePause pauseScene;
     private boolean paused = false;
     private boolean running = false;
 
-    private static cz.sparko.Bugmaze.Character character = null;
+    private static Character character = null;
     private static GameField gameField;
 
     private boolean playSoundEffects;
@@ -36,9 +42,11 @@ public class GameManager extends Manager {
     private long score = 0;
     private long tmpScore = 0;
 
+    private ArrayList<PowerUp> characterPowerUps = new ArrayList<PowerUp>();
+    private ArrayList<PowerUp> playerPowerUps = new ArrayList<PowerUp>();
+
     public static GameManager createInstance(Game game) {
-        if (instance == null)
-            instance = new GameManager(game);
+        instance = new GameManager(game);
         return instance;
     }
 
@@ -68,7 +76,7 @@ public class GameManager extends Manager {
     }
 
     public void showResultScreen() {
-        scene.setChildScene(new GameResults(game.getCamera(), scene, game.getVertexBufferObjectManager(), score));
+        scene.setChildScene(new GameResults(game.getCamera(), scene, game, score));
     }
 
     public void pauseGame() {
@@ -85,14 +93,14 @@ public class GameManager extends Manager {
     protected void setScene() {
         scene = new Scene();
 
-        pauseScene = new GamePause(game.getCamera(), scene, game.getVertexBufferObjectManager());
+        pauseScene = new GamePause(game.getCamera(), scene, game);
 
         gameField = new GameField(game, scene);
         gameField.createField();
 
         scene.setBackground(new Background(0.17f, 0.61f, 0f));
 
-        character = new Character(0, 0, game.getVertexBufferObjectManager());
+        character = new LadyBug(0, 0, game);
         character.setStartPosition(gameField.getActiveBlock());
 
         mScoreText = new Text((game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, resourceHandler.getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
@@ -104,11 +112,10 @@ public class GameManager extends Manager {
         mCountDownText.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1f, 1f, 10f), GameUpdateHandler.START_DELAY_SECONDS + 1, new LoopEntityModifier.ILoopEntityModifierListener() {
             @Override
             public void onLoopStarted(LoopModifier<IEntity> pLoopModifier, int pLoop, int pLoopCount) {
-                if (pLoop < pLoopCount - 1) {
+                if (pLoop < pLoopCount - 1)
                     mCountDownText.setText(String.format("%d", GameUpdateHandler.START_DELAY_SECONDS - pLoop));
-                } else {
+                else
                     mCountDownText.setText(String.format("GO"));
-                }
             }
 
             @Override
@@ -119,13 +126,34 @@ public class GameManager extends Manager {
         }));
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        scene.registerUpdateHandler(new GameUpdateHandler(gameField, character));
+        gameUpdateHandler = new GameUpdateHandler(gameField, character);
+        scene.registerUpdateHandler(gameUpdateHandler);
+
+        setPowerUps(scene);
 
         scene.attachChild(mCountDownText);
         scene.attachChild(mScoreText);
         scene.attachChild(character);
 
         scene.sortChildren();
+    }
+
+    private void setPowerUps(Scene scene) {
+        int x = 20, y = 70;
+        for (PowerUp powerUp : character.getPowerUps()) {
+            powerUp.init(x, y, gameField, gameUpdateHandler, character, game.getVertexBufferObjectManager());
+            scene.attachChild(powerUp.getSprite());
+            scene.registerTouchArea(powerUp.getSprite());
+            y += 95;
+        }
+
+        x = 716; y = 70;
+        for (PowerUp powerUp : character.getPowerUps()) {
+            powerUp.init(x, y, gameField, gameUpdateHandler, character, game.getVertexBufferObjectManager());
+            scene.attachChild(powerUp.getSprite());
+            scene.registerTouchArea(powerUp.getSprite());
+            y += 95;
+        }
     }
 
     @Override

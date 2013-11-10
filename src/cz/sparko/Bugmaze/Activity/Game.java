@@ -38,6 +38,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Collections;
 
+//TODO: make external listener
 public class Game extends GBaseGameActivityAND implements GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener, DialogInterface.OnCancelListener, OnStateLoadedListener, OnStateDeletedListener {
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
@@ -125,7 +126,6 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     @Override
     public void onCreateResources() {
         resourceHandler = new ResourceHandler(this);
-        Manager.setResourceHandler(resourceHandler);
     }
 
     @Override
@@ -187,6 +187,8 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
         MenuManager.createInstance(this);
         GameManager.createInstance(this);
+        MenuManager.getInstance().setResourceHandler(resourceHandler);
+        GameManager.getInstance().setResourceHandler(resourceHandler);
 
         switchManager(MenuManager.getInstance());
         return scene;

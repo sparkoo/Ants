@@ -9,7 +9,7 @@ import org.andengine.entity.scene.Scene;
 public abstract class Manager {
     protected Game game;
     protected Scene scene;
-    protected static ResourceHandler resourceHandler;
+    protected ResourceHandler resourceHandler;
     protected static GameData gameData;
 
     protected Manager(Game game) {
@@ -21,9 +21,8 @@ public abstract class Manager {
         Manager.gameData = gameData;
     }
     public static GameData getGameData() { return Manager.gameData; }
-    public static ResourceHandler getResourceHandler() { return resourceHandler; }
 
-    public static void setResourceHandler(ResourceHandler resourceHandler) { Manager.resourceHandler = resourceHandler; }
+    public void setResourceHandler(ResourceHandler resourceHandler) { this.resourceHandler = resourceHandler; }
 
     public Scene getScene() { setScene(); return scene; }
     protected abstract void setScene();

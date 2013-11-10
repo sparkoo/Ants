@@ -82,7 +82,7 @@ public class Options extends Menu {
 
     @Override
     protected void loadResources() {
-        textureResource = Manager.getResourceHandler().getTextureResource(ResourceHandler.MENU_OPTIONS);
+        textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.MENU_OPTIONS);
 
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_MUSIC));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_EFFECTS));
@@ -94,6 +94,6 @@ public class Options extends Menu {
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
         menuCustomTextures.add((ITiledTextureRegion)textureResource.getResource(MenuOptionsTextureResource.OPTIONS_ON_OFF));
 
-        headerTexture = Manager.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL).getResource(MenuGeneralTextureResource.MAIN_HEADER);
+        headerTexture = game.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL).getResource(MenuGeneralTextureResource.MAIN_HEADER);
     }
 }

@@ -19,13 +19,13 @@ public class Main extends Menu {
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
             case 0:
-                goToMenu(this, menuList.get(MenuEnum.PLAY.getValue()));
+                goToMenu(this, Menu.menuFactory(MenuEnum.PLAY, game));
                 break;
             case 1:
                 game.goToLeaderboard();
                 break;
             case 2:
-                goToMenu(this, menuList.get(MenuEnum.OPTIONS.getValue()));
+                goToMenu(this, Menu.menuFactory(MenuEnum.OPTIONS, game));
                 break;
         }
         return false;
