@@ -187,8 +187,6 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
         MenuManager.createInstance(this);
         GameManager.createInstance(this);
-        MenuManager.getInstance().setResourceHandler(resourceHandler);
-        GameManager.getInstance().setResourceHandler(resourceHandler);
 
         switchManager(MenuManager.getInstance());
         return scene;

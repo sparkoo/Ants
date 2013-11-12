@@ -9,12 +9,10 @@ import org.andengine.entity.scene.Scene;
 public abstract class Manager {
     protected Game game;
     protected Scene scene;
-    protected ResourceHandler resourceHandler;
     protected static GameData gameData;
 
     protected Manager(Game game) {
         this.game = game;
-        resourceHandler = game.getResourceHandler();
     }
 
     public static void setGameData(GameData gameData) {
@@ -22,7 +20,6 @@ public abstract class Manager {
     }
     public static GameData getGameData() { return Manager.gameData; }
 
-    public void setResourceHandler(ResourceHandler resourceHandler) { this.resourceHandler = resourceHandler; }
 
     public Scene getScene() { setScene(); return scene; }
     protected abstract void setScene();

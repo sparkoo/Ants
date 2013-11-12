@@ -12,6 +12,7 @@ import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
 
 public class MenuManager extends Manager {
+    //TODO: we dont want this. Handle instance in Game
     private static MenuManager instance;
 
     private Menu currentMenu;
@@ -29,7 +30,7 @@ public class MenuManager extends Manager {
 
     private MenuManager(Game game) {
         super(game);
-        textureResource = resourceHandler.getTextureResource(ResourceHandler.MENU_GENERAL);
+        textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.MENU_GENERAL);
         this.game = game;
         currentMenu = new Main(game);
     }
@@ -73,7 +74,7 @@ public class MenuManager extends Manager {
 
     @Override
     public void onSwitchOn() {
-        game.setMusic(resourceHandler.getMenuMusic());
+        game.setMusic(game.getResourceHandler().getMenuMusic());
         playOrPauseMusicBySettings();
     }
 

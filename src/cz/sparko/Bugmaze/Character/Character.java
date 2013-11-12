@@ -9,6 +9,7 @@ import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.call.Callable;
 
 import java.util.ArrayList;
 
@@ -19,8 +20,7 @@ public abstract class Character extends AnimatedSprite {
 
     public static final int Z_INDEX = 100;
 
-    private static final float baseSpeed = 0.7f;
-
+    private static final float baseSpeed = 1f;
     private float speed = baseSpeed;
     
     protected ArrayList<PowerUp> powerUps;
@@ -44,11 +44,8 @@ public abstract class Character extends AnimatedSprite {
 
     public ArrayList<PowerUp> getPowerUps() { return powerUps; }
 
-    public void switchSpeed() {
-        if (speed == baseSpeed)
-            speed = speed / 2;
-        else
-            speed = baseSpeed;
+    public void switchSpeed(float multiple) {
+        speed = baseSpeed * multiple;
     }
 
     public float getSpeed() { return speed; }

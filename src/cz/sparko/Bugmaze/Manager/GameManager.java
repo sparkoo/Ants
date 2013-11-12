@@ -24,6 +24,7 @@ import org.andengine.util.modifier.LoopModifier;
 import java.util.ArrayList;
 
 public class GameManager extends Manager {
+    //TODO: we dont want this. Handle instance in Game
     private static GameManager instance;
 
     private GameUpdateHandler gameUpdateHandler;
@@ -103,11 +104,11 @@ public class GameManager extends Manager {
         character = new LadyBug(0, 0, game);
         character.setStartPosition(gameField.getActiveBlock());
 
-        mScoreText = new Text((game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, resourceHandler.getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        mScoreText = new Text((game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
         printScore();
         mScoreText.setZIndex(101);
 
-        mCountDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, resourceHandler.getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
+        mCountDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, game.getResourceHandler().getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
         mCountDownText.setZIndex(101);
         mCountDownText.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1f, 1f, 10f), GameUpdateHandler.START_DELAY_SECONDS + 1, new LoopEntityModifier.ILoopEntityModifierListener() {
             @Override
@@ -196,7 +197,7 @@ public class GameManager extends Manager {
 
     public void playRebuildSound() {
         if (playSoundEffects)
-            resourceHandler.getRebuildSound().play();
+            game.getResourceHandler().getRebuildSound().play();
     }
 
     private void printScore() {

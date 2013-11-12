@@ -3,9 +3,10 @@ package cz.sparko.Bugmaze;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.PowerUp.PowerUpNextBlockListener;
 import org.andengine.engine.handler.IUpdateHandler;
 
-public class GameUpdateHandler implements IUpdateHandler {
+public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListener {
     public static final int START_DELAY_SECONDS = 3;
 
     private GameManager gameManager;
@@ -13,10 +14,19 @@ public class GameUpdateHandler implements IUpdateHandler {
     private cz.sparko.Bugmaze.Character.Character character;
     private boolean running = false;
     float timeCounter = 0;
+    private PowerUpNextBlockListener powerUpNextBlockListener;
     public GameUpdateHandler(GameField gameField, Character character) {
         this.gameManager = GameManager.getInstance();
         this.gameField = gameField;
         this.character = character;
+        this.powerUpNextBlockListener = this;
+    }
+
+    public void setPowerUpNextBlockListener(PowerUpNextBlockListener powerUpNextBlockListener) {
+        this.powerUpNextBlockListener = powerUpNextBlockListener;
+    }
+    public void unsetPowerUpNextBlockListener() {
+        this.powerUpNextBlockListener = this;
     }
 
     @Override
@@ -30,6 +40,8 @@ public class GameUpdateHandler implements IUpdateHandler {
             gameManager.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {
+            powerUpNextBlockListener.reachedNextBlock();
+
             timeCounter = 0;
             int currentX = gameField.getActiveBlock().getCoordinate().getX() + gameField.getActiveBlock().getOutCoordinate().getX();
             int currentY = gameField.getActiveBlock().getCoordinate().getY() + gameField.getActiveBlock().getOutCoordinate().getY();
@@ -67,5 +79,9 @@ public class GameUpdateHandler implements IUpdateHandler {
 
     @Override
     public void reset() {
+    }
+
+    @Override
+    public void reachedNextBlock() {
     }
 }
