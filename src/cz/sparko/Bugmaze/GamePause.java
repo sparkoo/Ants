@@ -3,16 +3,19 @@ package cz.sparko.Bugmaze;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Manager.Manager;
+import cz.sparko.Bugmaze.Menu.TwoStateMenuButton;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
@@ -21,7 +24,8 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
     private int positionX;
     private int positionY;
 
-    ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
+    ArrayList<IMenuItem> menuItems = new ArrayList<IMenuItem>(3);
+    ArrayList<IMenuItem> menuIcons = new ArrayList<IMenuItem>(3);
 
     public GamePause(Camera camera, final Scene gameScene, Game game) {
         super(camera);
@@ -33,15 +37,28 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
-        menuItems.add(new TextMenuItem(1, game.getResourceHandler().getFontIndieFlower36(), "Back to game", game.getVertexBufferObjectManager()));
-        menuItems.add(new TextMenuItem(2, game.getResourceHandler().getFontIndieFlower36(), "Exit to menu", game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_CONTINUE), game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(2, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN), game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(3, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_RETURN), game.getVertexBufferObjectManager()));
 
-        int posX = positionX;
-        int posY = positionY;
-        for (TextMenuItem menuItem : menuItems) {
+        menuIcons.add(new TwoStateMenuButton(1, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_CONTINUE_ICON), game.getVertexBufferObjectManager()));
+        menuIcons.add(new TwoStateMenuButton(2, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN_ICON), game.getVertexBufferObjectManager()));
+        menuIcons.add(new TwoStateMenuButton(3, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_RETURN_ICON), game.getVertexBufferObjectManager()));
+
+
+        int posX = positionX + 105;
+        int posY = positionY + 30;
+        for (IMenuItem menuItem : menuItems) {
             menuItem.setPosition(posX, posY);
-            posY += 50;
+            posY += 80;
             this.addMenuItem(menuItem);
+        }
+        posX = positionX + 30;
+        posY = positionY + 40;
+        for (IMenuItem menuIcon : menuIcons) {
+            menuIcon.setPosition(posX, posY);
+            posY += 80;
+            this.addMenuItem(menuIcon);
         }
         this.setOnMenuItemClickListener(this);
 
@@ -65,6 +82,9 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
                 GameManager.getInstance().unpauseGame();
                 break;
             case 2:
+                GameManager.getInstance().startGame();
+                break;
+            case 3:
                 GameManager.getInstance().gameOver();
                 break;
         }

@@ -86,7 +86,7 @@ public class ResourceHandler {
     }
 
     private void loadGraphics(Game game) {
-        textureAtlasGameField = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlasGameField = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 2048, 2048, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         textureAtlasGameField.clearTextureAtlasSources();
 
         textureResourcesList.add(GAMEFIELD, new GamefieldTextureResource(textureAtlasGameField, game));
