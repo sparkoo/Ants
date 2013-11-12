@@ -85,11 +85,11 @@ public abstract class Block extends AnimatedSprite {
         Block nBlock;
         float pickBlock = rnd.nextFloat();
         if (pickBlock < 0.7)
-            nBlock = new BlockCorner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CORNER), vertexBufferObjectManager, gameManager, 1);
+            nBlock = new Corner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CORNER), vertexBufferObjectManager, gameManager, 1);
         else if (pickBlock < 0.9)
-            nBlock = new BlockLine(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_LINE), vertexBufferObjectManager, gameManager, 1);
+            nBlock = new Line(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_LINE), vertexBufferObjectManager, gameManager, 1);
         else
-            nBlock = new BlockCross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CROSS), vertexBufferObjectManager, gameManager, 2);
+            nBlock = new Cross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CROSS), vertexBufferObjectManager, gameManager, 2);
 
         for (int i = 0; i < rnd.nextInt(4); i++)
             nBlock.rotate();
@@ -98,7 +98,7 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource, GameManager gameManager) {
-        Block nBlock = new BlockStart(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_START), vertexBufferObjectManager,  gameManager);
+        Block nBlock = new Start(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_START), vertexBufferObjectManager,  gameManager);
         for (int i = 0; i < new Random().nextInt(4); i++) {
             nBlock.rotate();
         }

@@ -9,14 +9,14 @@ import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public class BlockLine extends Block{
-    public BlockLine(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, GameManager gameManager, int walkThroughs) {
+public class Line extends Block{
+    public Line(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, GameManager gameManager, int walkThroughs) {
         super(coordinate ,pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, gameManager, walkThroughs);
     }
 
     @Override
     /*
-    TODO: same as BlockCross ==> refactor ?
+    TODO: same as Cross ==> refactor ?
      */
     public SequenceEntityModifier getMoveHandler(Character character) {
         final float centerX = this.getX() + (SIZE / 2) - (Character.SIZE_X / 2);

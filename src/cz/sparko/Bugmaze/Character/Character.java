@@ -2,14 +2,9 @@ package cz.sparko.Bugmaze.Character;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.PowerUp.PowerUp;
-import cz.sparko.Bugmaze.Resource.CharacterTextureResource;
-import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.call.Callable;
 
 import java.util.ArrayList;
 

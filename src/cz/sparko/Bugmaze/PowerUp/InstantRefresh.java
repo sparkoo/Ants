@@ -1,7 +1,6 @@
 package cz.sparko.Bugmaze.PowerUp;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;

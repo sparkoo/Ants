@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.appstate.OnStateDeletedListener;
 import com.google.android.gms.appstate.OnStateLoadedListener;
 import com.google.android.gms.common.ConnectionResult;
@@ -30,8 +30,6 @@ import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
-
-import com.google.android.gms.appstate.AppStateClient;
 
 import java.io.IOException;
 import java.sql.SQLException;
