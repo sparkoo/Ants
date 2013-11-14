@@ -51,7 +51,12 @@ public class GameData implements Serializable, Comparable {
 
     public void saveGameDataToSharedPreferences(Game game) {
         game.setGameData(GameDataEnum.COINS, this.coins);
-        game.setGameData(GameDataEnum.TIMESTAMP, this.timestamp);
+        game.setGameData(GameDataEnum.TIMESTAMP, Calendar.getInstance().getTimeInMillis());
+    }
+
+    public void save(Game game) {
+        saveGameDataToSharedPreferences(game);
+        game.updateGameData();
     }
 
     @Override

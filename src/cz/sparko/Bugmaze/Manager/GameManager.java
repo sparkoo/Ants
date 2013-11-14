@@ -73,6 +73,8 @@ public class GameManager extends Manager {
 
     public void gameOver() {
         game.switchManager(MenuManager.getInstance());
+        GameManager.getGameData().updateCoins(50);
+        GameManager.getGameData().save(game);
         MenuManager.getInstance().goToMenu(MenuEnum.MAIN);
     }
 

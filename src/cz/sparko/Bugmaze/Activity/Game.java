@@ -271,10 +271,11 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
+        Log.e("GAMEDATA", "onStateLoaded: " + statusCode);
         if (statusCode == AppStateClient.STATUS_OK) {
             try {
                 MenuManager.setGameData(getSyncedGameData(GameData.getGameDataFromByteStream(data)));
-                Log.e("GAMEDATA", MenuManager.getGameData().toString());
+                Log.e("GAMEDATA_LOADED", MenuManager.getGameData().toString());
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("GAMEDATA", e.getMessage());
@@ -283,6 +284,12 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
                 e.printStackTrace();
             }
         } else {
+            updateGameData();
+        }
+    }
+
+    public void updateGameData() {
+        if (getAppStateClient().isConnected()) {
             try {
                 getAppStateClient().updateState(getInteger(R.integer.cloud_game_data_key), MenuManager.getGameData().getByteStream());
             } catch (IOException e) {
@@ -301,5 +308,9 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateDeleted(int i, int i2) {
+    }
+
+    public void printGameData() {
+        Log.e("GAMEDATA", MenuManager.getGameData().toString());
     }
 }
