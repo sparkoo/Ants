@@ -62,7 +62,7 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
         }
         this.setOnMenuItemClickListener(this);
 
-        Sprite pauseBtn = new Sprite(700, 0, textureResource.getResource(GamefieldTextureResource.PAUSE_BUTTON), game.getVertexBufferObjectManager()) {
+        Sprite pauseBtn = new Sprite(Game.CAMERA_WIDTH - 64 - 5, 5, textureResource.getResource(GamefieldTextureResource.PAUSE_BUTTON), game.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
                 if (pSceneTouchEvent.isActionDown() && !gameScene.hasChildScene())

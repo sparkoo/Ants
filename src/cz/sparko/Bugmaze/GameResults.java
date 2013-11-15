@@ -41,18 +41,6 @@ public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClick
             this.addMenuItem(menuItem);
         }
         this.setOnMenuItemClickListener(this);
-
-        Sprite pauseBtn = new Sprite(700, 0, textureResource.getResource(GamefieldTextureResource.PAUSE_BUTTON), game.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-                if (pSceneTouchEvent.isActionDown() && !gameScene.hasChildScene())
-                    GameManager.getInstance().pauseGame();
-                return true;
-            }
-        };
-        pauseBtn.setZIndex(200);
-        gameScene.registerTouchArea(pauseBtn);
-        gameScene.attachChild(pauseBtn);
     }
 
     @Override

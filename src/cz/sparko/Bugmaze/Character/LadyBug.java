@@ -1,7 +1,7 @@
 package cz.sparko.Bugmaze.Character;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.PowerUp.Boost2x3b;
+import cz.sparko.Bugmaze.PowerUp.Points2xBase;
 import cz.sparko.Bugmaze.Resource.CharacterTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -13,7 +13,7 @@ public class LadyBug extends Character {
 
     @Override
     protected void setPowerUps() {
-        powerUps.add(new Boost2x3b(game));
+        powerUps.add(new Points2xBase(game));
         //powerUps.add(new InstantRefresh(game));
         //powerUps.add(new InstantRefresh(game));
         //powerUps.add(new InstantRefresh(game));

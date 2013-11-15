@@ -39,6 +39,7 @@ public class GameManager extends Manager {
     private boolean playSoundEffects;
 
     private Text mScoreText;
+    private Text mTmpScoreText;
     private Text mCountDownText;
     private long score = 0;
     private long tmpScore = 0;
@@ -106,9 +107,11 @@ public class GameManager extends Manager {
         character = new LadyBug(0, 0, game);
         character.setStartPosition(gameField.getActiveBlock());
 
-        mScoreText = new Text((game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        mScoreText = new Text(10, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        mTmpScoreText = new Text((game.CAMERA_WIDTH) / 2, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%020d", tmpScore), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
         printScore();
         mScoreText.setZIndex(101);
+        mTmpScoreText.setZIndex(101);
 
         mCountDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, game.getResourceHandler().getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
         mCountDownText.setZIndex(101);
@@ -136,6 +139,7 @@ public class GameManager extends Manager {
 
         scene.attachChild(mCountDownText);
         scene.attachChild(mScoreText);
+        scene.attachChild(mTmpScoreText);
         scene.attachChild(character);
 
         scene.sortChildren();
@@ -183,10 +187,17 @@ public class GameManager extends Manager {
             unpauseGame();
     }
 
-    //TODO: text handle
     public void increaseScore() {
         tmpScore++;
-        //mScoreText.setText(String.format("%09d + %09d", tmpScore * tmpScore, score));
+        mTmpScoreText.setText(String.format("%d", tmpScore * tmpScore));
+    }
+
+    public void increaseScore(long increaseBy) {
+        tmpScore += increaseBy;
+    }
+
+    public void increaseScore(int multiplier) {
+        tmpScore *= multiplier;
     }
 
     public void countScore() {
@@ -202,8 +213,9 @@ public class GameManager extends Manager {
             game.getResourceHandler().getRebuildSound().play();
     }
 
-    private void printScore() {
+    public void printScore() {
         mScoreText.setText(String.format("%s%d", game.getString(R.string.score_text), score));
+        mTmpScoreText.setText(String.format("%d", tmpScore * tmpScore));
     }
 
     public void saveScore() {
