@@ -14,7 +14,7 @@ public class InstantRefresh extends PowerUp {
 
     @Override
     public void action() {
-        gameField.refreshField();
+        gameUpdateHandler.refreshField();
     }
 
     @Override

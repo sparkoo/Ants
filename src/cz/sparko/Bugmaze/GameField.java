@@ -4,7 +4,6 @@ import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -36,25 +35,14 @@ public class GameField {
         this.scene = scene;
     }
 
-    public void needRefreshField() {
-        refreshField = true;
-    }
-
-    public boolean isNeedRefreshField() {
-        return refreshField;
-    }
-
-    public Block getActiveBlock() {
-        return activeBlock;
-    }
-
-    public void setActiveBlock(Block nActiveBlock) {
-        activeBlock = nActiveBlock;
-    }
-
-    public Block getBlock(int x, int y) {
-        return blocks[x][y];
-    }
+    public Scene getScene() { return scene; }
+    public void refreshFieldNeeded() { refreshField = true; }
+    public void refreshFieldNotNeeded() { refreshField = false; }
+    public boolean isNeedRefreshField() { return refreshField; }
+    public Block getActiveBlock() { return activeBlock; }
+    public void setActiveBlock(Block nActiveBlock) { activeBlock = nActiveBlock; }
+    public Block getBlock(int x, int y) { return blocks[x][y]; }
+    public void setBlock(int x, int y, Block block) { blocks[x][y] = block; }
 
     public void createField() {
         background = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), game.getVertexBufferObjectManager());
@@ -71,7 +59,7 @@ public class GameField {
                 Block nBlock;
                 Coordinate nCoordinate = new Coordinate(x, y);
                 if (!nCoordinate.equals(startBlock)) {
-                    nBlock = Block.createRandomBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource, GameManager.getInstance());
+                    nBlock = Block.createRandomBasicBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource);
                     scene.registerTouchArea(nBlock);
                 } else {
                     nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource, GameManager.getInstance());
@@ -82,24 +70,5 @@ public class GameField {
         }
 
         activeBlock = blocks[startBlock.getX()][startBlock.getY()];
-    }
-
-    public void refreshField() {
-        int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
-        int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
-        refreshField = false;
-        for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
-            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
-                if (blocks[x][y].isDeleted() && blocks[x][y] != activeBlock) {
-                    scene.detachChild(blocks[x][y]);
-                    scene.unregisterTouchArea(blocks[x][y]);
-                    Block nBlock = Block.createRandomBlockFactory(new Coordinate(x, y) ,startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource, GameManager.getInstance());
-                    blocks[x][y] = nBlock;
-                    scene.attachChild(nBlock);
-                    scene.registerTouchArea(nBlock);
-                }
-            }
-        }
-        scene.sortChildren();
     }
 }

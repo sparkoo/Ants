@@ -3,10 +3,10 @@ package cz.sparko.Bugmaze.Manager;
 import android.view.KeyEvent;
 import cz.sparko.Bugmaze.*;
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Character.LadyBug;
 import cz.sparko.Bugmaze.Helper.Settings;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Model.ScoreDTO;
 import cz.sparko.Bugmaze.PowerUp.PowerUp;
@@ -132,7 +132,7 @@ public class GameManager extends Manager {
         }));
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        gameUpdateHandler = new GameUpdateHandler(gameField, character);
+        gameUpdateHandler = new GameUpdateHandler(gameField, character, new Endless(game));
         scene.registerUpdateHandler(gameUpdateHandler);
 
         setPowerUps(scene);
@@ -225,6 +225,6 @@ public class GameManager extends Manager {
     }
 
     public void needRefreshField() {
-        gameField.needRefreshField();
+        gameField.refreshFieldNeeded();
     }
 }

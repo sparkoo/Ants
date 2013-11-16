@@ -2,6 +2,7 @@ package cz.sparko.Bugmaze;
 
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.PowerUp.PowerUpNextBlockListener;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -15,11 +16,13 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
     private boolean running = false;
     float timeCounter = 0;
     private PowerUpNextBlockListener powerUpNextBlockListener;
-    public GameUpdateHandler(GameField gameField, Character character) {
+    private Level level;
+    public GameUpdateHandler(GameField gameField, Character character, Level level) {
         this.gameManager = GameManager.getInstance();
         this.gameField = gameField;
         this.character = character;
         this.powerUpNextBlockListener = this;
+        this.level = level;
     }
 
     public void setPowerUpNextBlockListener(PowerUpNextBlockListener powerUpNextBlockListener) {
@@ -35,12 +38,13 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             return;
 
         if (gameField.isNeedRefreshField() && running) {
-            gameField.refreshField();
+            level.refreshField(gameField);
             gameManager.playRebuildSound();
             gameManager.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {
             powerUpNextBlockListener.reachedNextBlock();
+            level.reachedNextBlock();
 
             timeCounter = 0;
             int currentX = gameField.getActiveBlock().getCoordinate().getX() + gameField.getActiveBlock().getOutCoordinate().getX();
@@ -83,5 +87,9 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
 
     @Override
     public void reachedNextBlock() {
+    }
+
+    public void refreshField() {
+        level.refreshField(gameField);
     }
 }

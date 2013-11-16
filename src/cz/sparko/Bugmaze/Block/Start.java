@@ -10,8 +10,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Start extends Block {
-    public Start(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, GameManager gameManager) {
-        super(coordinate, pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, gameManager, 1);
+    public Start(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
+        super(coordinate, pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, 1);
     }
 
     @Override

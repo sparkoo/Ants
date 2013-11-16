@@ -10,8 +10,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Line extends Block{
-    public Line(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, GameManager gameManager, int walkThroughs) {
-        super(coordinate ,pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, gameManager, walkThroughs);
+    public Line(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
+        super(coordinate ,pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, walkThroughs);
     }
 
     @Override
