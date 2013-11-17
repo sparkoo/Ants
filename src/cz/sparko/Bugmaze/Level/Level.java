@@ -2,10 +2,16 @@ package cz.sparko.Bugmaze.Level;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
-import cz.sparko.Bugmaze.GameField;
+import cz.sparko.Bugmaze.Block.Corner;
+import cz.sparko.Bugmaze.Block.Cross;
+import cz.sparko.Bugmaze.Block.Line;
 import cz.sparko.Bugmaze.Helper.Coordinate;
-import cz.sparko.Bugmaze.Resource.ResourceHandler;
-import org.andengine.entity.scene.Scene;
+import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
+import cz.sparko.Bugmaze.Resource.TextureResource;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
+import java.util.Random;
 
 public abstract class Level {
     private Game game;
@@ -13,27 +19,24 @@ public abstract class Level {
         this.game = game;
     }
 
-    public void refreshField(GameField gameField) {
-        int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
-        int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
-        Scene scene = gameField.getScene();
-        gameField.refreshFieldNotNeeded();
-        for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
-            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
-                if (gameField.getBlock(x, y).isDeleted() && gameField.getBlock(x, y) != gameField.getActiveBlock()) {
-                    scene.detachChild(gameField.getBlock(x, y));
-                    scene.unregisterTouchArea(gameField.getBlock(x, y));
-                    Block nBlock = Block.createRandomBasicBlockFactory(new Coordinate(x, y), startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD));
-                    gameField.setBlock(x, y, nBlock);
-                    scene.attachChild(nBlock);
-                    scene.registerTouchArea(nBlock);
-                }
-            }
-        }
-        scene.sortChildren();
-    }
-
     public void reachedNextBlock() {
 
+    }
+
+    public Block createRandomBlock(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
+        Random rnd = new Random();
+        Block nBlock;
+        float pickBlock = rnd.nextFloat();
+        if (pickBlock < 0.7)
+            nBlock = new Corner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CORNER), vertexBufferObjectManager, 1);
+        else if (pickBlock < 0.9)
+            nBlock = new Line(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_LINE), vertexBufferObjectManager, 1);
+        else
+            nBlock = new Cross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CROSS), vertexBufferObjectManager, 2);
+
+        for (int i = 0; i < rnd.nextInt(4); i++)
+            nBlock.rotate();
+
+        return nBlock;
     }
 }

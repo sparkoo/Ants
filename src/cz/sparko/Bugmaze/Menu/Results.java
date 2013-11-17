@@ -1,8 +1,8 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Manager.GameManager;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
@@ -12,16 +12,16 @@ import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
 
-public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClickListener {
+public class Results extends MenuScene implements MenuScene.IOnMenuItemClickListener {
     ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
+    private Game game;
 
-    public GameResults(Camera camera, final Scene gameScene, Game game, long score) {
+    public Results(Camera camera, Game game, long score) {
         super(camera);
+        this.game = game;
         TextureResource textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
 
         final Sprite pausedSprite = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.RESULTS_BACKGROUND), game.getVertexBufferObjectManager());
@@ -47,7 +47,7 @@ public class GameResults extends MenuScene implements MenuScene.IOnMenuItemClick
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
             case 1:
-                GameManager.getInstance().startGame();
+                GameManager.getInstance().startGame(GameManager.getInstance().getLevel());
                 break;
             case 2:
                 GameManager.getInstance().gameOver();

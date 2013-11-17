@@ -38,7 +38,7 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             return;
 
         if (gameField.isNeedRefreshField() && running) {
-            level.refreshField(gameField);
+            gameField.refreshField(level);
             gameManager.playRebuildSound();
             gameManager.countScore();
         }
@@ -87,9 +87,5 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
 
     @Override
     public void reachedNextBlock() {
-    }
-
-    public void refreshField() {
-        level.refreshField(gameField);
     }
 }

@@ -1,8 +1,8 @@
-package cz.sparko.Bugmaze;
+package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Manager.GameManager;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Menu.TwoStateMenuButton;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
@@ -10,25 +10,25 @@ import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.ArrayList;
 
-public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickListener {
+public class Pause extends MenuScene implements MenuScene.IOnMenuItemClickListener {
     private int positionX;
     private int positionY;
+
+    private Game game;
 
     ArrayList<IMenuItem> menuItems = new ArrayList<IMenuItem>(3);
     ArrayList<IMenuItem> menuIcons = new ArrayList<IMenuItem>(3);
 
-    public GamePause(Camera camera, final Scene gameScene, Game game) {
+    public Pause(Camera camera, final Scene gameScene, Game game) {
         super(camera);
+        this.game = game;
         TextureResource textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
         positionX = (int)(camera.getWidth() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getWidth() / 2);
         positionY = (int)(camera.getHeight() / 2 - textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getHeight() / 2);
@@ -82,7 +82,7 @@ public class GamePause extends MenuScene implements MenuScene.IOnMenuItemClickLi
                 GameManager.getInstance().unpauseGame();
                 break;
             case 2:
-                GameManager.getInstance().startGame();
+                GameManager.getInstance().startGame(GameManager.getInstance().getLevel());
                 break;
             case 3:
                 GameManager.getInstance().gameOver();

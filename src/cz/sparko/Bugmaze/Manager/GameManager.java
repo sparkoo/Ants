@@ -7,6 +7,9 @@ import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Character.LadyBug;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Endless;
+import cz.sparko.Bugmaze.Level.Level;
+import cz.sparko.Bugmaze.Menu.Pause;
+import cz.sparko.Bugmaze.Menu.Results;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Model.ScoreDTO;
 import cz.sparko.Bugmaze.PowerUp.PowerUp;
@@ -29,12 +32,13 @@ public class GameManager extends Manager {
 
     private GameUpdateHandler gameUpdateHandler;
 
-    private GamePause pauseScene;
+    private Pause pauseScene;
     private boolean paused = false;
     private boolean running = false;
 
     private static Character character = null;
     private static GameField gameField;
+    private Level level;
 
     private boolean playSoundEffects;
 
@@ -65,12 +69,15 @@ public class GameManager extends Manager {
     public void stopRunning() { running = false; }
     public void startRunning() { running = true; }
 
-    public void startGame() {
+    public void startGame(Level level) {
         score = 0;
         tmpScore = 0;
+        this.level = level;
         startRunning();
         game.switchManager(this);
     }
+
+    public Level getLevel() { return level; }
 
     public void gameOver() {
         game.switchManager(MenuManager.getInstance());
@@ -80,7 +87,7 @@ public class GameManager extends Manager {
     }
 
     public void showResultScreen() {
-        scene.setChildScene(new GameResults(game.getCamera(), scene, game, score));
+        scene.setChildScene(new Results(game.getCamera(), game, score));
     }
 
     public void pauseGame() {
@@ -97,10 +104,10 @@ public class GameManager extends Manager {
     protected void setScene() {
         scene = new Scene();
 
-        pauseScene = new GamePause(game.getCamera(), scene, game);
+        pauseScene = new Pause(game.getCamera(), scene, game);
 
         gameField = new GameField(game, scene);
-        gameField.createField();
+        gameField.createField(level);
 
         scene.setBackground(new Background(0.17f, 0.61f, 0f));
 

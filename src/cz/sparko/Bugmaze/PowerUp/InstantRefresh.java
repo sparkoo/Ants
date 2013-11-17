@@ -1,6 +1,8 @@
 package cz.sparko.Bugmaze.PowerUp;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Level.Endless;
+import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
@@ -14,7 +16,7 @@ public class InstantRefresh extends PowerUp {
 
     @Override
     public void action() {
-        gameUpdateHandler.refreshField();
+        gameField.refreshField(GameManager.getInstance().getLevel());
     }
 
     @Override

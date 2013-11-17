@@ -3,6 +3,7 @@ package cz.sparko.Bugmaze;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
@@ -44,7 +45,7 @@ public class GameField {
     public Block getBlock(int x, int y) { return blocks[x][y]; }
     public void setBlock(int x, int y, Block block) { blocks[x][y] = block; }
 
-    public void createField() {
+    public void createField(Level level) {
         background = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), game.getVertexBufferObjectManager());
         background.setZIndex(Z_INDEX);
         scene.attachChild(background);
@@ -59,7 +60,7 @@ public class GameField {
                 Block nBlock;
                 Coordinate nCoordinate = new Coordinate(x, y);
                 if (!nCoordinate.equals(startBlock)) {
-                    nBlock = Block.createRandomBasicBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource);
+                    nBlock = level.createRandomBlock(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource);
                     scene.registerTouchArea(nBlock);
                 } else {
                     nBlock = Block.createStartBlockFactory(nCoordinate, startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), textureResource, GameManager.getInstance());
@@ -70,5 +71,24 @@ public class GameField {
         }
 
         activeBlock = blocks[startBlock.getX()][startBlock.getY()];
+    }
+
+    public void refreshField(Level level) {
+        int startX = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
+        int startY = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
+        refreshFieldNotNeeded();
+        for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
+            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
+                if (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()) {
+                    scene.detachChild(getBlock(x, y));
+                    scene.unregisterTouchArea(getBlock(x, y));
+                    Block nBlock = level.createRandomBlock(new Coordinate(x, y), startX + (x * Block.SIZE), startY + (y * Block.SIZE), game.getVertexBufferObjectManager(), game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD));
+                    setBlock(x, y, nBlock);
+                    scene.attachChild(nBlock);
+                    scene.registerTouchArea(nBlock);
+                }
+            }
+        }
+        scene.sortChildren();
     }
 }
