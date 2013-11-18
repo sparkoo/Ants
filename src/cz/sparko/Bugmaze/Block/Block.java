@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze.Block;
 
+import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
@@ -16,6 +17,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.modifier.IModifier;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,8 +36,8 @@ public abstract class Block extends AnimatedSprite {
     private boolean active = false;
     private boolean deleted = false;
 
-    public Block(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager vertexBufferObjectManager, int walkThroughs) {
-        super(pX, pY, pTiledTextureRegion, vertexBufferObjectManager);
+    public Block(Coordinate coordinate, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager vertexBufferObjectManager, int walkThroughs) {
+        super(0, 0, pTiledTextureRegion, vertexBufferObjectManager);
         sourceWays = new ArrayList<Direction>();
         outWays = new ArrayList<Direction>();
         this.coordinate = coordinate;
@@ -80,28 +83,31 @@ public abstract class Block extends AnimatedSprite {
 
     public Coordinate getCoordinate() { return coordinate; }
 
-    public static Block createRandomBasicBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource) {
-        Random rnd = new Random();
-        Block nBlock;
-        float pickBlock = rnd.nextFloat();
-        if (pickBlock < 0.7)
-            nBlock = new Corner(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CORNER), vertexBufferObjectManager, 1);
-        else if (pickBlock < 0.9)
-            nBlock = new Line(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_LINE), vertexBufferObjectManager, 1);
-        else
-            nBlock = new Cross(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_CROSS), vertexBufferObjectManager, 2);
-
-        for (int i = 0; i < rnd.nextInt(4); i++)
+    public static Block createStartBlock(Coordinate coordinate, Game game) {
+        Block nBlock = new Start(coordinate, game);
+        for (int i = 0; i < new Random().nextInt(4); i++)
             nBlock.rotate();
-
         return nBlock;
     }
 
-    public static Block createStartBlockFactory(Coordinate coordinate, int posX, int posY, VertexBufferObjectManager vertexBufferObjectManager, TextureResource textureResource, GameManager gameManager) {
-        Block nBlock = new Start(coordinate, posX, posY, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.BLOCK_START), vertexBufferObjectManager);
-        for (int i = 0; i < new Random().nextInt(4); i++) {
-            nBlock.rotate();
+    public static Block createRandomBlock(Class[] blocks, float probabilities[], int walkThroughs[], Game game, Coordinate coordinate, boolean randomRotate) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Random randomGenerator = new Random();
+        float sumOfProbabilities = 0;
+        float pickBlock = randomGenerator.nextFloat();
+        int pickedBlockIndex;
+        for (pickedBlockIndex = 0; pickedBlockIndex < probabilities.length; pickedBlockIndex++ ) {
+            if (sumOfProbabilities + probabilities[pickedBlockIndex] >= pickBlock)
+                break;
+            sumOfProbabilities += probabilities[pickedBlockIndex];
         }
+
+        Constructor<Block> constructor = blocks[pickedBlockIndex].getConstructor(Coordinate.class, Game.class, int.class);
+        Block nBlock = constructor.newInstance(coordinate, game, walkThroughs[pickedBlockIndex]);
+
+        if (randomRotate)
+            for (int i = 0; i < randomGenerator.nextInt(4); i++)
+                nBlock.rotate();
+
         return nBlock;
     }
 

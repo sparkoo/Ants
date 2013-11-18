@@ -1,9 +1,11 @@
 package cz.sparko.Bugmaze.Block;
 
+import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
-import cz.sparko.Bugmaze.Manager.GameManager;
+import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
+import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -11,8 +13,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Corner extends Block {
-    public Corner(Coordinate coordinate, float pX, float pY, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager, int walkThroughs) {
-        super(coordinate, pX, pY, pTiledTextureRegion, pVertexBufferObjectManager, walkThroughs);
+    public Corner(Coordinate coordinate, Game game, int walkThroughs) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER), game.getVertexBufferObjectManager(), walkThroughs);
     }
 
     @Override

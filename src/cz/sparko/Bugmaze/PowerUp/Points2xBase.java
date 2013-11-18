@@ -15,7 +15,7 @@ public class Points2xBase extends PowerUp {
 
     @Override
     public void action() {
-        GameManager.getInstance().increaseScore(2);
+        GameManager.getInstance().multiplyScore(2);
         GameManager.getInstance().printScore();
     }
 

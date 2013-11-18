@@ -47,6 +47,7 @@ public class GameManager extends Manager {
     private Text mCountDownText;
     private long score = 0;
     private long tmpScore = 0;
+    private long scoreBase = 0;
 
     private ArrayList<PowerUp> characterPowerUps = new ArrayList<PowerUp>();
     private ArrayList<PowerUp> playerPowerUps = new ArrayList<PowerUp>();
@@ -195,21 +196,30 @@ public class GameManager extends Manager {
     }
 
     public void increaseScore() {
-        tmpScore++;
-        mTmpScoreText.setText(String.format("%d", tmpScore * tmpScore));
+        scoreBase++;
+        tmpScore += scoreBase;
+        mTmpScoreText.setText(String.format("%d", tmpScore));
     }
 
-    public void increaseScore(long increaseBy) {
+    public void increaseScore(int increaseBy) {
         tmpScore += increaseBy;
     }
 
-    public void increaseScore(int multiplier) {
+    public void multiplyScore(int multiplier) {
         tmpScore *= multiplier;
     }
 
+    public void increaseScoreBase(int increaseBy) {
+        scoreBase += increaseBy;
+    }
+    public void multiplyScoreBase(int multiplier) {
+        scoreBase *= multiplier;
+    }
+
     public void countScore() {
-        score += tmpScore * tmpScore;
+        score += tmpScore;
         tmpScore = 0;
+        scoreBase = 0;
         printScore();
         mScoreText.registerEntityModifier(new SequenceEntityModifier(new ScaleModifier(0.1f, 1f, 1.5f), new ScaleModifier(0.3f, 1.5f, 1f)));
         mScoreText.setScale(1.2f);
@@ -222,7 +232,7 @@ public class GameManager extends Manager {
 
     public void printScore() {
         mScoreText.setText(String.format("%s%d", game.getString(R.string.score_text), score));
-        mTmpScoreText.setText(String.format("%d", tmpScore * tmpScore));
+        mTmpScoreText.setText(String.format("%d", tmpScore));
     }
 
     public void saveScore() {
