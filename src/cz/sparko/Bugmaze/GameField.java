@@ -27,13 +27,14 @@ public class GameField {
     private Sprite background;
 
     private Block[][] blocks;
-    private Coordinate startBlock;
+    private Coordinate startBlockCoordinate;
     private Block activeBlock;
 
     private boolean refreshField = false;
 
     public GameField(Game game, Scene scene) {
         textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
+        blocks = new Block[GameField.FIELD_SIZE_X][GameField.FIELD_SIZE_Y];
         this.game = game;
         this.scene = scene;
     }
@@ -65,30 +66,20 @@ public class GameField {
         background.setZIndex(Z_INDEX);
         scene.attachChild(background);
 
-        blocks = new Block[GameField.FIELD_SIZE_X][GameField.FIELD_SIZE_Y];
+        refreshField(level);
+
         Random rnd = new Random();
-        startBlock = new Coordinate(rnd.nextInt(GameField.FIELD_SIZE_X), rnd.nextInt(GameField.FIELD_SIZE_Y));
-        for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
-            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
-                Block nBlock;
-                Coordinate nCoordinate = new Coordinate(x, y);
-                if (!nCoordinate.equals(startBlock))
-                    nBlock = level.createRandomBlock(nCoordinate);
-                else
-                    nBlock = Block.createStartBlock(nCoordinate, game);
+        startBlockCoordinate = new Coordinate(rnd.nextInt(GameField.FIELD_SIZE_X), rnd.nextInt(GameField.FIELD_SIZE_Y));
+        putBlock(startBlockCoordinate.getX(), startBlockCoordinate.getY(), Block.createStartBlock(startBlockCoordinate, game), false);
 
-                putBlock(x, y, nBlock, !nCoordinate.equals(startBlock));
-            }
-        }
-
-        activeBlock = blocks[startBlock.getX()][startBlock.getY()];
+        activeBlock = blocks[startBlockCoordinate.getX()][startBlockCoordinate.getY()];
     }
 
     public void refreshField(Level level) {
         refreshFieldNotNeeded();
         for (int x = 0; x < GameField.FIELD_SIZE_X; x++)
             for (int y = 0; y < GameField.FIELD_SIZE_Y; y++)
-                if (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock())
+                if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()))
                     putBlock(x, y, level.createRandomBlock(new Coordinate(x, y)));
         scene.sortChildren();
     }
