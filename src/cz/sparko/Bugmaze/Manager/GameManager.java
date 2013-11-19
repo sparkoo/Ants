@@ -8,6 +8,7 @@ import cz.sparko.Bugmaze.Character.LadyBug;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Level.Level;
+import cz.sparko.Bugmaze.Level.Level1;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
@@ -69,6 +70,7 @@ public class GameManager extends Manager {
     public boolean getRunning() { return running; }
     public void stopRunning() { running = false; }
     public void startRunning() { running = true; }
+    public long getScore() { return score; }
 
     public void startGame(Level level) {
         score = 0;
@@ -140,7 +142,7 @@ public class GameManager extends Manager {
         }));
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        gameUpdateHandler = new GameUpdateHandler(gameField, character, new Endless(game));
+        gameUpdateHandler = new GameUpdateHandler(gameField, character, new Level1(game));
         scene.registerUpdateHandler(gameUpdateHandler);
 
         setPowerUps(scene);

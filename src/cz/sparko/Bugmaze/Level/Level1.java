@@ -1,21 +1,42 @@
 package cz.sparko.Bugmaze.Level;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Block.Block;
-import cz.sparko.Bugmaze.Block.Finish;
+import cz.sparko.Bugmaze.Block.*;
+import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Manager.GameManager;
 
+/* after reach score 100, put finish block */
 public class Level1 extends Level {
     public Level1(Game game) {
         super(game);
     }
 
     @Override
-    public void reachedNextBlock() {
+    public void reachedNextBlock(Block activeBlock, GameUpdateHandler gameUpdateHandler) {
+        super.reachedNextBlock(activeBlock, gameUpdateHandler);
     }
 
     @Override
     public Block createRandomBlock(Coordinate coordinate) {
-        return new Finish(coordinate, game, 1);
+        Class[] blocks = {Corner.class, Line.class, Cross.class};
+        float[] probabilities = {0.7f, 0.2f, 0.1f};
+        int[] walkThroughs = {1, 1, 2};
+        try {
+            return Block.createRandomBlock(blocks, probabilities, walkThroughs, game, coordinate, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Block[] getLevelBlocks() {
+        if (GameManager.getInstance().getScore() > 1000) {
+            Block[] levelBlocks = new Block[1];
+            levelBlocks[0] = new Finish(new Coordinate(1, 1), game);
+            return levelBlocks;
+        }
+        return new Block[0];
     }
 }

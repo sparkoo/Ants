@@ -81,6 +81,10 @@ public class GameField {
             for (int y = 0; y < GameField.FIELD_SIZE_Y; y++)
                 if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()))
                     putBlock(x, y, level.createRandomBlock(new Coordinate(x, y)));
+
+        for (Block levelBlock : level.getLevelBlocks())
+            putBlock(levelBlock.getCoordinate().getX(), levelBlock.getCoordinate().getY(), levelBlock);
+
         scene.sortChildren();
     }
 }

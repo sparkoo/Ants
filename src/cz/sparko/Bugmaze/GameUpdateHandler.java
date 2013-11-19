@@ -38,13 +38,11 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             return;
 
         if (gameField.isNeedRefreshField() && running) {
+            gameManager.countScore();
             gameField.refreshField(level);
             gameManager.playRebuildSound();
-            gameManager.countScore();
         }
         if (running && timeCounter > character.getSpeed()) {
-            powerUpNextBlockListener.reachedNextBlock();
-            level.reachedNextBlock();
 
             timeCounter = 0;
             int currentX = gameField.getActiveBlock().getCoordinate().getX() + gameField.getActiveBlock().getOutCoordinate().getX();
@@ -56,12 +54,15 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             Coordinate nCoordinate = new Coordinate(currentX, currentY);
 
             if (gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()).canGetInFrom(gameField.getActiveBlock().getCoordinate())) {
+                powerUpNextBlockListener.reachedNextBlock();
+                level.reachedNextBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()), this);
+
                 gameField.setActiveBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()));
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
                 gameManager.increaseScore();
             } else {
-                gameOver();
+                gameOver(false);
             }
         } else {
             timeCounter += pSecondsElapsed;
@@ -74,7 +75,9 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
         }
     }
 
-    private void gameOver() {
+    public void gameOver(boolean completed) {
+        if (completed)
+            gameManager.countScore();
         running = false;
         gameManager.stopRunning();
         gameManager.saveScore();
