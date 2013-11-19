@@ -1,19 +1,20 @@
 package cz.sparko.Bugmaze.Manager;
 
 import android.view.KeyEvent;
-import cz.sparko.Bugmaze.*;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Character.LadyBug;
+import cz.sparko.Bugmaze.GameField;
+import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Settings;
-import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Level.Level1;
+import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
-import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Model.ScoreDTO;
 import cz.sparko.Bugmaze.PowerUp.PowerUp;
+import cz.sparko.Bugmaze.R;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
