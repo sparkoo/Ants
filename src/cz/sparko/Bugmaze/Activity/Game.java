@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.appstate.OnStateDeletedListener;
@@ -259,7 +258,6 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e("PRD", "onConnectionFailed");
     }
 
     private GameData getSyncedGameData(GameData cloud) {
@@ -271,16 +269,12 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     @Override
     public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
-        Log.e("GAMEDATA", "onStateLoaded: " + statusCode);
         if (statusCode == AppStateClient.STATUS_OK) {
             try {
                 MenuManager.setGameData(getSyncedGameData(GameData.getGameDataFromByteStream(data)));
-                Log.e("GAMEDATA_LOADED", MenuManager.getGameData().toString());
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.e("GAMEDATA", e.getMessage());
             } catch (ClassNotFoundException e) {
-                Log.e("GAMEDATA", e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -311,6 +305,5 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     }
 
     public void printGameData() {
-        Log.e("GAMEDATA", MenuManager.getGameData().toString());
     }
 }

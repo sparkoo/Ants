@@ -72,6 +72,7 @@ public class GameManager extends Manager {
     public void stopRunning() { running = false; }
     public void startRunning() { running = true; }
     public long getScore() { return score; }
+    public void setPlaySoundEffects(boolean playSoundEffects) { this.playSoundEffects = playSoundEffects; }
 
     public void startGame(Level level) {
         score = 0;

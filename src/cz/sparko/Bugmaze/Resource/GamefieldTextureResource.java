@@ -20,6 +20,8 @@ public class GamefieldTextureResource extends TextureResource {
     public static final int PAUSE_PLAY_AGAIN_ICON = 12;
     public static final int PAUSE_RETURN = 13;
     public static final int PAUSE_RETURN_ICON = 14;
+    public static final int PAUSE_MUSIC_ICON = 15;
+
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -43,5 +45,6 @@ public class GamefieldTextureResource extends TextureResource {
         textures.add(PAUSE_PLAY_AGAIN_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pausePlayAgainIcon.png", 1, 2));
         textures.add(PAUSE_RETURN, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseReturn.png", 1, 2));
         textures.add(PAUSE_RETURN_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseMenuIcon.png", 1, 2));
+        textures.add(PAUSE_MUSIC_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseMusicIcon.png", 1, 2));
     }
 }

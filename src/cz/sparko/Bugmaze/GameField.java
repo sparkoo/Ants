@@ -15,7 +15,7 @@ import java.util.Random;
 public class GameField {
     public static final int FIELD_SIZE_X = 9;
     public static final int FIELD_SIZE_Y = 6;
-    public static final int Z_INDEX = 99;
+    public static final int Z_INDEX_BACKGROUND = 99;
 
     private static int START_X = (Game.CAMERA_WIDTH - (GameField.FIELD_SIZE_X * Block.SIZE)) / 2;
     private static int START_Y = (Game.CAMERA_HEIGHT - (GameField.FIELD_SIZE_Y * Block.SIZE)) / 2;
@@ -63,7 +63,7 @@ public class GameField {
 
     public void createField(Level level) {
         background = new Sprite(0, 0, textureResource.getResource(GamefieldTextureResource.BACKGROUND), game.getVertexBufferObjectManager());
-        background.setZIndex(Z_INDEX);
+        background.setZIndex(Z_INDEX_BACKGROUND);
         scene.attachChild(background);
 
         refreshField(level);

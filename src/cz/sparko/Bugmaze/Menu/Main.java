@@ -41,12 +41,12 @@ public class Main extends Menu {
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_PLAY));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_LEADERBOARD));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_OPTIONS));
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_OPTIONS));
+        //menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_OPTIONS));
 
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.BUG_ICON));
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.LEADERBOARD_ICON));
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.OPTIONS_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.OPTIONS_ICON));
+        //menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.OPTIONS_ICON));
 
         headerTexture = textureResource.getResource(MenuGeneralTextureResource.MAIN_HEADER);
     }

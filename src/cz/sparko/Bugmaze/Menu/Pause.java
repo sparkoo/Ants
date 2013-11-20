@@ -1,15 +1,18 @@
 package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Menu.TwoStateMenuButton;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
+import cz.sparko.Bugmaze.Resource.MenuOptionsTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.scene.menu.item.AnimatedSpriteMenuItem;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
@@ -25,6 +28,7 @@ public class Pause extends MenuScene implements MenuScene.IOnMenuItemClickListen
 
     ArrayList<IMenuItem> menuItems = new ArrayList<IMenuItem>(3);
     ArrayList<IMenuItem> menuIcons = new ArrayList<IMenuItem>(3);
+    AnimatedSpriteMenuItem musicButton;
 
     public Pause(Camera camera, final Scene gameScene, Game game) {
         super(camera);
@@ -37,17 +41,23 @@ public class Pause extends MenuScene implements MenuScene.IOnMenuItemClickListen
         this.attachChild(pausedSprite);
         this.setBackgroundEnabled(false);
 
-        menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_CONTINUE), game.getVertexBufferObjectManager()));
-        menuItems.add(new TwoStateMenuButton(2, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN), game.getVertexBufferObjectManager()));
-        menuItems.add(new TwoStateMenuButton(3, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_RETURN), game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_CONTINUE), game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(2, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN), game.getVertexBufferObjectManager()));
+        menuItems.add(new TwoStateMenuButton(3, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_RETURN), game.getVertexBufferObjectManager()));
 
-        menuIcons.add(new TwoStateMenuButton(1, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_CONTINUE_ICON), game.getVertexBufferObjectManager()));
-        menuIcons.add(new TwoStateMenuButton(2, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN_ICON), game.getVertexBufferObjectManager()));
-        menuIcons.add(new TwoStateMenuButton(3, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.PAUSE_RETURN_ICON), game.getVertexBufferObjectManager()));
+        menuIcons.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_CONTINUE_ICON), game.getVertexBufferObjectManager()));
+        menuIcons.add(new TwoStateMenuButton(2, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN_ICON), game.getVertexBufferObjectManager()));
+        menuIcons.add(new TwoStateMenuButton(3, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_RETURN_ICON), game.getVertexBufferObjectManager()));
 
+
+        musicButton = new AnimatedSpriteMenuItem(4, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_MUSIC_ICON), game.getVertexBufferObjectManager());
+        musicButton.setPosition(positionX + textureResource.getResource(GamefieldTextureResource.PAUSE_BACKGROUND).getWidth() - 76, positionY + 27);
+        if (!game.getSettingsBoolean(Settings.EFFECTS)) musicButton.setCurrentTileIndex(1);
+        this.addMenuItem(musicButton);
 
         int posX = positionX + 105;
         int posY = positionY + 30;
+
         for (IMenuItem menuItem : menuItems) {
             menuItem.setPosition(posX, posY);
             posY += 80;
@@ -87,7 +97,19 @@ public class Pause extends MenuScene implements MenuScene.IOnMenuItemClickListen
             case 3:
                 GameManager.getInstance().gameOver();
                 break;
+            case 4:
+                if (toogleSettings(Settings.EFFECTS)) musicButton.setCurrentTileIndex(0);
+                else musicButton.setCurrentTileIndex(1);
+
+                GameManager.getInstance().setPlaySoundEffects(game.getSettingsBoolean(Settings.EFFECTS));
+                break;
         }
         return false;
+    }
+
+    private Boolean toogleSettings(Settings key) {
+        boolean newValue = !game.getSettingsBoolean(key);
+        game.setSettingsBoolean(key, newValue);
+        return newValue;
     }
 }
