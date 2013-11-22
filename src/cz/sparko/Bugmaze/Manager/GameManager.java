@@ -47,9 +47,11 @@ public class GameManager extends Manager {
     private Text mScoreText;
     private Text mTmpScoreText;
     private Text mCountDownText;
+    private Text timerText;
     private long score = 0;
     private long tmpScore = 0;
     private long scoreBase = 0;
+    private float runTime = 0;
 
     private ArrayList<PowerUp> characterPowerUps = new ArrayList<PowerUp>();
     private ArrayList<PowerUp> playerPowerUps = new ArrayList<PowerUp>();
@@ -77,9 +79,17 @@ public class GameManager extends Manager {
     public void startGame(Level level) {
         score = 0;
         tmpScore = 0;
+        runTime = 0;
         this.level = level;
         startRunning();
         game.switchManager(this);
+    }
+
+    public void increaseTime(float timeElapsed) {
+        runTime += timeElapsed;
+        int minutes = (int)(runTime / 60);
+        int seconds = (int)(runTime - (minutes * 60));
+        timerText.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
     public Level getLevel() { return level; }
@@ -92,7 +102,7 @@ public class GameManager extends Manager {
     }
 
     public void showResultScreen() {
-        scene.setChildScene(new Results(game.getCamera(), game, score));
+        scene.setChildScene(new Results(game.getCamera(), game, score, runTime));
     }
 
     public void pauseGame() {
@@ -120,10 +130,13 @@ public class GameManager extends Manager {
         character.setStartPosition(gameField.getActiveBlock());
 
         mScoreText = new Text(10, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
-        mTmpScoreText = new Text((game.CAMERA_WIDTH) / 2, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%020d", tmpScore), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        mTmpScoreText = new Text((game.CAMERA_WIDTH) / 2 - 100, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%020d", tmpScore), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
         printScore();
         mScoreText.setZIndex(101);
         mTmpScoreText.setZIndex(101);
+
+        timerText = new Text((game.CAMERA_WIDTH) / 2 + 100, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%02d:%02d", 0, 0), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        timerText.setZIndex(101);
 
         mCountDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, game.getResourceHandler().getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
         mCountDownText.setZIndex(101);
@@ -151,6 +164,7 @@ public class GameManager extends Manager {
 
         scene.attachChild(mCountDownText);
         scene.attachChild(mScoreText);
+        scene.attachChild(timerText);
         scene.attachChild(mTmpScoreText);
         scene.attachChild(character);
 

@@ -37,6 +37,11 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
         if (!GameManager.getInstance().getRunning())
             return;
 
+        timeCounter += pSecondsElapsed;
+        if (running) {
+            gameManager.increaseTime(pSecondsElapsed);
+        }
+
         if (gameField.isNeedRefreshField() && running) {
             gameManager.countScore();
             gameField.refreshField(level);
@@ -65,7 +70,6 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
                 gameOver(false);
             }
         } else {
-            timeCounter += pSecondsElapsed;
             if (!running && timeCounter > START_DELAY_SECONDS) { //first step after start delay
                 running = true;
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));

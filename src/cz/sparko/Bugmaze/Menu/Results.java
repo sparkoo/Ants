@@ -19,7 +19,7 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
     ArrayList<TextMenuItem> menuItems = new ArrayList<TextMenuItem>(3);
     private Game game;
 
-    public Results(Camera camera, Game game, long score) {
+    public Results(Camera camera, Game game, long score, float runTime) {
         super(camera);
         this.game = game;
         TextureResource textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
@@ -31,6 +31,7 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
         menuItems.add(new TextMenuItem(0, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager()));
         menuItems.add(new TextMenuItem(1, game.getResourceHandler().getFontIndieFlower36(), "Play again", game.getVertexBufferObjectManager()));
         menuItems.add(new TextMenuItem(2, game.getResourceHandler().getFontIndieFlower36(), "Back to menu", game.getVertexBufferObjectManager()));
+        menuItems.add(new TextMenuItem(0, game.getResourceHandler().getFontIndieFlower36(), "Time: " + runTime, game.getVertexBufferObjectManager()));
 
         int posX = 0;
         int posY = 0;
