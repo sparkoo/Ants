@@ -6,10 +6,10 @@ import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
-public class Points2xBase extends PowerUp {
+public class Points2xTmpScore extends PowerUp {
     private static final int TIMER = 2;
 
-    public Points2xBase(Game game) {
+    public Points2xTmpScore(Game game) {
         super((ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.POWER_UP_BUTTON));
     }
 

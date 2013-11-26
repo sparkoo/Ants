@@ -219,6 +219,14 @@ public class GameManager extends Manager {
         mTmpScoreText.setText(String.format("%d", tmpScore));
     }
 
+    public void increaseTmpScore(int increaseBy) {
+        tmpScore += increaseBy;
+    }
+
+    public void multiplyTmpScore(int multiplier) {
+        tmpScore *= multiplier;
+    }
+
     public void increaseScore(int increaseBy) {
         tmpScore += increaseBy;
     }
@@ -235,7 +243,7 @@ public class GameManager extends Manager {
     }
 
     public void countScore() {
-        score += tmpScore;
+        increaseScore((int)tmpScore);
         tmpScore = 0;
         scoreBase = 0;
         printScore();
