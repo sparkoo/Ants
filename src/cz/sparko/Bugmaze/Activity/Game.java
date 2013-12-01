@@ -3,6 +3,7 @@ package cz.sparko.Bugmaze.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import com.google.android.gms.appstate.AppStateClient;
@@ -17,10 +18,11 @@ import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Manager.MenuManager;
 import cz.sparko.Bugmaze.Model.GameData;
-import cz.sparko.Bugmaze.Model.ScoreDTO;
-import cz.sparko.Bugmaze.Model.ScoreModel;
+import cz.sparko.Bugmaze.Model.Schema;
+import cz.sparko.Bugmaze.Model.Score;
 import cz.sparko.Bugmaze.R;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
+import cz.sparko.Database.DBHelper;
 import org.andengine.audio.music.Music;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
@@ -31,7 +33,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Collections;
 
@@ -46,10 +47,11 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     private ResourceHandler resourceHandler;
 
-    private ScoreModel scoreModel;
-
     private SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
+    private SQLiteDatabase db;
+    private DBHelper dbHelper;
 
     private Manager activeManager;
 
@@ -57,8 +59,8 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
 
     public Scene getScene() { return scene; }
     public Camera getCamera() { return camera; }
-    public ScoreModel getScoreModel() { return scoreModel; }
     public ResourceHandler getResourceHandler() { return resourceHandler; }
+    public SQLiteDatabase getDatabase() { return db; }
 
     public Game() {
         super(CLIENT_APPSTATE | CLIENT_GAMES);
@@ -68,17 +70,13 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        scoreModel = new ScoreModel(this);
+        dbHelper = new DBHelper(this.getBaseContext(), new Schema(this.getBaseContext()));
+        db = dbHelper.getWritableDatabase();
+
         prefs = getSharedPreferences(getString(R.string.shared_preferences_settings_key), Context.MODE_PRIVATE);
 
         MenuManager.setGameData(GameData.getGameDataFromSharedPreferences(this));
         MenuManager.getGameData().saveGameDataToSharedPreferences(this);
-
-        try {
-            scoreModel.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public Boolean getSettingsBoolean(Settings settings) {
@@ -136,18 +134,15 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
             super.onResumeGame();
         if (activeManager != null)
             activeManager.onResume();
-        try {
-            scoreModel.open();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        db = dbHelper.getWritableDatabase();
 
         mEngine.start();
     }
 
     @Override
     protected void onPause() {
-        scoreModel.close();
+        dbHelper.close();
         if (activeManager != null)
             activeManager.onPause();
         super.onPause();
@@ -169,10 +164,10 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     }
 
     public void syncScoreWithGoogle() {
-        ScoreDTO highScore = null;
-        for (ScoreDTO score : scoreModel.getAllScores()) {
+        Score highScore = null;
+        for (Score score : Score.getAllScores(db)) {
             if (highScore == null || score.getScore() > highScore.getScore())
-                highScore = Collections.max(scoreModel.getAllScores());
+                highScore = Collections.max(Score.getAllScores(db));
         }
         if (highScore != null)
             saveScore(highScore.getScore());

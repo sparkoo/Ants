@@ -1,1 +1,2 @@
-CREATE TABLE [score] ([_id] INTEGER NOT NULL PRIMARY KEY, [score] INTEGER NOT NULL, [timestamp] TIMESTAMP NOT NULL);
+CREATE TABLE [Score] ([_id] INTEGER NOT NULL PRIMARY KEY, [score] INTEGER NOT NULL, [timestamp] TIMESTAMP NOT NULL);
+CREATE TABLE [LevelScore] ([classname] TEXT(20), [highScore] INTEGER DEFAULT 0, [completed] INTEGER DEFAULT false, CONSTRAINT [] PRIMARY KEY ([classname]));

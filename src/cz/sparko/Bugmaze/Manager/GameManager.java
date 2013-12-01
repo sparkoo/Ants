@@ -12,7 +12,7 @@ import cz.sparko.Bugmaze.Level.Level1;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
-import cz.sparko.Bugmaze.Model.ScoreDTO;
+import cz.sparko.Bugmaze.Model.Score;
 import cz.sparko.Bugmaze.PowerUp.PowerUp;
 import cz.sparko.Bugmaze.R;
 import org.andengine.entity.IEntity;
@@ -262,8 +262,7 @@ public class GameManager extends Manager {
     }
 
     public void saveScore() {
-        //SQLite
-        game.getScoreModel().insertScore(new ScoreDTO(score, ((Long) System.currentTimeMillis()).toString()));
+        Score.insertScore(new Score(score, ((Long) System.currentTimeMillis()).toString()), game.getDatabase());
         game.saveScore(score);
     }
 

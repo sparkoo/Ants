@@ -9,6 +9,7 @@ import cz.sparko.Bugmaze.Manager.GameManager;
 
 public abstract class Level {
     protected Game game;
+    protected Level nextLevel;
     protected Level(Game game) {
         this.game = game;
     }
@@ -21,4 +22,20 @@ public abstract class Level {
     public abstract Block createRandomBlock(Coordinate coordinate);
 
     public abstract Block[] getLevelBlocks();
+
+    protected void initNextLevel() {
+        this.nextLevel = null;
+    }
+
+    public boolean hasNextLevel() {
+        if (nextLevel == null)
+            initNextLevel();
+        return nextLevel != null;
+    }
+
+    public Level getNextLevel() {
+        if (nextLevel == null)
+            initNextLevel();
+        return nextLevel;
+    }
 }

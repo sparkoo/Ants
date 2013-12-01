@@ -2,18 +2,18 @@ package cz.sparko.Bugmaze.Level;
 
 import cz.sparko.Bugmaze.Activity.Game;
 
-public class Level1 extends LevelMinScore {
-    public Level1(Game game) {
+public class Level3 extends LevelMinScore {
+    protected Level3(Game game) {
         super(game);
     }
 
     @Override
     protected int getMinScore() {
-        return 500;
+        return 1500;
     }
 
     @Override
     protected void initNextLevel() {
-        this.nextLevel = new Level2(game);
+        this.nextLevel = null;
     }
 }

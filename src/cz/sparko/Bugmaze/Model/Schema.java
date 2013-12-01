@@ -1,43 +1,34 @@
 package cz.sparko.Bugmaze.Model;
 
+import android.content.Context;
+import cz.sparko.Bugmaze.Helper.AssetFileReader;
+
 import java.util.ArrayList;
 
 public class Schema implements cz.sparko.Database.Schema {
-    private static Schema instance = null;
+    private final Context context;
 
-    private ArrayList<String> updateQuery = new ArrayList<String>();
-    private String createQuery;
-
-    private Schema(){}
-
-    public static Schema getInstance() {
-        if (instance == null)
-            instance = new Schema();
-        return instance;
+    public Schema(Context context){
+        this.context = context;
     }
 
     @Override
-    public String getCreateQuery() {
-        //TODO: read from file assets/db/create.sql
-        createQuery = "CREATE TABLE [score] ([_id] INTEGER NOT NULL PRIMARY KEY, [score] INTEGER NOT NULL, [timestamp] TIMESTAMP NOT NULL);";
-        return createQuery;
+    public ArrayList<String> getCreateQuery() {
+        return AssetFileReader.fileToList(context.getAssets(), "db/create.sql");
     }
 
     @Override
     public ArrayList<String> getUpdateQuery() {
-        //TODO: read from file assets/db/update.sql
-        return updateQuery;
+        return AssetFileReader.fileToList(context.getAssets(), "db/update.sql");
     }
 
     @Override
     public String getName() {
-        //TODO: read from file assets/db/NAME
-        return "Bugmaze";
+        return AssetFileReader.fileToString(context.getAssets(), "db/NAME");
     }
 
     @Override
     public int getVersion() {
-        //TODO: read from file assets/db/VERSION
-        return 1;
+        return Integer.parseInt(AssetFileReader.fileToString(context.getAssets(), "db/VERSION"));
     }
 }
