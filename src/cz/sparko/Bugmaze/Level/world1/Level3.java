@@ -1,6 +1,7 @@
-package cz.sparko.Bugmaze.Level;
+package cz.sparko.Bugmaze.Level.world1;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Level.LevelMinScore;
 
 public class Level3 extends LevelMinScore {
     protected Level3(Game game) {
@@ -8,12 +9,17 @@ public class Level3 extends LevelMinScore {
     }
 
     @Override
+    public float getSpeed() {
+        return 1f;
+    }
+
+    @Override
     protected int getMinScore() {
-        return 1500;
+        return 500;
     }
 
     @Override
     protected void initNextLevel() {
-        this.nextLevel = null;
+        this.nextLevel = new Level4(game);
     }
 }

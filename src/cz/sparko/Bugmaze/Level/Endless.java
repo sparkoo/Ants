@@ -30,4 +30,9 @@ public class Endless extends Level {
     public Block[] getLevelBlocks() {
         return new Block[0];
     }
+
+    @Override
+    public float getSpeed() {
+        return 0.7f;
+    }
 }

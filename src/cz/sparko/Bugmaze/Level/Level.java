@@ -22,6 +22,7 @@ public abstract class Level {
     public abstract Block createRandomBlock(Coordinate coordinate);
 
     public abstract Block[] getLevelBlocks();
+    public abstract float getSpeed();
 
     protected void initNextLevel() {
         this.nextLevel = null;
@@ -38,4 +39,6 @@ public abstract class Level {
             initNextLevel();
         return nextLevel;
     }
+
+
 }

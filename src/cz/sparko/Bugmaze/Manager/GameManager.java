@@ -8,7 +8,7 @@ import cz.sparko.Bugmaze.GameField;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Level;
-import cz.sparko.Bugmaze.Level.Level1;
+import cz.sparko.Bugmaze.Level.world1.Level1;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
@@ -126,7 +126,7 @@ public class GameManager extends Manager {
 
         scene.setBackground(new Background(0.17f, 0.61f, 0f));
 
-        character = new LadyBug(0, 0, game);
+        character = new LadyBug(0, 0, game, level.getSpeed());
         character.setStartPosition(gameField.getActiveBlock());
 
         mScoreText = new Text(10, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());

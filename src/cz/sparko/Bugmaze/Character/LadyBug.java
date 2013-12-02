@@ -7,8 +7,8 @@ import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LadyBug extends Character {
-    public LadyBug(float pX, float pY, Game game) {
-        super(pX, pY, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.CHARACTER).getResource(CharacterTextureResource.LADYBUG), game);
+    public LadyBug(float pX, float pY, Game game, float speed) {
+        super(pX, pY, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.CHARACTER).getResource(CharacterTextureResource.LADYBUG), game, speed);
     }
 
     @Override

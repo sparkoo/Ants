@@ -15,15 +15,16 @@ public abstract class Character extends AnimatedSprite {
 
     public static final int Z_INDEX = 100;
 
-    private static final float baseSpeed = 1f;
+    private float baseSpeed;
     private float speed = baseSpeed;
     
     protected ArrayList<PowerUp> powerUps;
 
     protected Game game;
 
-    public Character(float pX, float pY, ITiledTextureRegion texture, Game game) {
+    public Character(float pX, float pY, ITiledTextureRegion texture, Game game, float speed) {
         super(pX, pY, texture, game.getVertexBufferObjectManager());
+        baseSpeed = speed;
         this.game = game;
         this.setZIndex(Z_INDEX);
         powerUps = new ArrayList<PowerUp>();
