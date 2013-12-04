@@ -243,7 +243,7 @@ public class GameManager extends Manager {
     }
 
     public void countScore() {
-        increaseScore((int)tmpScore);
+        score += tmpScore;
         tmpScore = 0;
         scoreBase = 0;
         printScore();

@@ -38,9 +38,8 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             return;
 
         timeCounter += pSecondsElapsed;
-        if (running) {
+        if (running)
             gameManager.increaseTime(pSecondsElapsed);
-        }
 
         if (gameField.isNeedRefreshField() && running) {
             gameManager.countScore();

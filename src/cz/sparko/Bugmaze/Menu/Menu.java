@@ -1,7 +1,6 @@
 package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Manager.Manager;
 import cz.sparko.Bugmaze.Manager.MenuManager;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
@@ -52,12 +51,14 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
                 return new Play(game);
             case OPTIONS:
                 return new Options(game);
+            case ARCADE_WORLD_SELECTION:
+                return new ArcadeWorldSelection(game);
             default:
                 return new Main(game);
         }
     }
 
-    private void createMenuScene() {
+    protected void createMenuScene() {
         menuScene = new MenuScene(game.getCamera());
         menuScene.setBackgroundEnabled(false);
 
@@ -89,11 +90,11 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
         menuScene.setOnMenuItemClickListener(this);
     }
 
-    public MenuScene getMenuScene() {
+    public final MenuScene getMenuScene() {
         return getMenuScene(false);
     }
 
-    public MenuScene getMenuScene(boolean forceLoad) {
+    public final MenuScene getMenuScene(boolean forceLoad) {
         if (forceLoad || menuScene == null) {
             setItems();
             createMenuScene();
