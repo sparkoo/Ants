@@ -45,6 +45,7 @@ public class ArcadeWorldSelection extends Menu {
     protected void createCustomItems() {
     }
 
+    @Override
     protected void createMenuScene() {
         menuScene = new MenuScene(game.getCamera());
         menuScene.setBackgroundEnabled(false);
@@ -93,6 +94,10 @@ public class ArcadeWorldSelection extends Menu {
 
         if (pMenuItem.getID() == activeWorld + 1)
             moveToNext();
+
+        if (pMenuItem.getID() == activeWorld) {
+            goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_LEVEL_SELECTION, game));
+        }
 
         return false;
     }
