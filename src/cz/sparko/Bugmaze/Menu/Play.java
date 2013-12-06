@@ -41,7 +41,7 @@ public class Play extends Menu {
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ADVENTURE));
 
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ICON_NOT));
+        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.PLAY_ICON));
 
         headerTexture = textureResource.getResource(MenuGeneralTextureResource.PLAY_HEADER);
     }

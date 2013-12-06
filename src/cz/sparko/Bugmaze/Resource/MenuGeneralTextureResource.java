@@ -19,6 +19,11 @@ public class MenuGeneralTextureResource extends TextureResource {
     public static final int PLAY_ADVENTURE = 11;
     public static final int PLAY_ICON = 12;
     public static final int PLAY_ICON_NOT = 13;
+    public static final int NEXT_WORLD_ICON = 14;
+    public static final int PREV_WORLD_ICON = 15;
+    public static final int WORLD_GRASS = 16;
+    public static final int WORLD_LAVA = 17;
+    public static final int WORLD_ICE = 18;
 
 
     public MenuGeneralTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
@@ -43,8 +48,15 @@ public class MenuGeneralTextureResource extends TextureResource {
         //play
         textures.add(PLAY_HEADER, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "playHeader.png"));
         textures.add(PLAY_ENDLESS_MAZE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "playEndlessMaze.png", 1, 2));
-        textures.add(PLAY_ADVENTURE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "playAdventure.png", 1, 2));
+        textures.add(PLAY_ADVENTURE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "playAdventure.png", 1, 1));
         textures.add(PLAY_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "playIcon.png", 1, 2));
         textures.add(PLAY_ICON_NOT, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "playNotIcon.png", 1, 1));
+
+        //world selection
+        textures.add(NEXT_WORLD_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "nextIcon.png", 1, 2));
+        textures.add(PREV_WORLD_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "prevIcon.png", 1, 2));
+        textures.add(WORLD_GRASS, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "worldGrass.png"));
+        textures.add(WORLD_LAVA, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "worldLava.png"));
+        textures.add(WORLD_ICE, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "worldIce.png"));
     }
 }
