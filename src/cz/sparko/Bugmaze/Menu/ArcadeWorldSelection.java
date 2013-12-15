@@ -2,6 +2,7 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
+import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 
 public class ArcadeWorldSelection extends Menu {
     private final int ACTIVE_POS_X = 205;
-    private final int POS_Y = 170;
-    private final int NEXT_POS_X = 580;
+    private final int POS_Y = 150;
+    private final int NEXT_POS_X = 572;
     private final float NEXT_SCALE = 0.7f;
     private final float PREV_SCALE = 1.3f;
     private final float ANIMATION_DURATION = 0.2f;
@@ -37,8 +38,8 @@ public class ArcadeWorldSelection extends Menu {
     private void initWorlds() {
         worlds = new ArrayList<IMenuItem>();
         worlds.add(new SpriteMenuItem(0, textureResource.getResource(MenuGeneralTextureResource.WORLD_GRASS), game.getVertexBufferObjectManager()));
-        worlds.add(new SpriteMenuItem(1, textureResource.getResource(MenuGeneralTextureResource.WORLD_LAVA), game.getVertexBufferObjectManager()));
-        worlds.add(new SpriteMenuItem(2, textureResource.getResource(MenuGeneralTextureResource.WORLD_ICE), game.getVertexBufferObjectManager()));
+        //worlds.add(new SpriteMenuItem(1, textureResource.getResource(MenuGeneralTextureResource.WORLD_LAVA), game.getVertexBufferObjectManager()));
+        //worlds.add(new SpriteMenuItem(2, textureResource.getResource(MenuGeneralTextureResource.WORLD_ICE), game.getVertexBufferObjectManager()));
     }
 
     @Override
@@ -67,8 +68,8 @@ public class ArcadeWorldSelection extends Menu {
             }
         }
 
-        prevWorldButton.setPosition(100, 270);
-        nextWorldButton.setPosition(450, 270);
+        prevWorldButton.setPosition(110, 270);
+        nextWorldButton.setPosition(465, 270);
 
         for (IMenuItem world : worlds)
             menuScene.addMenuItem(world);
@@ -76,6 +77,8 @@ public class ArcadeWorldSelection extends Menu {
         menuScene.addMenuItem(prevWorldButton);
         menuScene.addMenuItem(nextWorldButton);
         menuScene.setOnMenuItemClickListener(this);
+
+        checkShowNavButtons();
     }
 
     @Override
@@ -91,13 +94,12 @@ public class ArcadeWorldSelection extends Menu {
                 moveToPrev();
                 break;
         }
-
-        if (pMenuItem.getID() == activeWorld + 1)
+        if (pMenuItem.getID() == activeWorld)
+            goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_LEVEL_SELECTION, game));
+        else if (pMenuItem.getID() == activeWorld + 1)
             moveToNext();
 
-        if (pMenuItem.getID() == activeWorld) {
-            goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_LEVEL_SELECTION, game));
-        }
+
 
         return false;
     }
@@ -116,6 +118,8 @@ public class ArcadeWorldSelection extends Menu {
                 world.registerEntityModifier(new MoveModifier(ANIMATION_DURATION, 1000, NEXT_POS_X, POS_Y, POS_Y));
                 world.setScale(NEXT_SCALE);
             }
+
+            checkShowNavButtons();
         }
     }
 
@@ -132,13 +136,28 @@ public class ArcadeWorldSelection extends Menu {
             world = worlds.get(activeWorld);
             world.registerEntityModifier(new ScaleModifier(ANIMATION_DURATION, PREV_SCALE, 1f));
             world.registerEntityModifier(new MoveModifier(ANIMATION_DURATION, -500, ACTIVE_POS_X, POS_Y, POS_Y));
+
+            checkShowNavButtons();
         }
+    }
+
+    private void checkShowNavButtons() {
+        if (activeWorld == 0)
+            prevWorldButton.setScale(0);
+        else
+            prevWorldButton.setScale(1);
+
+        if (activeWorld == worlds.size() - 1)
+            nextWorldButton.setScale(0);
+        else
+            nextWorldButton.setScale(1);
+
     }
 
     @Override
     protected void loadResources() {
         super.loadResources();
 
-        headerTexture = textureResource.getResource(MenuGeneralTextureResource.PLAY_ADVENTURE);
+        headerTexture = textureResource.getResource(MenuGeneralTextureResource.ADVENTURE_HEADER);
     }
 }

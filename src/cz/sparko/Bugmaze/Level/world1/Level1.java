@@ -10,12 +10,12 @@ public class Level1 extends LevelMinScore {
 
     @Override
     public float getSpeed() {
-        return 2;
+        return 1;
     }
 
     @Override
     protected int getMinScore() {
-        return 500;
+        return 5;
     }
 
     @Override

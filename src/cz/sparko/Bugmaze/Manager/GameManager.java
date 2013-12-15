@@ -102,7 +102,7 @@ public class GameManager extends Manager {
     }
 
     public void showResultScreen() {
-        scene.setChildScene(new Results(game.getCamera(), game, score, runTime));
+        scene.setChildScene(new Results(game.getCamera(), game, score, runTime, level));
     }
 
     public void pauseGame() {

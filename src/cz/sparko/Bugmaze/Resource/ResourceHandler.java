@@ -25,12 +25,14 @@ public class ResourceHandler {
     private BuildableBitmapTextureAtlas textureAtlasMenu;
     private BuildableBitmapTextureAtlas textureAtlasGameField;
     private BuildableBitmapTextureAtlas textureAtlasMenuOptions;
+    private BuildableBitmapTextureAtlas textureAtlasLevel;
     private BitmapTextureAtlas fontTextureAtlas;
 
     public final static int GAMEFIELD = 0;
     public final static int CHARACTER = 1;
     public final static int MENU_GENERAL = 2;
     public final static int MENU_OPTIONS = 3;
+    public final static int MENU_LEVEL = 4;
 
     private ArrayList<TextureResource> textureResourcesList;
 
@@ -88,19 +90,20 @@ public class ResourceHandler {
     private void loadGraphics(Game game) {
         textureAtlasGameField = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 2048, 2048, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         textureAtlasGameField.clearTextureAtlasSources();
-
         textureResourcesList.add(GAMEFIELD, new GamefieldTextureResource(textureAtlasGameField, game));
         textureResourcesList.add(CHARACTER, new CharacterTextureResource(textureAtlasGameField, game));
 
-
         textureAtlasMenu = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         textureAtlasMenu.clearTextureAtlasSources();
-
         textureResourcesList.add(MENU_GENERAL, new MenuGeneralTextureResource(textureAtlasMenu, game));
 
         textureAtlasMenuOptions = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         textureAtlasMenuOptions.clearTextureAtlasSources();
         textureResourcesList.add(MENU_OPTIONS, new MenuOptionsTextureResource(textureAtlasMenuOptions, game));
+
+        textureAtlasLevel = new BuildableBitmapTextureAtlas(game.getEngine().getTextureManager(), 1024, 1024, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
+        textureAtlasLevel.clearTextureAtlasSources();
+        textureResourcesList.add(MENU_LEVEL, new LevelsTextureResource(textureAtlasLevel, game));
 
 
         try {
@@ -110,6 +113,8 @@ public class ResourceHandler {
             textureAtlasGameField.load();
             textureAtlasMenuOptions.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
             textureAtlasMenuOptions.load();
+            textureAtlasLevel.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            textureAtlasLevel.load();
         } catch (ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             e.printStackTrace();
         }

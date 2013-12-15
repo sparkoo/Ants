@@ -21,6 +21,11 @@ public class GamefieldTextureResource extends TextureResource {
     public static final int PAUSE_RETURN = 13;
     public static final int PAUSE_RETURN_ICON = 14;
     public static final int PAUSE_MUSIC_ICON = 15;
+    public static final int RESULTS_PLAY_AGAIN = 16;
+    public static final int RESULTS_NEXT_LEVEL = 17;
+    public static final int RESULTS_RETURN_TO_MENU = 18;
+    public static final int RESULTS_COMPLETED = 19;
+    public static final int RESULTS_FAILED = 20;
 
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
@@ -46,5 +51,10 @@ public class GamefieldTextureResource extends TextureResource {
         textures.add(PAUSE_RETURN, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseReturn.png", 1, 2));
         textures.add(PAUSE_RETURN_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseMenuIcon.png", 1, 2));
         textures.add(PAUSE_MUSIC_ICON, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "pauseMusicIcon.png", 1, 2));
+        textures.add(RESULTS_PLAY_AGAIN, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "resultsAgain.png", 1, 2));
+        textures.add(RESULTS_NEXT_LEVEL, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "resultsNext.png", 1, 2));
+        textures.add(RESULTS_RETURN_TO_MENU, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "resultsReturn.png", 1, 2));
+        textures.add(RESULTS_COMPLETED, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "resultsCompleted.png"));
+        textures.add(RESULTS_FAILED, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "resultsFailed.png"));
     }
 }
