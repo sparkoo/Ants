@@ -9,11 +9,11 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LineAutoRotate extends Line {
+    private float rotateTimeCounter = 0;
     public LineAutoRotate(Coordinate coordinate, Game game, int walkThroughs) {
         super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_AUTOROTATE), game, walkThroughs);
 
         registerUpdateHandler(new IUpdateHandler() {
-            float rotateTimeCounter = 0;
             @Override
             public void onUpdate(float pSecondsElapsed) {
                 rotateTimeCounter += pSecondsElapsed;
@@ -30,5 +30,9 @@ public class LineAutoRotate extends Line {
         });
     }
 
-
+    @Override
+    public void rotate() {
+        super.rotate();
+        rotateTimeCounter = 0;
+    }
 }
