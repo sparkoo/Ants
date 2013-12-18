@@ -18,9 +18,6 @@ public class Start extends Block {
 
     @Override
     public SequenceEntityModifier getMoveHandler(Character character) {
-        final float centerX = this.getX() + (SIZE / 2) - (Character.SIZE_X / 2);
-        final float centerY = this.getY() + (SIZE / 2) - (Character.SIZE_Y / 2);
-
         final float outPositionX = centerX + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
         final float outPositionY = centerY + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 

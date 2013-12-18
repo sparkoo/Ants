@@ -44,7 +44,12 @@ public class GameField {
     public void refreshFieldNotNeeded() { refreshField = false; }
     public boolean isNeedRefreshField() { return refreshField; }
     public Block getActiveBlock() { return activeBlock; }
-    public void setActiveBlock(Block nActiveBlock) { activeBlock = nActiveBlock; }
+    public void setActiveBlock(Block nActiveBlock) {
+        if (activeBlock != null)
+            activeBlock.deactivate();
+        activeBlock = nActiveBlock;
+        activeBlock.activate();
+    }
     public Block getBlock(int x, int y) { return blocks[x][y]; }
 
     public void putBlock(int x, int y, Block block) {

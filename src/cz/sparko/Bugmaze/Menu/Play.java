@@ -25,7 +25,7 @@ public class Play extends Menu {
                 goBack();
                 break;
             case 0:
-                GameManager.getInstance().startGame(new Endless(game));
+                GameManager.getInstance().startGame(new LevelTest(game));
                 break;
             case 1:
                 goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_WORLD_SELECTION, game));

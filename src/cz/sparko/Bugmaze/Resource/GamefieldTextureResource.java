@@ -26,7 +26,12 @@ public class GamefieldTextureResource extends TextureResource {
     public static final int RESULTS_RETURN_TO_MENU = 18;
     public static final int RESULTS_COMPLETED = 19;
     public static final int RESULTS_FAILED = 20;
-
+    public static final int BLOCK_CROSS_T = 21;
+    public static final int BLOCK_CORNER_NOROTATE = 22;
+    public static final int BLOCK_LINE_NOROTATE = 23;
+    public static final int BLOCK_LINE_ONEWAY = 24;
+    public static final int BLOCK_LINE_AUTOROTATE = 25;
+    public static final int BLOCK_CORNER_AUTOROTATE = 26;
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -56,5 +61,12 @@ public class GamefieldTextureResource extends TextureResource {
         textures.add(RESULTS_RETURN_TO_MENU, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "resultsReturn.png", 1, 2));
         textures.add(RESULTS_COMPLETED, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "resultsCompleted.png"));
         textures.add(RESULTS_FAILED, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "resultsFailed.png"));
+        textures.add(BLOCK_CROSS_T, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "crossT.png", 4, 2));
+        textures.add(BLOCK_CORNER_NOROTATE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "cornerNoRotate.png", 4, 2));
+        textures.add(BLOCK_LINE_NOROTATE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineNoRotate.png", 2, 2));
+        textures.add(BLOCK_LINE_ONEWAY, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineOneWay.png", 4, 2));
+        textures.add(BLOCK_LINE_AUTOROTATE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineAutoRotate.png", 2, 2));
+        textures.add(BLOCK_CORNER_AUTOROTATE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "cornerAutoRotate.png", 4, 2));
+
     }
 }

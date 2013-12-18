@@ -24,6 +24,9 @@ public abstract class Block extends AnimatedSprite {
     public static final int SIZE = 64;
     public static final int Z_INDEX = 10;
 
+    protected float centerX;
+    protected float centerY;
+
     protected Coordinate coordinate;
     protected ArrayList<Direction> sourceWays;
     protected ArrayList<Direction> outWays;
@@ -45,13 +48,10 @@ public abstract class Block extends AnimatedSprite {
         this.walkThroughs = walkThroughs;
     }
 
-    public boolean isActive() {
-        return this.active;
-    }
-
-    public void setActive() {
-        this.active = true;
-    }
+    public boolean isActive() {  return this.active; }
+    public void activate() { setActive(true); }
+    public void deactivate() { setActive(false); }
+    public void setActive(boolean active) { this.active = active; }
 
     public boolean isDeleted() {
         return this.deleted;
@@ -154,12 +154,21 @@ public abstract class Block extends AnimatedSprite {
         return false;
     }
 
+    //TODO: anticlockwise rotate
     public void rotate() {
         this.setCurrentTileIndex((this.getCurrentTileIndex() + 1) % (this.getTileCount() / 2));
         for (int i = 0; i < outWays.size(); i++)
             outWays.set(i, Direction.fromInt((outWays.get(i).getValue() + 1) % 4));
         for (int i = 0; i < sourceWays.size(); i++)
             sourceWays.set(i, Direction.fromInt((sourceWays.get(i).getValue() + 1) % 4));
+    }
+
+
+    @Override
+    public void setPosition(float pX, float pY) {
+        super.setPosition(pX, pY);
+        centerX = this.getX() + (SIZE / 2) - (Character.SIZE_X / 2);
+        centerY = this.getY() + (SIZE / 2) - (Character.SIZE_Y / 2);
     }
 
     public abstract SequenceEntityModifier getMoveHandler(Character character);

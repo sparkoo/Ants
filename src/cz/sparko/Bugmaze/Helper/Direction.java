@@ -31,7 +31,17 @@ public enum Direction {
     }
 
     public float getDegree() { return 90 * value; }
-
+    public float getDegree(Direction that) {
+        float degree = (this.getValue() - that.getValue()) * 90;
+        if (degree > 180 || degree < -180)
+            return 360 - degree;
+        return degree;
+    }
+    public float getCornerWay(Direction that) {
+        if (this.getValue() > that.getValue())  //TODO: NOT WORKING !!!
+            return 90;
+        return -90;
+    }
     private static final Coordinate[] directions = {new Coordinate(0, -1),  new Coordinate(1, 0), new Coordinate(0, 1), new Coordinate(-1, 0)};
     public Coordinate getCoordinate() { return directions[value]; }
 }

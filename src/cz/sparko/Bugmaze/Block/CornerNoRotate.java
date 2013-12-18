@@ -8,9 +8,9 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-public class HardCorner extends Corner {
-    public HardCorner(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, game, walkThroughs);
+public class CornerNoRotate extends Corner {
+    public CornerNoRotate(Coordinate coordinate, Game game, int walkThroughs) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER_NOROTATE), game, walkThroughs);
     }
     @Override
     public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
