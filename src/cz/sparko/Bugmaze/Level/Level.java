@@ -23,6 +23,7 @@ public abstract class Level {
 
     public abstract Block[] getLevelBlocks();
     public abstract float getSpeed();
+    public abstract void cleanLevelForStart();
 
     protected void initNextLevel() {
         this.nextLevel = null;

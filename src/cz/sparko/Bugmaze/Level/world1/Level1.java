@@ -1,4 +1,4 @@
-package cz.sparko.Bugmaze.Level.world1;
+package cz.sparko.Bugmaze.Level.World1;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Level.LevelMinScore;
@@ -15,7 +15,7 @@ public class Level1 extends LevelMinScore {
 
     @Override
     protected int getMinScore() {
-        return 5;
+        return 100;
     }
 
     @Override

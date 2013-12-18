@@ -1,10 +1,10 @@
-package cz.sparko.Bugmaze.Level.world1;
+package cz.sparko.Bugmaze.Level.World1;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Level.LevelMinScore;
 
 public class Level6 extends LevelMinScore {
-    protected Level6(Game game) {
+    public Level6(Game game) {
         super(game);
     }
 

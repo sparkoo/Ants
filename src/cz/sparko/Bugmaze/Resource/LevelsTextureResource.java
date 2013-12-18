@@ -25,6 +25,7 @@ public class LevelsTextureResource extends TextureResource {
     public static final int LEVEL18 = 17;
     public static final int LEVEL19 = 18;
     public static final int LEVEL20 = 19;
+    public static final int LOCKED = 20;
 
     public LevelsTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -52,5 +53,6 @@ public class LevelsTextureResource extends TextureResource {
         textures.add(LEVEL18, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "18.png", 1, 2));
         textures.add(LEVEL19, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "19.png", 1, 2));
         textures.add(LEVEL20, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "20.png", 1, 2));
+        textures.add(LOCKED, BitmapTextureAtlasTextureRegionFactory.createFromAsset(textureAtlas, game, "0levelLocked.png"));
     }
 }

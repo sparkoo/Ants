@@ -5,8 +5,6 @@ import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
 import cz.sparko.Bugmaze.Manager.GameManager;
-import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
-import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.DelayModifier;
 import org.andengine.entity.modifier.IEntityModifier;

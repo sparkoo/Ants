@@ -8,7 +8,6 @@ import cz.sparko.Bugmaze.GameField;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Level;
-import cz.sparko.Bugmaze.Level.world1.Level1;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
@@ -69,6 +68,8 @@ public class GameManager extends Manager {
         super(game);
     }
 
+    public static GameField getGameField() { return gameField; }
+
     public Character getCharacter() { return character; }
     public boolean getRunning() { return running; }
     public void stopRunning() { running = false; }
@@ -101,8 +102,12 @@ public class GameManager extends Manager {
         MenuManager.getInstance().goToMenu(MenuEnum.MAIN);
     }
 
-    public void showResultScreen() {
-        scene.setChildScene(new Results(game.getCamera(), game, score, runTime, level));
+    public void showResultScreen(boolean completed) {
+        scene.setChildScene(new Results(game.getCamera(), game, score, runTime, level, completed));
+        if (completed) {
+            game.setSharedPreferencesBoolean(level.getNextLevel().getClass().getName(), true);
+            game.setSharePreferencesLong(level.getClass().getName() + "_score", score);
+        }
     }
 
     public void pauseGame() {
@@ -157,7 +162,7 @@ public class GameManager extends Manager {
         }));
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-        gameUpdateHandler = new GameUpdateHandler(gameField, character, new Level1(game));
+        gameUpdateHandler = new GameUpdateHandler(gameField, character, level);
         scene.registerUpdateHandler(gameUpdateHandler);
 
         setPowerUps(scene);

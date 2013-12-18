@@ -13,7 +13,7 @@ public class LadyBug extends Character {
 
     @Override
     protected void setPowerUps() {
-        powerUps.add(new Points2xBase(game));
+        //powerUps.add(new Points2xBase(game));
         //powerUps.add(new InstantRefresh(game));
         //powerUps.add(new InstantRefresh(game));
         //powerUps.add(new InstantRefresh(game));

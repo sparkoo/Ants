@@ -1,6 +1,7 @@
 package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Level.LevelTest;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
@@ -24,7 +25,7 @@ public class Play extends Menu {
                 goBack();
                 break;
             case 0:
-                GameManager.getInstance().startGame(new LevelTest(game));
+                GameManager.getInstance().startGame(new Endless(game));
                 break;
             case 1:
                 goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_WORLD_SELECTION, game));

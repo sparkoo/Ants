@@ -11,6 +11,7 @@ import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.TextMenuItem;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
     ArrayList<IMenuItem> menuItems = new ArrayList<IMenuItem>(3);
     private Game game;
 
-    public Results(Camera camera, Game game, long score, float runTime, Level level) {
+    public Results(Camera camera, Game game, long score, float runTime, Level level, boolean completed) {
         super(camera);
         this.game = game;
         TextureResource textureResource = game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD);
@@ -28,10 +29,18 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
         attachChild(pausedSprite);
         setBackgroundEnabled(false);
 
-        Sprite header = new Sprite(170, 30, textureResource.getResource(GamefieldTextureResource.RESULTS_COMPLETED), game.getVertexBufferObjectManager());
+        ITextureRegion headerText;
+        if (completed)
+            headerText = textureResource.getResource(GamefieldTextureResource.RESULTS_COMPLETED);
+        else
+            headerText = textureResource.getResource(GamefieldTextureResource.RESULTS_FAILED);
+
+        Sprite header = new Sprite(170, 30, headerText, game.getVertexBufferObjectManager());
         attachChild(header);
 
-        menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_NEXT_LEVEL), game.getVertexBufferObjectManager()));
+        if (completed)
+            menuItems.add(new TwoStateMenuButton(0, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_NEXT_LEVEL), game.getVertexBufferObjectManager()));
+
         menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_PLAY_AGAIN), game.getVertexBufferObjectManager()));
         menuItems.add(new TwoStateMenuButton(2, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_RETURN_TO_MENU), game.getVertexBufferObjectManager()));
         menuItems.add(new TextMenuItem(0, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager()));
@@ -50,7 +59,11 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
     @Override
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
+            case 0:
+                GameManager.getInstance().startGame(GameManager.getInstance().getLevel().getNextLevel());
+                break;
             case 1:
+                GameManager.getInstance().getLevel().cleanLevelForStart();
                 GameManager.getInstance().startGame(GameManager.getInstance().getLevel());
                 break;
             case 2:

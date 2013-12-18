@@ -80,14 +80,29 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
     }
 
     public Boolean getSettingsBoolean(Settings settings) {
-        return prefs.getBoolean(settings.toString(), true);
+        return getSharedPreferencesBoolean(settings.toString(), true);
+    }
+
+    public Boolean getSharedPreferencesBoolean(String key, boolean defaultValue) {
+        return prefs.getBoolean(key, defaultValue);
+    }
+
+    public void setSharedPreferencesBoolean(String key, boolean value) {
+        if (editor == null)
+            editor = prefs.edit();
+        editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public void setSharePreferencesLong(String key, long value) {
+        if (editor == null)
+            editor = prefs.edit();
+        editor.putLong(key, value);
+        editor.commit();
     }
 
     public void setSettingsBoolean(Settings key, boolean value) {
-        if (editor == null)
-            editor = prefs.edit();
-        editor.putBoolean(key.toString(), value);
-        editor.commit();
+        setSharedPreferencesBoolean(key.toString(), value);
     }
 
     public int getGameDataInt(GameDataEnum key) {

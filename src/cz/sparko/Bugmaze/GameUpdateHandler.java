@@ -84,7 +84,7 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
         running = false;
         gameManager.stopRunning();
         gameManager.saveScore();
-        gameManager.showResultScreen();
+        gameManager.showResultScreen(completed);
     }
 
     @Override

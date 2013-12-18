@@ -31,13 +31,11 @@ public class Finish extends Block {
 
     @Override
     public void setPossibleSourceWays() {
-        sourceWays.add(0, Direction.LEFT);
-        sourceWays.add(1, Direction.RIGHT);
+        sourceWays.add(0, Direction.RIGHT);
     }
 
     @Override
     public void setOutWays() {
-        outWays.add(0, Direction.RIGHT);
-        outWays.add(1, Direction.LEFT);
+        outWays.add(0, Direction.LEFT);
     }
 }
