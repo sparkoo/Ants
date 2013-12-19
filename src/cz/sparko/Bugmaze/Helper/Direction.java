@@ -38,7 +38,8 @@ public enum Direction {
         return degree;
     }
     public float getCornerWay(Direction that) {
-        if (this.getValue() > that.getValue())  //TODO: NOT WORKING !!!
+        int diff = this.getValue() - that.getValue();
+        if (diff == 1 || diff == -3)
             return 90;
         return -90;
     }
