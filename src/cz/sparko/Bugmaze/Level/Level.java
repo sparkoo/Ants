@@ -3,6 +3,7 @@ package cz.sparko.Bugmaze.Level;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Block.Finish;
+import cz.sparko.Bugmaze.Block.HasMine;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
@@ -41,5 +42,11 @@ public abstract class Level {
         return nextLevel;
     }
 
+    public void onRefreshField() {
+        for (Block blockline[] : GameManager.getGameField().getBlocks())
+            for (Block block : blockline)
+                if (block instanceof HasMine)
+                    ((HasMine) block).removeMine();
+    }
 
 }

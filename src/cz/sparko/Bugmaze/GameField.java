@@ -51,6 +51,7 @@ public class GameField {
         activeBlock.activate();
     }
     public Block getBlock(int x, int y) { return blocks[x][y]; }
+    public Block[][] getBlocks() { return blocks; }
 
     public void putBlock(int x, int y, Block block) {
         putBlock(x, y, block, true);
