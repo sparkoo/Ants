@@ -1,9 +1,10 @@
 package cz.sparko.Bugmaze.Level;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Block.*;
-import cz.sparko.Bugmaze.GameUpdateHandler;
-import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Block.Block;
+import cz.sparko.Bugmaze.Block.Corner;
+import cz.sparko.Bugmaze.Block.Cross;
+import cz.sparko.Bugmaze.Block.Line;
 
 public class Endless extends Level {
     public Endless(Game game) {
@@ -11,16 +12,18 @@ public class Endless extends Level {
     }
 
     @Override
-    public Block createRandomBlock(Coordinate coordinate) {
-        Class[] blocks = {Corner.class, Line.class, CrossT.class};
-        float[] probabilities = {0.6f, 0.1f, 0.3f};
-        int[] walkThroughs = {1, 1, 2};
-        try {
-            return Block.createRandomBlock(blocks, probabilities, walkThroughs, game, coordinate, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    protected Class[] getBlockTypes() {
+        return new Class[]{Corner.class, Line.class, Cross.class};
+    }
+
+    @Override
+    protected float[] getBlockProbabilities() {
+        return new float[]{0.7f, 0.2f, 0.1f};
+    }
+
+    @Override
+    protected int[] getBlockWalkThroughs() {
+        return new int[]{1, 1, 2};
     }
 
     @Override
@@ -30,7 +33,7 @@ public class Endless extends Level {
 
     @Override
     public float getSpeed() {
-        return 0.7f;
+        return 0.8f;
     }
 
     @Override

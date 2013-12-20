@@ -8,6 +8,7 @@ import cz.sparko.Bugmaze.GameField;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Settings;
 import cz.sparko.Bugmaze.Level.Level;
+import cz.sparko.Bugmaze.Level.LevelMinScore;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
 import cz.sparko.Bugmaze.Menu.Pause;
 import cz.sparko.Bugmaze.Menu.Results;
@@ -43,9 +44,9 @@ public class GameManager extends Manager {
 
     private boolean playSoundEffects;
 
-    private Text mScoreText;
-    private Text mTmpScoreText;
-    private Text mCountDownText;
+    private Text scoreText;
+    private Text tmpScoreText;
+    private Text countDownText;
     private Text timerText;
     private long score = 0;
     private long tmpScore = 0;
@@ -97,8 +98,8 @@ public class GameManager extends Manager {
 
     public void gameOver() {
         game.switchManager(MenuManager.getInstance());
-        GameManager.getGameData().updateCoins(50);
-        GameManager.getGameData().save(game);
+        //GameManager.getGameData().updateCoins(50);
+        //GameManager.getGameData().save(game);
         MenuManager.getInstance().goToMenu(MenuEnum.MAIN);
     }
 
@@ -106,7 +107,9 @@ public class GameManager extends Manager {
         scene.setChildScene(new Results(game.getCamera(), game, score, runTime, level, completed));
         if (completed) {
             game.setSharedPreferencesBoolean(level.getNextLevel().getClass().getName(), true);
-            game.setSharePreferencesLong(level.getClass().getName() + "_score", score);
+            if (score > game.getSharePreferencesLong(level.getClass().getName() + "_score")) {
+                game.setSharePreferencesLong(level.getClass().getName() + "_score", score);
+            }
         }
     }
 
@@ -134,32 +137,42 @@ public class GameManager extends Manager {
         character = new LadyBug(0, 0, game, level.getSpeed());
         character.setStartPosition(gameField.getActiveBlock());
 
-        mScoreText = new Text(10, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
-        mTmpScoreText = new Text((game.CAMERA_WIDTH) / 2 - 100, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%020d", tmpScore), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        scoreText = new Text(10, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("Score: %020d", score), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        tmpScoreText = new Text((game.CAMERA_WIDTH) / 2 - 50, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%020d", tmpScore), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
         printScore();
-        mScoreText.setZIndex(101);
-        mTmpScoreText.setZIndex(101);
+        scoreText.setZIndex(101);
+        tmpScoreText.setZIndex(101);
 
-        timerText = new Text((game.CAMERA_WIDTH) / 2 + 100, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%02d:%02d", 0, 0), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
+        timerText = new Text((game.CAMERA_WIDTH) / 2 + 200, -5, game.getResourceHandler().getFontIndieFlower36(), String.format("%02d:%02d", 0, 0), new TextOptions(HorizontalAlign. RIGHT), game.getVertexBufferObjectManager());
         timerText.setZIndex(101);
 
-        mCountDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, game.getResourceHandler().getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
-        mCountDownText.setZIndex(101);
-        mCountDownText.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1f, 1f, 10f), GameUpdateHandler.START_DELAY_SECONDS + 1, new LoopEntityModifier.ILoopEntityModifierListener() {
+        countDownText = new Text(game.CAMERA_WIDTH / 2, game.CAMERA_HEIGHT / 2, game.getResourceHandler().getFontIndieFlower36(), String.format("  "), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
+        countDownText.setZIndex(101);
+        countDownText.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1f, 1f, 10f), GameUpdateHandler.START_DELAY_SECONDS + 1, new LoopEntityModifier.ILoopEntityModifierListener() {
             @Override
             public void onLoopStarted(LoopModifier<IEntity> pLoopModifier, int pLoop, int pLoopCount) {
+
+
                 if (pLoop < pLoopCount - 1)
-                    mCountDownText.setText(String.format("%d", GameUpdateHandler.START_DELAY_SECONDS - pLoop));
+                    countDownText.setText(String.format("%d", GameUpdateHandler.START_DELAY_SECONDS - pLoop));
                 else
-                    mCountDownText.setText(String.format("GO"));
+                    countDownText.setText(String.format("GO"));
             }
 
             @Override
             public void onLoopFinished(LoopModifier<IEntity> pLoopModifier, int pLoop, int pLoopCount) {
                 if (pLoop == pLoopCount - 1)
-                    mCountDownText.setText("");
+                    countDownText.setText("");
             }
         }));
+
+        if (level instanceof LevelMinScore) {
+            Text targetScoreText = new Text(-25, game.CAMERA_HEIGHT - 60, game.getResourceHandler().getFontIndieFlower36(), String.format("Target: %d", ((LevelMinScore) level).getTargetScore()), new TextOptions(HorizontalAlign.CENTER), game.getVertexBufferObjectManager());
+            targetScoreText.setScale(0.7f);
+            targetScoreText.setZIndex(101);
+            scene.attachChild(targetScoreText);
+        }
+
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
         gameUpdateHandler = new GameUpdateHandler(gameField, character, level);
@@ -167,10 +180,10 @@ public class GameManager extends Manager {
 
         setPowerUps(scene);
 
-        scene.attachChild(mCountDownText);
-        scene.attachChild(mScoreText);
+        scene.attachChild(countDownText);
+        scene.attachChild(scoreText);
         scene.attachChild(timerText);
-        scene.attachChild(mTmpScoreText);
+        scene.attachChild(tmpScoreText);
         scene.attachChild(character);
 
         scene.sortChildren();
@@ -221,7 +234,7 @@ public class GameManager extends Manager {
     public void increaseScore() {
         scoreBase++;
         tmpScore += scoreBase;
-        mTmpScoreText.setText(String.format("%d", tmpScore));
+        tmpScoreText.setText(String.format("%d", tmpScore));
     }
 
     public void increaseTmpScore(int increaseBy) {
@@ -252,8 +265,8 @@ public class GameManager extends Manager {
         tmpScore = 0;
         scoreBase = 0;
         printScore();
-        mScoreText.registerEntityModifier(new SequenceEntityModifier(new ScaleModifier(0.1f, 1f, 1.5f), new ScaleModifier(0.3f, 1.5f, 1f)));
-        mScoreText.setScale(1.2f);
+        scoreText.registerEntityModifier(new SequenceEntityModifier(new ScaleModifier(0.1f, 1f, 1.5f), new ScaleModifier(0.3f, 1.5f, 1f)));
+        scoreText.setScale(1.2f);
     }
 
     public void playRebuildSound() {
@@ -262,8 +275,8 @@ public class GameManager extends Manager {
     }
 
     public void printScore() {
-        mScoreText.setText(String.format("%s%d", game.getString(R.string.score_text), score));
-        mTmpScoreText.setText(String.format("%d", tmpScore));
+        scoreText.setText(String.format("%s%d", game.getString(R.string.score_text), score));
+        tmpScoreText.setText(String.format("%d", tmpScore));
     }
 
     public void saveScore() {

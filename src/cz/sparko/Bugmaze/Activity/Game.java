@@ -100,6 +100,9 @@ public class Game extends GBaseGameActivityAND implements GooglePlayServicesClie
         editor.putLong(key, value);
         editor.commit();
     }
+    public long getSharePreferencesLong(String key) {
+        return prefs.getLong(key, 0);
+    }
 
     public void setSettingsBoolean(Settings key, boolean value) {
         setSharedPreferencesBoolean(key.toString(), value);

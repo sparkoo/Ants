@@ -7,6 +7,10 @@ import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.PowerUp.PowerUpNextBlockListener;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.IEntityModifier;
+import org.andengine.util.modifier.IModifier;
 
 public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListener {
     public static final int START_DELAY_SECONDS = 3;
@@ -75,6 +79,7 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
         } else {
             if (!running && timeCounter > START_DELAY_SECONDS) { //first step after start delay
                 running = true;
+                character.animate(new long[]{300, 300}, 0, 1, true);
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
                 timeCounter = 0;
@@ -82,14 +87,29 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
         }
     }
 
-    public void gameOver(boolean completed) {
-        if (completed)
-            gameManager.countScore();
-        running = false;
-        gameManager.stopRunning();
-        gameManager.saveScore();
-        gameManager.showResultScreen(completed);
-    }
+    public void gameOver(final boolean completed) {
+        final IEntityModifier gameOverProcedure = new DelayModifier(2, new IEntityModifier.IEntityModifierListener() {
+
+            @Override
+            public void onModifierStarted(IModifier<IEntity> pModifier, IEntity pItem) {
+                if (completed) {
+                    character.animate(new long[]{150, 150}, 0, 1, true);
+                    gameManager.countScore();
+                } else {
+                    character.animate(new long[]{100, 100}, 2, 3, true);
+                }
+                running = false;
+                gameManager.stopRunning();
+                //gameManager.saveScore();
+            }
+
+            @Override
+            public void onModifierFinished(IModifier<IEntity> pModifier, IEntity pItem) {
+                gameManager.showResultScreen(completed);
+            }
+        });
+        character.registerEntityModifier(gameOverProcedure);
+        }
 
     @Override
     public void reset() {

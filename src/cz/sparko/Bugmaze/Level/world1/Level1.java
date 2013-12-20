@@ -1,6 +1,9 @@
 package cz.sparko.Bugmaze.Level.World1;
 
 import cz.sparko.Bugmaze.Activity.Game;
+import cz.sparko.Bugmaze.Block.Corner;
+import cz.sparko.Bugmaze.Block.Cross;
+import cz.sparko.Bugmaze.Block.Line;
 import cz.sparko.Bugmaze.Level.LevelMinScore;
 
 public class Level1 extends LevelMinScore {
@@ -9,12 +12,27 @@ public class Level1 extends LevelMinScore {
     }
 
     @Override
-    public float getSpeed() {
-        return 1;
+    protected Class[] getBlockTypes() {
+        return new Class[]{Corner.class, Line.class, Cross.class};
     }
 
     @Override
-    protected int getMinScore() {
+    protected float[] getBlockProbabilities() {
+        return new float[]{0.7f, 0.2f, 0.1f};
+    }
+
+    @Override
+    protected int[] getBlockWalkThroughs() {
+        return new int[]{1, 1, 2};
+    }
+
+    @Override
+    public float getSpeed() {
+        return 1.5f;
+    }
+
+    @Override
+    public int getTargetScore() {
         return 100;
     }
 

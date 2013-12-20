@@ -23,6 +23,21 @@ public class LevelTest extends Level {
     }
 
     @Override
+    protected Class[] getBlockTypes() {
+        return new Class[0];
+    }
+
+    @Override
+    protected float[] getBlockProbabilities() {
+        return new float[0];
+    }
+
+    @Override
+    protected int[] getBlockWalkThroughs() {
+        return new int[0];
+    }
+
+    @Override
     public Block[] getLevelBlocks() {
         return new Block[0];
     }

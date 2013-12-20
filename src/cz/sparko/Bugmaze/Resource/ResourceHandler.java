@@ -36,9 +36,7 @@ public class ResourceHandler {
 
     private ArrayList<TextureResource> textureResourcesList;
 
-    private Font fontIndieFlower100;
     private Font fontIndieFlower36;
-    private Font fontIndieFlower40;
 
     private Music menuMusic;
     private ArrayList<Sound> rebuildSounds;
@@ -52,8 +50,6 @@ public class ResourceHandler {
     public TextureResource getTextureResource(int textureResourceIndex) { return textureResourcesList.get(textureResourceIndex); }
     public Music getMenuMusic() { return menuMusic; }
     public Sound getRebuildSound() {  return rebuildSounds.get(randomGenerator.nextInt(rebuildSounds.size())); }
-    public Font getFontIndieFlower100() { return fontIndieFlower100; }
-    public Font getFontIndieFlower40() { return fontIndieFlower40; }
     public Font getFontIndieFlower36() { return fontIndieFlower36; }
 
     public void loadResource(Game game) {
@@ -82,9 +78,7 @@ public class ResourceHandler {
         this.fontTextureAtlas = new BitmapTextureAtlas(game.getTextureManager(), 256, 256, game.getSettingsBoolean(Settings.GRAPHICS) ? TextureOptions.BILINEAR_PREMULTIPLYALPHA : TextureOptions.DEFAULT);
         game.getTextureManager().loadTexture(fontTextureAtlas);
         fontIndieFlower36 = FontFactory.createFromAsset(game.getFontManager(), this.fontTextureAtlas, game.getAssets(), "Indie_Flower.ttf", 36, true, Color.WHITE.getABGRPackedInt());
-        fontIndieFlower40 = FontFactory.createFromAsset(game.getFontManager(), this.fontTextureAtlas, game.getAssets(), "Indie_Flower.ttf", 40, true, Color.WHITE.getABGRPackedInt());
-        fontIndieFlower100 = FontFactory.createFromAsset(game.getFontManager(), this.fontTextureAtlas, game.getAssets(), "Indie_Flower.ttf", 100, true, Color.WHITE.getABGRPackedInt());
-        game.getFontManager().loadFonts(fontIndieFlower36, fontIndieFlower100, fontIndieFlower40);
+        game.getFontManager().loadFonts(fontIndieFlower36);
     }
 
     private void loadGraphics(Game game) {

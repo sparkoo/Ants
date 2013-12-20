@@ -23,13 +23,14 @@ public class Main extends Menu {
                 goToMenu(this, Menu.menuFactory(MenuEnum.PLAY, game));
                 break;
             case 1:
-                game.goToLeaderboard();
-                break;
-            case 2:
                 goToMenu(this, Menu.menuFactory(MenuEnum.OPTIONS, game));
                 break;
+            /*
+            case 2:
+                game.goToLeaderboard();
+                break;
             case 3:
-                game.printGameData();
+                game.printGameData();*/
         }
         return false;
     }
@@ -39,12 +40,12 @@ public class Main extends Menu {
         super.loadResources();
 
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_PLAY));
-        menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_LEADERBOARD));
+        //menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_LEADERBOARD));
         menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_OPTIONS));
         //menuItemsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.MAIN_OPTIONS));
 
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.BUG_ICON));
-        menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.LEADERBOARD_ICON));
+        //menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.LEADERBOARD_ICON));
         menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.OPTIONS_ICON));
         //menuIconsTextures.add((ITiledTextureRegion)textureResource.getResource(MenuGeneralTextureResource.OPTIONS_ICON));
 

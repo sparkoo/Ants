@@ -13,6 +13,6 @@ public class CharacterTextureResource extends TextureResource {
 
     @Override
     protected void loadResources() {
-        textures.add(LADYBUG, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "characterLadybug.png", 1, 1));
+        textures.add(LADYBUG, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "characterLadybug.png", 2, 2));
     }
 }

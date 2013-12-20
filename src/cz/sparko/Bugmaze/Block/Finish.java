@@ -20,10 +20,8 @@ public class Finish extends Block {
     public SequenceEntityModifier getMoveHandler(Character character) {
         final float sourcePositionX = centerX + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getX());
         final float sourcePositionY = centerY + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
-        final float outPositionX = centerX + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getX());
-        final float outPositionY = centerY + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
-        return new SequenceEntityModifier(new MoveModifier(character.getSpeed(), sourcePositionX, outPositionX, sourcePositionY, outPositionY));
+        return new SequenceEntityModifier(new MoveModifier(character.getSpeed(), sourcePositionX, centerX, sourcePositionY, centerY));
     }
 
     @Override

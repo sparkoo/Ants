@@ -10,15 +10,20 @@ import cz.sparko.Bugmaze.Manager.GameManager;
 import java.util.Random;
 
 public abstract class LevelMinScore extends Level {
-    private final int minScore;
+    private final int targetScore;
     private boolean hasFinishBlock = false;
 
-    public LevelMinScore(Game game) {
+    protected LevelMinScore(Game game) {
         super(game);
-        minScore = getMinScore();
+        targetScore = getTargetScore();
     }
 
-    protected abstract int getMinScore();
+    protected LevelMinScore() {
+        super();
+        targetScore = getTargetScore();
+    }
+
+    public abstract int getTargetScore();
 
     @Override
     public void reachedNextBlock(Block activeBlock, GameUpdateHandler gameUpdateHandler) {
@@ -26,21 +31,8 @@ public abstract class LevelMinScore extends Level {
     }
 
     @Override
-    public Block createRandomBlock(Coordinate coordinate) {
-        Class[] blocks = {Corner.class, Line.class, Cross.class};
-        float[] probabilities = {0.7f, 0.2f, 0.1f};
-        int[] walkThroughs = {1, 1, 2};
-        try {
-            return Block.createRandomBlock(blocks, probabilities, walkThroughs, game, coordinate, true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public Block[] getLevelBlocks() {
-        if (!hasFinishBlock && GameManager.getInstance().getScore() > minScore) {
+        if (!hasFinishBlock && GameManager.getInstance().getScore() > targetScore) {
             hasFinishBlock = true;
             Block[] levelBlocks = new Block[1];
             Random rnd = new Random();

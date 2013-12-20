@@ -1,10 +1,7 @@
 package cz.sparko.Bugmaze.Level;
 
 import cz.sparko.Bugmaze.Activity.Game;
-import cz.sparko.Bugmaze.Block.Block;
-import cz.sparko.Bugmaze.Block.Finish;
-import cz.sparko.Bugmaze.Block.HasMine;
-import cz.sparko.Bugmaze.GameField;
+import cz.sparko.Bugmaze.Block.*;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
@@ -12,16 +9,36 @@ import cz.sparko.Bugmaze.Manager.GameManager;
 public abstract class Level {
     protected Game game;
     protected Level nextLevel;
+    protected Class[] blockTypes;
+    protected float[] blockProbabilities;
+    protected int[] blockWalkThroughs;
     protected Level(Game game) {
         this.game = game;
+
+        this.blockTypes = getBlockTypes();
+        this.blockProbabilities = getBlockProbabilities();
+        this.blockWalkThroughs = getBlockWalkThroughs();
     }
+
+    protected Level() { }
 
     public void reachedNextBlock(Block activeBlock, GameUpdateHandler gameUpdateHandler) {
         if (activeBlock instanceof Finish)
             gameUpdateHandler.gameOver(true);
     }
 
-    public abstract Block createRandomBlock(Coordinate coordinate);
+    public Block createRandomBlock(Coordinate coordinate) {
+        try {
+            return Block.createRandomBlock(blockTypes, blockProbabilities, blockWalkThroughs, game, coordinate, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected abstract Class[] getBlockTypes();
+    protected abstract float[] getBlockProbabilities();
+    protected abstract int[] getBlockWalkThroughs();
 
     public abstract Block[] getLevelBlocks();
     public abstract float getSpeed();
@@ -50,4 +67,21 @@ public abstract class Level {
                     GameManager.getGameField().putBlock(block.getCoordinate().getX(), block.getCoordinate().getY(), ((HasMine) block).getUnminedBlock(game));
     }
 
+    public boolean testLevel() {
+        if (blockTypes.length != blockProbabilities.length || blockProbabilities.length != blockWalkThroughs.length || blockTypes.length != blockWalkThroughs.length)
+            return false;
+
+        float sum = 0;
+        int sumInt;
+        for (float increment : blockProbabilities)
+            sum += increment;
+
+        sumInt = java.lang.Math.round(sum*1000);
+        if (sumInt != 1000) {
+            System.out.println(sumInt);
+            return false;
+        }
+
+        return true;
+    }
 }
