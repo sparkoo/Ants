@@ -83,6 +83,7 @@ public class GameField {
 
     public void refreshField(Level level) {
         refreshFieldNotNeeded();
+        level.onRefreshField();
         for (int x = 0; x < GameField.FIELD_SIZE_X; x++)
             for (int y = 0; y < GameField.FIELD_SIZE_Y; y++)
                 if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()))

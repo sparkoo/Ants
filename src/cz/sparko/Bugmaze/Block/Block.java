@@ -37,6 +37,8 @@ public abstract class Block extends AnimatedSprite {
     private boolean active = false;
     private boolean deleted = false;
 
+    protected int rotateCount = 0;
+
     public Block(Coordinate coordinate, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager vertexBufferObjectManager, int walkThroughs) {
         super(0, 0, pTiledTextureRegion, vertexBufferObjectManager);
         sourceWays = new ArrayList<Direction>();
@@ -161,6 +163,8 @@ public abstract class Block extends AnimatedSprite {
             outWays.set(i, Direction.fromInt((outWays.get(i).getValue() + 1) % 4));
         for (int i = 0; i < sourceWays.size(); i++)
             sourceWays.set(i, Direction.fromInt((sourceWays.get(i).getValue() + 1) % 4));
+
+        rotateCount = ++rotateCount % 4;
     }
 
 

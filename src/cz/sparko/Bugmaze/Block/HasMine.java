@@ -1,5 +1,7 @@
 package cz.sparko.Bugmaze.Block;
 
+import cz.sparko.Bugmaze.Activity.Game;
+
 public interface HasMine {
-    public void removeMine();
+    public Block getUnminedBlock(Game game);
 }

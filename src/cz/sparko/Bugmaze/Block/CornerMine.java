@@ -8,20 +8,20 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class CornerMine extends Corner implements HasMine {
-    private boolean hasMine = true;
     public CornerMine(Coordinate coordinate, Game game, int walkThroughs) {
         super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER_MINE), game, walkThroughs);
     }
 
     @Override
-    public void removeMine() {
-        hasMine = false;
+    public boolean canGetInFrom(Coordinate fromCoordinate) {
+        return false;
     }
 
     @Override
-    public boolean canGetInFrom(Coordinate fromCoordinate) {
-        if (hasMine)
-            return false;
-        return super.canGetInFrom(fromCoordinate);
+    public Block getUnminedBlock(Game game) {
+        Block unminedBlock = new Corner(coordinate, game, 1);
+        for (int i = 0; i < rotateCount; i++)
+            unminedBlock.rotate();
+        return unminedBlock;
     }
 }
