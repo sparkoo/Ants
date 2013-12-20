@@ -34,6 +34,8 @@ public class GamefieldTextureResource extends TextureResource {
     public static final int BLOCK_CORNER_AUTOROTATE = 26;
     public static final int BLOCK_CORNER_MINE = 27;
     public static final int BLOCK_LINE_MINE = 28;
+    public static final int BLOCK_LINE_SPEED_DOWN = 29;
+    public static final int BLOCK_LINE_SPEED_UP = 30;
 
     public GamefieldTextureResource(BuildableBitmapTextureAtlas textureAtlas, Game game) {
         super(textureAtlas, game);
@@ -71,6 +73,8 @@ public class GamefieldTextureResource extends TextureResource {
         textures.add(BLOCK_CORNER_AUTOROTATE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "cornerAutoRotate.png", 4, 2));
         textures.add(BLOCK_CORNER_MINE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "cornerMine.png", 4, 2));
         textures.add(BLOCK_LINE_MINE, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineMine.png", 2, 2));
+        textures.add(BLOCK_LINE_SPEED_DOWN, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineSpeedDown.png", 4, 2));
+        textures.add(BLOCK_LINE_SPEED_UP, BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(textureAtlas, game, "lineSpeedUp.png", 4, 2));
 
     }
 }

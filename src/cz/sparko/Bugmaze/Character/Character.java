@@ -45,6 +45,10 @@ public abstract class Character extends AnimatedSprite {
         speed = baseSpeed * multiple;
     }
 
+    public void increaseSpeed(float increaseBy) {
+        speed -= increaseBy;    //it's time which spend character on one block, that's why minus
+    }
+
     public float getSpeed() { return speed; }
 
     public void setStartPosition(Block activeBlock) {

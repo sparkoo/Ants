@@ -1,5 +1,6 @@
 package cz.sparko.Bugmaze;
 
+import cz.sparko.Bugmaze.Block.HasAction;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Level.Level;
@@ -60,8 +61,11 @@ public class GameUpdateHandler implements IUpdateHandler, PowerUpNextBlockListen
             if (gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()).canGetInFrom(gameField.getActiveBlock().getCoordinate())) {
                 powerUpNextBlockListener.reachedNextBlock();
                 level.reachedNextBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()), this);
-
                 gameField.setActiveBlock(gameField.getBlock(nCoordinate.getX(), nCoordinate.getY()));
+
+                if (gameField.getActiveBlock() instanceof HasAction)
+                    ((HasAction) gameField.getActiveBlock()).doActionBefore();
+
                 character.registerEntityModifier(gameField.getActiveBlock().getMoveHandler(character));
                 gameField.getActiveBlock().delete();
                 gameManager.increaseScore();

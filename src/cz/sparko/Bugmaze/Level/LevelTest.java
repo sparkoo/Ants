@@ -11,8 +11,8 @@ public class LevelTest extends Level {
 
     @Override
     public Block createRandomBlock(Coordinate coordinate) {
-        Class[] blocks = {Corner.class, LineMine.class, Line.class};
-        float[] probabilities = {0.6f, 0.1f, 0.3f};
+        Class[] blocks = {Corner.class, LineSpeedUp.class, LineSpeedDown.class};
+        float[] probabilities = {0.6f, 0.2f, 0.2f};
         int[] walkThroughs = {1, 1, 1};
         try {
             return Block.createRandomBlock(blocks, probabilities, walkThroughs, game, coordinate, true);
