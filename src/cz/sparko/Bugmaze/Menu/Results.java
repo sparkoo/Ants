@@ -50,7 +50,6 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
 
         menuItems.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_PLAY_AGAIN), game.getVertexBufferObjectManager()));
         menuItems.add(new TwoStateMenuButton(2, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_RETURN_TO_MENU), game.getVertexBufferObjectManager()));
-        menuItems.add(new TextMenuItem(-1, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager()));
 
         menuIcons.add(new TwoStateMenuButton(1, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_PLAY_AGAIN_ICON), game.getVertexBufferObjectManager()));
         menuIcons.add(new TwoStateMenuButton(2, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.PAUSE_RETURN_ICON), game.getVertexBufferObjectManager()));
@@ -62,6 +61,10 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
             posY += 70;
             this.addMenuItem(menuItem);
         }
+
+        IMenuItem scoreText = new TextMenuItem(-1, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager());
+        scoreText.setPosition(posX + 20, 370);
+        this.addMenuItem(scoreText);
 
         posX = 180; posY = 160;
         for (IMenuItem menuIcon : menuIcons) {
