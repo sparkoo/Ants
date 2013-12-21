@@ -3,6 +3,7 @@ package cz.sparko.Bugmaze;
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Helper.Coordinate;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;

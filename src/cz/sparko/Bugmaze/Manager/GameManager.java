@@ -7,6 +7,7 @@ import cz.sparko.Bugmaze.Character.LadyBug;
 import cz.sparko.Bugmaze.GameField;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Settings;
+import cz.sparko.Bugmaze.Level.Endless;
 import cz.sparko.Bugmaze.Level.Level;
 import cz.sparko.Bugmaze.Level.LevelMinScore;
 import cz.sparko.Bugmaze.Menu.MenuEnum;
@@ -130,7 +131,7 @@ public class GameManager extends Manager {
         pauseScene = new Pause(game.getCamera(), scene, game);
 
         gameField = new GameField(game, scene);
-        gameField.createField(level);
+        gameField.createField(new Endless(game));
 
         scene.setBackground(new Background(0.17f, 0.61f, 0f));
 
