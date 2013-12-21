@@ -2,7 +2,6 @@ package cz.sparko.Bugmaze.Menu;
 
 import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Resource.MenuGeneralTextureResource;
-import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
@@ -95,7 +94,7 @@ public class ArcadeWorldSelection extends Menu {
                 break;
         }
         if (pMenuItem.getID() == activeWorld)
-            goToMenu(this, Menu.menuFactory(MenuEnum.ARCADE_LEVEL_SELECTION, game));
+            goToMenu(this, Menu.menuFactory(MenuEnum.ADVENTURE_LEVEL_SELECTION, game));
         else if (pMenuItem.getID() == activeWorld + 1)
             moveToNext();
 

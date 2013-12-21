@@ -4,8 +4,8 @@ public enum MenuEnum {
     MAIN(0),
     PLAY(1),
     OPTIONS(2),
-    ARCADE_WORLD_SELECTION(3),
-    ARCADE_LEVEL_SELECTION(4);
+    ADVENTURE_WORLD_SELECTION(3),
+    ADVENTURE_LEVEL_SELECTION(4);
 
     private final int value;
 

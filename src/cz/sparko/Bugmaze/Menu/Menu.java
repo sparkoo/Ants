@@ -51,9 +51,9 @@ public abstract class Menu implements MenuScene.IOnMenuItemClickListener {
                 return new Play(game);
             case OPTIONS:
                 return new Options(game);
-            case ARCADE_WORLD_SELECTION:
+            case ADVENTURE_WORLD_SELECTION:
                 return new ArcadeWorldSelection(game);
-            case ARCADE_LEVEL_SELECTION:
+            case ADVENTURE_LEVEL_SELECTION:
                 return new ArcadeLevelSelection(game);
             default:
                 return new Main(game);
