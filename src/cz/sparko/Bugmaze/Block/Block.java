@@ -32,10 +32,10 @@ public abstract class Block extends AnimatedSprite {
     protected ArrayList<Direction> outWays;
     protected int wayNo = 0;
 
-    private int walkThroughs;
+    protected int walkThroughs;
 
-    private boolean active = false;
-    private boolean deleted = false;
+    protected boolean active = false;
+    protected boolean deleted = false;
 
     protected int rotateCount = 0;
 
@@ -60,7 +60,7 @@ public abstract class Block extends AnimatedSprite {
     }
 
     public boolean delete() {
-        if (walkThroughs == 1) {
+        if (walkThroughs <= 1) {
             this.deleted = true;
             this.active = false;
 

@@ -4,12 +4,17 @@ import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Character.Character;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Helper.Direction;
+import cz.sparko.Bugmaze.Manager.GameManager;
 import cz.sparko.Bugmaze.Resource.GamefieldTextureResource;
 import cz.sparko.Bugmaze.Resource.ResourceHandler;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.DelayModifier;
+import org.andengine.entity.modifier.IEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
 import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.modifier.IModifier;
 
 public class Finish extends Block {
     public Finish(Coordinate coordinate, Game game) {
@@ -22,6 +27,16 @@ public class Finish extends Block {
         final float sourcePositionY = centerY + ((SIZE / 2) * sourceWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(new MoveModifier(character.getSpeed(), sourcePositionX, centerX, sourcePositionY, centerY));
+    }
+
+    @Override
+    public boolean delete() {
+        if (walkThroughs <= 1) {
+            this.deleted = true;
+            this.active = false;
+        }
+        walkThroughs--;
+        return deleted;
     }
 
     @Override
