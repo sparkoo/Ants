@@ -173,6 +173,12 @@ public class GameManager extends Manager {
             scene.attachChild(targetScoreText);
         }
 
+        Text levelText = new Text(0, 0, game.getResourceHandler().getFontIndieFlower36(), level.getClass().getSimpleName(), game.getVertexBufferObjectManager());
+        levelText.setScale(0.7f);
+        levelText.setZIndex(101);
+        levelText.setPosition(game.CAMERA_WIDTH - levelText.getWidth(), game.CAMERA_HEIGHT - 60);
+        scene.attachChild(levelText);
+
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
         gameUpdateHandler = new GameUpdateHandler(gameField, character, level);
