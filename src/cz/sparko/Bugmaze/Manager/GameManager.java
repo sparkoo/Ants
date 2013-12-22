@@ -83,6 +83,7 @@ public class GameManager extends Manager {
         score = 0;
         tmpScore = 0;
         runTime = 0;
+        scoreBase = 0;
         this.level = level;
         startRunning();
         game.switchManager(this);
