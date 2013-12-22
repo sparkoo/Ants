@@ -13,12 +13,12 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Corner extends Block {
-    public Corner(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER), game.getVertexBufferObjectManager(), walkThroughs);
+    public Corner(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER), game.getVertexBufferObjectManager());
     }
 
-    protected Corner(Coordinate coordinate, ITiledTextureRegion texture, Game game, int walkThroughs) {
-        super(coordinate, texture, game.getVertexBufferObjectManager(), walkThroughs);
+    protected Corner(Coordinate coordinate, ITiledTextureRegion texture, Game game) {
+        super(coordinate, texture, game.getVertexBufferObjectManager());
     }
 
     @Override

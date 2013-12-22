@@ -8,8 +8,8 @@ import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LineSpeedUp extends LineOneWay implements HasAction {
-    public LineSpeedUp(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_SPEED_UP), game, walkThroughs);
+    public LineSpeedUp(Coordinate coordinate, Game game) {
+        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_SPEED_UP), game);
     }
 
     @Override

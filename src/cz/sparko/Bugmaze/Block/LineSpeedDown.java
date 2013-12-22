@@ -13,8 +13,8 @@ import org.andengine.entity.primitive.*;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LineSpeedDown extends LineOneWay implements HasAction {
-    public LineSpeedDown(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_SPEED_DOWN), game, walkThroughs);
+    public LineSpeedDown(Coordinate coordinate, Game game) {
+        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_SPEED_DOWN), game);
     }
 
     @Override

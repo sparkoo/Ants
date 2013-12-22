@@ -50,10 +50,17 @@ public abstract class Block extends AnimatedSprite {
         this.walkThroughs = walkThroughs;
     }
 
+    public Block(Coordinate coordinate, ITiledTextureRegion pTiledTextureRegion, VertexBufferObjectManager vertexBufferObjectManager) {
+        this(coordinate, pTiledTextureRegion, vertexBufferObjectManager, 1);
+    }
+
     public boolean isActive() {  return this.active; }
     public void activate() { setActive(true); }
     public void deactivate() { setActive(false); }
     public void setActive(boolean active) { this.active = active; }
+    public void refreshWalkthroughs() {
+        this.walkThroughs = 1;
+    }
 
     public boolean isDeleted() {
         return this.deleted;
@@ -90,7 +97,7 @@ public abstract class Block extends AnimatedSprite {
         return nBlock;
     }
 
-    public static Block createRandomBlock(Class[] blocks, float probabilities[], int walkThroughs[], Game game, Coordinate coordinate, boolean randomRotate) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static Block createRandomBlock(Class[] blocks, float probabilities[], Game game, Coordinate coordinate, boolean randomRotate) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Random randomGenerator = new Random();
         float sumOfProbabilities = 0;
         float pickBlock = randomGenerator.nextFloat();
@@ -101,8 +108,8 @@ public abstract class Block extends AnimatedSprite {
             sumOfProbabilities += probabilities[pickedBlockIndex];
         }
 
-        Constructor<Block> constructor = blocks[pickedBlockIndex].getConstructor(Coordinate.class, Game.class, int.class);
-        Block nBlock = constructor.newInstance(coordinate, game, walkThroughs[pickedBlockIndex]);
+        Constructor<Block> constructor = blocks[pickedBlockIndex].getConstructor(Coordinate.class, Game.class);
+        Block nBlock = constructor.newInstance(coordinate, game);
 
         if (randomRotate)
             for (int i = 0; i < randomGenerator.nextInt(4); i++)

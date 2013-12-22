@@ -7,8 +7,8 @@ import cz.sparko.Bugmaze.Resource.ResourceHandler;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LineMine extends Line implements HasMine {
-    public LineMine(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_MINE), game, walkThroughs);
+    public LineMine(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_MINE), game);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class LineMine extends Line implements HasMine {
 
     @Override
     public Block getUnminedBlock(Game game) {
-        Block unminedBlock = new Line(coordinate, game, 1);
+        Block unminedBlock = new Line(coordinate, game);
         for (int i = 0; i < rotateCount; i++)
             unminedBlock.rotate();
         return unminedBlock;

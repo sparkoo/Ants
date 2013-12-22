@@ -12,12 +12,12 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Line extends Block{
-    public Line(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE), game.getVertexBufferObjectManager(), walkThroughs);
+    public Line(Coordinate coordinate, Game game) {
+        super(coordinate , (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE), game.getVertexBufferObjectManager());
     }
 
-    protected Line(Coordinate coordinate, ITiledTextureRegion texture, Game game, int walkThroughs) {
-        super(coordinate, texture, game.getVertexBufferObjectManager(), walkThroughs);
+    protected Line(Coordinate coordinate, ITiledTextureRegion texture, Game game) {
+        super(coordinate, texture, game.getVertexBufferObjectManager());
     }
 
     @Override

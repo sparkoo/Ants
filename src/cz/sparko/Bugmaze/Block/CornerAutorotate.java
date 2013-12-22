@@ -9,8 +9,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class CornerAutoRotate extends Corner {
     private float rotateTimeCounter = 0;
-    public CornerAutoRotate(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER_AUTOROTATE), game, walkThroughs);
+    public CornerAutoRotate(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CORNER_AUTOROTATE), game);
 
         registerUpdateHandler(new IUpdateHandler() {
             @Override

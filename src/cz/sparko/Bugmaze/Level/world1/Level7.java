@@ -20,11 +20,6 @@ public class Level7 extends LevelMinScore {
     }
 
     @Override
-    protected int[] getBlockWalkThroughs() {
-        return new int[]{1, 1, 2, 1, 1, 1};
-    }
-
-    @Override
     public float getSpeed() {
         return 1.1f;
     }

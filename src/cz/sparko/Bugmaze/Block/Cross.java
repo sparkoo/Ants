@@ -12,8 +12,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Cross extends Block {
-    public Cross(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CROSS), game.getVertexBufferObjectManager(), walkThroughs);
+    public Cross(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CROSS), game.getVertexBufferObjectManager(), 2);
     }
 
     @Override
@@ -27,6 +27,11 @@ public class Cross extends Block {
         final float outPositionY = centerY + ((SIZE / 2) * outWays.get(wayNo).getCoordinate().getY());
 
         return new SequenceEntityModifier(new MoveModifier(character.getSpeed(), sourcePositionX, outPositionX, sourcePositionY, outPositionY));
+    }
+
+    @Override
+    public void refreshWalkthroughs() {
+        this.walkThroughs = 2;
     }
 
     @Override

@@ -10,8 +10,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 public class LineAutoRotate extends Line {
     private float rotateTimeCounter = 0;
-    public LineAutoRotate(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_AUTOROTATE), game, walkThroughs);
+    public LineAutoRotate(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_LINE_AUTOROTATE), game);
 
         registerUpdateHandler(new IUpdateHandler() {
             @Override

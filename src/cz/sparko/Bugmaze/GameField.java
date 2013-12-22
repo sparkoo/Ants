@@ -85,10 +85,13 @@ public class GameField {
     public void refreshField(Level level) {
         refreshFieldNotNeeded();
         level.onRefreshField();
-        for (int x = 0; x < GameField.FIELD_SIZE_X; x++)
-            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++)
+        for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
+            for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
                 if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()))
                     putBlock(x, y, level.createRandomBlock(new Coordinate(x, y)));
+                getBlock(x, y).refreshWalkthroughs();
+            }
+        }
 
         for (Block levelBlock : level.getLevelBlocks())
             putBlock(levelBlock.getCoordinate().getX(), levelBlock.getCoordinate().getY(), levelBlock);

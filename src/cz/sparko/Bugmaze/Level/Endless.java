@@ -22,11 +22,6 @@ public class Endless extends Level {
     }
 
     @Override
-    protected int[] getBlockWalkThroughs() {
-        return new int[]{1, 1, 2};
-    }
-
-    @Override
     public Block[] getLevelBlocks() {
         return new Block[0];
     }

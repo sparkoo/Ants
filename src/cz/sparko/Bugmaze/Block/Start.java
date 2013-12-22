@@ -13,7 +13,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 public class Start extends Block {
     public Start(Coordinate coordinate, Game game) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_START), game.getVertexBufferObjectManager(), 1);
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_START), game.getVertexBufferObjectManager());
     }
 
     @Override

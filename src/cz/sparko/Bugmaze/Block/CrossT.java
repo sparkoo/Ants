@@ -14,8 +14,8 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import java.util.Random;
 
 public class CrossT extends Block {
-    public CrossT(Coordinate coordinate, Game game, int walkThroughs) {
-        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CROSS_T), game.getVertexBufferObjectManager(), walkThroughs);
+    public CrossT(Coordinate coordinate, Game game) {
+        super(coordinate, (ITiledTextureRegion)game.getResourceHandler().getTextureResource(ResourceHandler.GAMEFIELD).getResource(GamefieldTextureResource.BLOCK_CROSS_T), game.getVertexBufferObjectManager());
     }
 
     @Override

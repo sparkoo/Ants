@@ -11,13 +11,12 @@ public abstract class Level {
     protected Level nextLevel;
     protected Class[] blockTypes;
     protected float[] blockProbabilities;
-    protected int[] blockWalkThroughs;
+
     protected Level(Game game) {
         this.game = game;
 
         this.blockTypes = getBlockTypes();
         this.blockProbabilities = getBlockProbabilities();
-        this.blockWalkThroughs = getBlockWalkThroughs();
     }
 
     protected Level() { }
@@ -29,7 +28,7 @@ public abstract class Level {
 
     public Block createRandomBlock(Coordinate coordinate) {
         try {
-            return Block.createRandomBlock(blockTypes, blockProbabilities, blockWalkThroughs, game, coordinate, true);
+            return Block.createRandomBlock(blockTypes, blockProbabilities, game, coordinate, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,7 +37,6 @@ public abstract class Level {
 
     protected abstract Class[] getBlockTypes();
     protected abstract float[] getBlockProbabilities();
-    protected abstract int[] getBlockWalkThroughs();
 
     public abstract Block[] getLevelBlocks();
     public abstract float getSpeed();
@@ -68,7 +66,7 @@ public abstract class Level {
     }
 
     public boolean testLevel() {
-        if (blockTypes.length != blockProbabilities.length || blockProbabilities.length != blockWalkThroughs.length || blockTypes.length != blockWalkThroughs.length)
+        if (blockTypes.length != blockProbabilities.length)
             return false;
 
         float sum = 0;

@@ -15,7 +15,7 @@ public class LevelTest extends Level {
         float[] probabilities = {0.6f, 0.2f, 0.2f};
         int[] walkThroughs = {1, 1, 1};
         try {
-            return Block.createRandomBlock(blocks, probabilities, walkThroughs, game, coordinate, true);
+            return Block.createRandomBlock(blocks, probabilities, game, coordinate, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,11 +30,6 @@ public class LevelTest extends Level {
     @Override
     protected float[] getBlockProbabilities() {
         return new float[0];
-    }
-
-    @Override
-    protected int[] getBlockWalkThroughs() {
-        return new int[0];
     }
 
     @Override
