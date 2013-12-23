@@ -11,12 +11,12 @@ public class Level18 extends LevelMinScore {
 
     @Override
     protected Class[] getBlockTypes() {
-        return new Class[]{Corner.class, Line.class, Cross.class, CornerMine.class, LineMine.class, LineOneWay.class, CornerNoRotate.class, LineNoRotate.class, LineSpeedDown.class, LineSpeedUp.class, LineAutoRotate.class, CrossT.class};
+        return new Class[]{Corner.class, Line.class, Cross.class, CrossT.class, CornerAutoRotate.class, CornerMine.class, LineMine.class, LineAutoRotate.class, LineSpeedDown.class, LineSpeedUp.class};
     }
 
     @Override
     protected float[] getBlockProbabilities() {
-        return new float[]{0.55f, 0.06f, 0.1f, 0.05f, 0.02f, 0.03f, 0.02f, 0.02f, 0.04f, 0.04f, 0.02f, 0.05f};
+        return new float[]{0.65f, 0.15f, 0.05f, 0.01f, 0.02f, 0.01f, 0.01f, 0.02f, 0.04f, 0.04f};
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Level18 extends LevelMinScore {
 
     @Override
     public int getTargetScore() {
-        return 2500;
+        return 1800;
     }
 
     @Override

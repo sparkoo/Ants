@@ -11,12 +11,12 @@ public class Level4 extends LevelMinScore {
 
     @Override
     protected Class[] getBlockTypes() {
-        return new Class[]{Corner.class, Line.class, Cross.class, CornerMine.class, LineMine.class};
+        return new Class[]{Corner.class, Line.class, Cross.class, CrossT.class, LineOneWay.class};
     }
 
     @Override
     protected float[] getBlockProbabilities() {
-        return new float[]{0.65f, 0.15f, 0.1f, 0.05f, 0.05f};
+        return new float[]{0.69f, 0.2f, 0.03f, 0.03f, 0.05f};
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Level4 extends LevelMinScore {
 
     @Override
     public int getTargetScore() {
-        return 500;
+        return 400;
     }
 
     @Override

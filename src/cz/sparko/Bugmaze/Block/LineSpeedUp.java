@@ -14,7 +14,7 @@ public class LineSpeedUp extends LineOneWay implements HasAction {
 
     @Override
     public void doActionBefore() {
-        if (GameManager.getInstance().getCharacter().getSpeed() >= 0.2f)
+        if (GameManager.getInstance().getCharacter().getSpeed() > 0.5f)
             GameManager.getInstance().getCharacter().increaseSpeed(0.1f);
     }
 

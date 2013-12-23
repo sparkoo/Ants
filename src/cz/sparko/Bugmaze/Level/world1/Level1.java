@@ -18,7 +18,7 @@ public class Level1 extends LevelMinScore {
 
     @Override
     protected float[] getBlockProbabilities() {
-        return new float[]{0.7f, 0.2f, 0.1f};
+        return new float[]{0.7f, 0.25f, 0.05f};
     }
 
     @Override

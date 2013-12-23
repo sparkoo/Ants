@@ -74,8 +74,8 @@ public abstract class Level {
         for (float increment : blockProbabilities)
             sum += increment;
 
-        sumInt = java.lang.Math.round(sum*1000);
-        if (sumInt != 1000) {
+        sumInt = java.lang.Math.round(sum*100);
+        if (sumInt != 100) {
             System.out.println(sumInt);
             return false;
         }
