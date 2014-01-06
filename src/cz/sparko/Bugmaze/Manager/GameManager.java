@@ -108,7 +108,8 @@ public class GameManager extends Manager {
     public void showResultScreen(boolean completed) {
         scene.setChildScene(new Results(game.getCamera(), game, score, runTime, level, completed));
         if (completed) {
-            game.setSharedPreferencesBoolean(level.getNextLevel().getClass().getName(), true);
+            if (level.hasNextLevel())
+                game.setSharedPreferencesBoolean(level.getNextLevel().getClass().getName(), true);
             if (score > game.getSharePreferencesLong(level.getClass().getName() + "_score")) {
                 game.setSharePreferencesLong(level.getClass().getName() + "_score", score);
             }

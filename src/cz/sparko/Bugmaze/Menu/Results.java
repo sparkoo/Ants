@@ -43,7 +43,7 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
 
 
 
-        if (completed) {
+        if (completed && GameManager.getInstance().getLevel().hasNextLevel()) {
             menuItems.add(new TwoStateMenuButton(0, (ITiledTextureRegion)textureResource.getResource(GamefieldTextureResource.RESULTS_NEXT_LEVEL), game.getVertexBufferObjectManager()));
             menuIcons.add(new TwoStateMenuButton(0, (ITiledTextureRegion)menuTextureResource.getResource(MenuGeneralTextureResource.PLAY_ICON), game.getVertexBufferObjectManager()));
         }
@@ -62,7 +62,16 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
             this.addMenuItem(menuItem);
         }
 
-        IMenuItem scoreText = new TextMenuItem(-1, game.getResourceHandler().getFontIndieFlower36(), "Your score: " + score, game.getVertexBufferObjectManager());
+        /*if (completed && !GameManager.getInstance().getLevel().hasNextLevel()) {
+            IMenuItem wonText = new TextMenuItem(-1, game.getResourceHandler().getFontIndieFlower36(), "You rule the Grass world!", game.getVertexBufferObjectManager());
+            wonText.setPosition(posX - 10, 300);
+            this.addMenuItem(wonText);
+        }*/
+
+        int minutes = (int)(runTime / 60);
+        int seconds = (int)(runTime - (minutes * 60));
+
+        IMenuItem scoreText = new TextMenuItem(-1, game.getResourceHandler().getFontIndieFlower36(), "Your time: " + String.format("%02d:%02d", minutes, seconds), game.getVertexBufferObjectManager());
         scoreText.setPosition(posX + 20, 370);
         this.addMenuItem(scoreText);
 
@@ -80,7 +89,8 @@ public class Results extends MenuScene implements MenuScene.IOnMenuItemClickList
     public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY) {
         switch (pMenuItem.getID()) {
             case 0:
-                GameManager.getInstance().startGame(GameManager.getInstance().getLevel().getNextLevel());
+                if (GameManager.getInstance().getLevel().hasNextLevel())
+                    GameManager.getInstance().startGame(GameManager.getInstance().getLevel().getNextLevel());
                 break;
             case 1:
                 GameManager.getInstance().getLevel().cleanLevelForStart();
