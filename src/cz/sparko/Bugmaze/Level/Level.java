@@ -6,6 +6,8 @@ import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
 
+import java.util.List;
+
 public abstract class Level {
     protected Game game;
     protected Level nextLevel;
@@ -38,7 +40,7 @@ public abstract class Level {
     protected abstract Class[] getBlockTypes();
     protected abstract float[] getBlockProbabilities();
 
-    public abstract Block[] getLevelBlocks();
+    public abstract Block[] getLevelBlocks(List<Coordinate> refreshBlocksCoordinates);
     public abstract float getSpeed();
     public abstract void cleanLevelForStart();
 

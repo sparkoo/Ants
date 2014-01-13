@@ -5,6 +5,9 @@ import cz.sparko.Bugmaze.Block.Block;
 import cz.sparko.Bugmaze.Block.Corner;
 import cz.sparko.Bugmaze.Block.Cross;
 import cz.sparko.Bugmaze.Block.Line;
+import cz.sparko.Bugmaze.Helper.Coordinate;
+
+import java.util.List;
 
 public class Endless extends Level {
     public Endless(Game game) {
@@ -22,7 +25,7 @@ public class Endless extends Level {
     }
 
     @Override
-    public Block[] getLevelBlocks() {
+    public Block[] getLevelBlocks(List<Coordinate> refreshBlocksCoordinates) {
         return new Block[0];
     }
 

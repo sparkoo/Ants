@@ -6,7 +6,9 @@ import cz.sparko.Bugmaze.GameField;
 import cz.sparko.Bugmaze.GameUpdateHandler;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 import cz.sparko.Bugmaze.Manager.GameManager;
+import org.andengine.util.adt.list.ListUtils;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class LevelMinScore extends Level {
@@ -31,15 +33,12 @@ public abstract class LevelMinScore extends Level {
     }
 
     @Override
-    public Block[] getLevelBlocks() {
-        if (!hasFinishBlock && GameManager.getInstance().getScore() > targetScore) {
+    public Block[] getLevelBlocks(List<Coordinate> refreshBlocksCoordinates) {
+        if (!hasFinishBlock && GameManager.getInstance().getScore() >= targetScore) {
             hasFinishBlock = true;
             Block[] levelBlocks = new Block[1];
             Random rnd = new Random();
-            Coordinate activeBlockCoordinate = GameManager.getGameField().getActiveBlock().getCoordinate();
-            Coordinate finishBlockCoordinate = new Coordinate(rnd.nextInt(GameField.FIELD_SIZE_X), rnd.nextInt(GameField.FIELD_SIZE_Y));
-            while (activeBlockCoordinate.equals(finishBlockCoordinate))
-                finishBlockCoordinate = new Coordinate(rnd.nextInt(GameField.FIELD_SIZE_X), rnd.nextInt(GameField.FIELD_SIZE_Y));
+            Coordinate finishBlockCoordinate = refreshBlocksCoordinates.get(rnd.nextInt(refreshBlocksCoordinates.size()));
             levelBlocks[0] = new Finish(finishBlockCoordinate, game);
             return levelBlocks;
         }

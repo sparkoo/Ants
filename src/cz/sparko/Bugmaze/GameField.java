@@ -11,6 +11,8 @@ import cz.sparko.Bugmaze.Resource.TextureResource;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class GameField {
@@ -85,15 +87,18 @@ public class GameField {
     public void refreshField(Level level) {
         refreshFieldNotNeeded();
         level.onRefreshField();
+        List<Coordinate> refreshBlocksCoordinates = new LinkedList<Coordinate>();
         for (int x = 0; x < GameField.FIELD_SIZE_X; x++) {
             for (int y = 0; y < GameField.FIELD_SIZE_Y; y++) {
-                if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock()))
+                if (getBlock(x, y) == null || (getBlock(x, y).isDeleted() && getBlock(x, y) != getActiveBlock())) {
                     putBlock(x, y, level.createRandomBlock(new Coordinate(x, y)));
+                    refreshBlocksCoordinates.add(new Coordinate(x, y));
+                }
                 getBlock(x, y).refreshWalkthroughs();
             }
         }
 
-        for (Block levelBlock : level.getLevelBlocks())
+        for (Block levelBlock : level.getLevelBlocks(refreshBlocksCoordinates))
             putBlock(levelBlock.getCoordinate().getX(), levelBlock.getCoordinate().getY(), levelBlock);
 
         scene.sortChildren();

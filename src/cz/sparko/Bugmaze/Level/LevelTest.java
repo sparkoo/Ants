@@ -4,6 +4,8 @@ import cz.sparko.Bugmaze.Activity.Game;
 import cz.sparko.Bugmaze.Block.*;
 import cz.sparko.Bugmaze.Helper.Coordinate;
 
+import java.util.List;
+
 public class LevelTest extends Level {
     public LevelTest(Game game) {
         super(game);
@@ -33,7 +35,7 @@ public class LevelTest extends Level {
     }
 
     @Override
-    public Block[] getLevelBlocks() {
+    public Block[] getLevelBlocks(List<Coordinate> refreshBlocksCoordinates) {
         return new Block[0];
     }
 
